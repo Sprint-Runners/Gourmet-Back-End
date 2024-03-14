@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-
+using Gourmet.Core.Services;
+using Gourmet.Core.ServiceContracts;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddSingleton<IJwt,JWTService>();
 
 builder.Services.AddControllers();
 
