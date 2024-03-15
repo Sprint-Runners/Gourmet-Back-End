@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gourmet.Core\Gourmet.Core.csproj" />
-    <ProjectReference Include="..\Gourmet.Infrastructure\Gourmet.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

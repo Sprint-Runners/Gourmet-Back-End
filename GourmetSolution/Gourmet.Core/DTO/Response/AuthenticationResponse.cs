@@ -8,7 +8,7 @@ namespace Gourmet.Core.DTO.Response
 {
     public class AuthenticationResponse
     {
-        public string? Username;
+        //public string? Username;
         public string? Email { get; set; }
         public string? JWT_Token { get; set; }
         public DateTime? Expiration { get; set; }

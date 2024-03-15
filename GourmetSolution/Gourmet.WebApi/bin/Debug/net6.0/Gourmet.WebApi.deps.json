@@ -9,7 +9,6 @@
       "Gourmet.WebApi/1.0.0": {
         "dependencies": {
           "Gourmet.Core": "1.0.0",
-          "Gourmet.Infrastructure": "1.0.0",
           "Microsoft.EntityFrameworkCore": "6.0.9",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.9",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.9"
@@ -438,21 +437,13 @@
       },
       "Gourmet.Core/1.0.0": {
         "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.9",
+          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.9",
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
           "System.IdentityModel.Tokens.Jwt": "6.9.0"
         },
         "runtime": {
           "Gourmet.Core.dll": {}
-        }
-      },
-      "Gourmet.Infrastructure/1.0.0": {
-        "dependencies": {
-          "Gourmet.Core": "1.0.0",
-          "Microsoft.EntityFrameworkCore": "6.0.9",
-          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.9"
-        },
-        "runtime": {
-          "Gourmet.Infrastructure.dll": {}
         }
       }
     }
@@ -765,11 +756,6 @@
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
     },
     "Gourmet.Core/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Gourmet.Infrastructure/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

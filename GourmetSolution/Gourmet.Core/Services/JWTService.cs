@@ -2,6 +2,7 @@
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.ServiceContracts;
+using Gourmet.Core.Exceptions;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System;
@@ -18,7 +19,12 @@ namespace Gourmet.Core.Services
         {
             _configuration = configuration;
         }
-
+        /// <summary>
+        /// Provides the jwt token creation service by using token's guid,user's id,
+        /// iat and user's email as its payload 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public AuthenticationResponse CreateJwtToken(SignUpRequest request)
         {
             User new_User=request.ToUser();
@@ -41,16 +47,25 @@ namespace Gourmet.Core.Services
             JwtSecurityTokenHandler tokenhandler = new JwtSecurityTokenHandler();
             string token=tokenhandler.WriteToken(tokengenerator);
             return new AuthenticationResponse() { Email=new_User.Email,JWT_Token=token,
-            Username=new_User.UserName,Expiration=Expiration};
+            Expiration=Expiration};
         }
 
         public bool Token_Validation(string token)
         {
+            //Parsing the input token
             JwtSecurityTokenHandler tokenHandler= new JwtSecurityTokenHandler();
             JwtSecurityToken tokengenerator=tokenHandler.ReadJwtToken(token);
             IEnumerable<Claim> request_claims = tokengenerator.Claims;
             DateTime request_expiration = tokengenerator.ValidTo;
             string request_issuer = tokengenerator.Issuer;
+
+
+
+            // Check the expiration date of the token
+            if (DateTime.Compare(request_expiration, DateTime.UtcNow) <= 0)
+                throw new InvalidTokenException("The token has expired");
+
+
 
             //Generate a new token to see if the token is valid
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(

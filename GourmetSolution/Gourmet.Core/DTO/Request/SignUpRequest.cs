@@ -15,7 +15,7 @@ namespace Gourmet.Core.DTO.Request
 
         public User ToUser()
         {
-            return new User() { Email = Email, UserName = UserName,
+            return new User() { Email = Email, 
                 Password = Password,Id=Guid.NewGuid() };
         }
         

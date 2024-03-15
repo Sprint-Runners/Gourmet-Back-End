@@ -11,24 +11,26 @@ namespace Gourmet.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IJwt _jwtservice;
-        public UsersController(IJwt jwtservice)
+        private readonly IUsersService usersService;
+        public UsersController(IJwt jwtservice, IUsersService usersService)
         {
             _jwtservice = jwtservice;
+            this.usersService = usersService;
         }
 
         [HttpPost("SignUp")]
         public async Task<ActionResult<AuthenticationResponse>> SignUp(SignUpRequest request)
         {
             AuthenticationResponse response = _jwtservice.CreateJwtToken(request);
-            return Ok(response);
+            return  Ok(response);
         }
-/*        [HttpGet("Test")]
+        [HttpGet("Test")]
         public async Task<IActionResult> Test(string token)
         {
             if (_jwtservice.Token_Validation(token))
                 return Ok();
             else
                 return BadRequest();
-        }*/
+        }
     }
 }

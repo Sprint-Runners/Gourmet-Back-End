@@ -640,6 +640,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.9",
+          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.9",
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
           "System.IdentityModel.Tokens.Jwt": "6.9.0"
         },
@@ -648,21 +650,6 @@
         },
         "runtime": {
           "bin/placeholder/Gourmet.Core.dll": {}
-        }
-      },
-      "Gourmet.Infrastructure/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "Gourmet.Core": "1.0.0",
-          "Microsoft.EntityFrameworkCore": "6.0.9",
-          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.9"
-        },
-        "compile": {
-          "bin/placeholder/Gourmet.Infrastructure.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Gourmet.Infrastructure.dll": {}
         }
       }
     }
@@ -1898,17 +1885,11 @@
       "type": "project",
       "path": "../Gourmet.Core/Gourmet.Core.csproj",
       "msbuildProject": "../Gourmet.Core/Gourmet.Core.csproj"
-    },
-    "Gourmet.Infrastructure/1.0.0": {
-      "type": "project",
-      "path": "../Gourmet.Infrastructure/Gourmet.Infrastructure.csproj",
-      "msbuildProject": "../Gourmet.Infrastructure/Gourmet.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "Gourmet.Core >= 1.0.0",
-      "Gourmet.Infrastructure >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 6.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.9"
@@ -1943,9 +1924,6 @@
           "projectReferences": {
             "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
               "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
-            },
-            "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Infrastructure\\Gourmet.Infrastructure.csproj": {
-              "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Infrastructure\\Gourmet.Infrastructure.csproj"
             }
           }
         }
