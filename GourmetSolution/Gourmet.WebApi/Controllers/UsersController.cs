@@ -11,17 +11,18 @@ namespace Gourmet.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IJwt _jwtservice;
-        private readonly IUsersService usersService;
+        private readonly IUsersService _usersService;
         public UsersController(IJwt jwtservice, IUsersService usersService)
         {
             _jwtservice = jwtservice;
-            this.usersService = usersService;
+            _usersService = usersService;
         }
 
         [HttpPost("SignUp")]
         public async Task<ActionResult<AuthenticationResponse>> SignUp(SignUpRequest request)
         {
             AuthenticationResponse response = _jwtservice.CreateJwtToken(request);
+            await _usersService.Sign_Up_User(request);
             return  Ok(response);
         }
         [HttpGet("Test")]

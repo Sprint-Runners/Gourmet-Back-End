@@ -1868,10 +1868,8 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Microsoft.EntityFrameworkCore >= 6.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.9",
-      "Microsoft.Extensions.Configuration.Abstractions >= 6.0.0",
       "System.IdentityModel.Tokens.Jwt >= 6.9.0"
     ]
   },
@@ -1914,10 +1912,6 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": {
-            "target": "Package",
-            "version": "[6.0.9, )"
-          },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
             "version": "[6.0.9, )"
@@ -1927,10 +1921,6 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[6.0.9, )"
-          },
-          "Microsoft.Extensions.Configuration.Abstractions": {
-            "target": "Package",
-            "version": "[6.0.0, )"
           },
           "System.IdentityModel.Tokens.Jwt": {
             "target": "Package",

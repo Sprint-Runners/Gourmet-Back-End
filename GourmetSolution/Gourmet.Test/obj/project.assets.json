@@ -2376,9 +2376,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "6.0.9",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.9",
-          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
           "System.IdentityModel.Tokens.Jwt": "6.9.0"
         },
         "compile": {
@@ -2393,7 +2391,6 @@
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "Gourmet.Core": "1.0.0",
-          "Microsoft.EntityFrameworkCore": "6.0.9",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.9"
         },
         "compile": {

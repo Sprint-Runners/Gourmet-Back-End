@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2QeWyl+e2yPlIJAwUZeYdJhp3Xt2HAzk9VCcFOgb12pwee3AimcKnmLYhCvn4yQXl5nfQ4qbcyCUzTqtzjfFZw==",
+  "dgSpecHash": "8RBw1asjulLtHuEEULYOcGb7e1jh4M2hNw/IPXiM0YvcGnk6rlU3XGsVSkj4LMQR7elU039SBRSRXEx7bu6hwA==",
   "success": true,
   "projectFilePath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
   "expectedPackageFiles": [
@@ -14,7 +14,6 @@
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.entityframeworkcore.design\\6.0.9\\microsoft.entityframeworkcore.design.6.0.9.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\6.0.9\\microsoft.entityframeworkcore.relational.6.0.9.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\6.0.9\\microsoft.entityframeworkcore.sqlserver.6.0.9.nupkg.sha512",
-    "C:\\Users\\hp\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\6.0.9\\microsoft.entityframeworkcore.tools.6.0.9.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\6.0.0\\microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.extensions.caching.memory\\6.0.1\\microsoft.extensions.caching.memory.6.0.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",

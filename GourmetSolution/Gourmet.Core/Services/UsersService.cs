@@ -1,4 +1,5 @@
-﻿using Gourmet.Core.DTO.Request;
+﻿using Gourmet.Core.Domain.Entities;
+using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
 using Gourmet.Infrastructure.GourmetDbcontext;
@@ -18,9 +19,12 @@ namespace Gourmet.Core.Services
             _db=db;
         }
 
-        public Task<AuthenticationResponse> Sign_Up_User(SignUpRequest request)
+        public async Task<User> Sign_Up_User(SignUpRequest request)
         {
-            throw new NotImplementedException();
+            User new_user=request.ToUser();
+            _db.Users.Add(new_user);
+            await _db.SaveChangesAsync();
+            return new_user;
         }
     }
 }
