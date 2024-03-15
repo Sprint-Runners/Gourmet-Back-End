@@ -1,8 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using Gourmet.Core.Services;
+using Gourmet.Core.ServiceContracts;
+using Gourmet.Infrastructure.GourmetDbcontext;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<ApplicationDbContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
+});
+builder.Services.AddTransient<IUsersService, UsersService>();
+builder.Services.AddSingleton<IJwt,JWTService>();
+
+
 
 builder.Services.AddControllers();
 
