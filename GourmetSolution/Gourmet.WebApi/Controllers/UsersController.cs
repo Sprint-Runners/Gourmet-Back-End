@@ -4,6 +4,8 @@ using Gourmet.Core.Services;
 using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
+using Gourmet.Core.Domain.Entities;
+
 namespace Gourmet.WebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -19,11 +21,25 @@ namespace Gourmet.WebApi.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<ActionResult<AuthenticationResponse>> SignUp(SignUpRequest request)
+        public async Task<ActionResult<SignUpResponse>> SignUp(SignUpRequest request)
         {
-            AuthenticationResponse response = _jwtservice.CreateJwtToken(request);
-            await _usersService.Sign_Up_User(request);
-            return  Ok(response);
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
+                    return Problem(detail:errors,statusCode:400,title:"Sign Up Error");
+                }
+                
+                User new_user = await _usersService.Sign_Up_User(request);
+
+                return Ok(new_user.ToSignUpResponse());
+
+            }
+            catch(Exception exception)
+            {
+                return Problem(detail: exception.Message, statusCode: 400, title: "Sign up Error");
+            }
         }
         [HttpGet("Test")]
         public async Task<IActionResult> Test(string token)
