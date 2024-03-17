@@ -1,7 +1,7 @@
 ﻿using EntityFrameworkMock;
 using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.ServiceContracts;
-using Gourmet.Infrastructure.GourmetDbcontext;
+using Gourmet.Core.DataBase.GourmetDbcontext;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

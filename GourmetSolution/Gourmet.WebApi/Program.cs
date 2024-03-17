@@ -1,15 +1,48 @@
 using Microsoft.EntityFrameworkCore;
 using Gourmet.Core.Services;
 using Gourmet.Core.ServiceContracts;
-using Gourmet.Infrastructure.GourmetDbcontext;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Gourmet.Core.DataBase.GourmetDbcontext;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
+builder.Services.AddDbContext<AppDbContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
+
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
-builder.Services.AddTransient<IUsersService, UsersService>();
-builder.Services.AddSingleton<IJwt,JWTService>();
+
+// Add Identity
+builder.Services
+    .AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+
+// Config Identity
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    //options.SignIn.RequireConfirmedEmail = true;
+});
+// Add Authentication and JwtBearer
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IJwt, JWTService>();
 
 
 
@@ -17,8 +50,15 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+}
+// Configure the HTTP request pipeline.
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

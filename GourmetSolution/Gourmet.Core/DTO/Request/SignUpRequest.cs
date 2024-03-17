@@ -10,20 +10,11 @@ namespace Gourmet.Core.DTO.Request
 {
     public class SignUpRequest
     {
-        [EmailAddress(ErrorMessage = "Email is not valid")]
-        [Required(ErrorMessage = "{0} cannot be blank")]
-        public string? Email { get; set; }
-        //public string? UserName { get; set; }
-        [Required(ErrorMessage = "{0} cannot be blank")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", ErrorMessage = "" +
-    "Your password is not strong")]
-        public string? Password { get; set; }
+        [Required(ErrorMessage = "UserName is required")]
+        public string UserName { get; set; }
 
-        public User ToUser()
-        {
-            return new User() { Email = Email, 
-                Password = Password,Id=Guid.NewGuid() };
-        }
-        
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+
     }
 }

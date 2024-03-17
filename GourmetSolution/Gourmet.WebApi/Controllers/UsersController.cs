@@ -19,27 +19,40 @@ namespace Gourmet.WebApi.Controllers
             _jwtservice = jwtservice;
             _usersService = usersService;
         }
+        [HttpPost]
+        [Route("seed-roles")]
+        public async Task<IActionResult> SeedRoles()
+        {
+            var seerRoles = await _usersService.SeedRolesAsync();
+
+            return Ok(seerRoles.Message);
+        }
 
         [HttpPost("SignUp")]
-        public async Task<ActionResult<SignUpResponse>> SignUp(SignUpRequest request)
+        public async Task<IActionResult> SignUp([FromBody] SignUpRequest request)
         {
-            try
+            var signupResult = await _usersService.Sign_Up_User(request);
+            if (signupResult.IsSucceed)
             {
-                if (!ModelState.IsValid)
-                {
-                    string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
-                    return Problem(detail:errors,statusCode:400,title:"Sign Up Error");
-                }
-                
-                User new_user = await _usersService.Sign_Up_User(request);
-
-                return Ok(new_user.ToSignUpResponse());
-
+                var response = _jwtservice.CreateJwtToken(signupResult.user);
+                return Ok(response);
             }
-            catch(Exception exception)
+
+            return BadRequest(signupResult.Message);
+        }
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var loginResult = await _usersService.LoginAsync(request);
+
+            if (loginResult.IsSucceed)
             {
-                return Problem(detail: exception.Message, statusCode: 400, title: "Sign up Error");
+                var response = _jwtservice.CreateJwtToken(loginResult.user);
+                return Ok(response);
             }
+
+            return Unauthorized(loginResult.Message);
         }
         [HttpGet("Test")]
         public async Task<IActionResult> Test(string token)
@@ -49,5 +62,31 @@ namespace Gourmet.WebApi.Controllers
             else
                 return BadRequest();
         }
+        // Route -> make user -> admin
+        [HttpPost]
+        [Route("make-admin")]
+        public async Task<IActionResult> MakeAdmin([FromBody] UpdatePermissionRequest updatePermission)
+        {
+            var operationResult = await _usersService.MakeAdminAsync(updatePermission);
+
+            if (operationResult.IsSucceed)
+                return Ok(operationResult.Message);
+
+            return BadRequest(operationResult.Message);
+        }
+
+        // Route -> make user -> owner
+        [HttpPost]
+        [Route("make-owner")]
+        public async Task<IActionResult> MakeChef([FromBody] UpdatePermissionRequest updatePermission)
+        {
+            var operationResult = await _usersService.MakeChefAsync(updatePermission);
+
+            if (operationResult.IsSucceed)
+                return Ok(operationResult.Message);
+
+            return BadRequest(operationResult.Message);
+        }
     }
 }
+

@@ -9,14 +9,19 @@ using System;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace Gourmet.Core.Services
 {
     public class JWTService : IJwt
     {
         private readonly IConfiguration _configuration;
-        public JWTService(IConfiguration configuration)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public JWTService(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
+            _userManager = userManager;
+            _roleManager = roleManager;
             _configuration = configuration;
         }
         /// <summary>
@@ -25,36 +30,39 @@ namespace Gourmet.Core.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public AuthenticationResponse CreateJwtToken(SignUpRequest request)
+        public AuthenticationResponse CreateJwtToken(IdentityUser new_User)
         {
-            User new_User=request.ToUser();
             DateTime Expiration = DateTime.UtcNow.AddMinutes(
                 Convert.ToDouble(_configuration["JWT:Expiration_Time"]));
-            Claim[] claims = new Claim[]{
+            List<Claim> claims = new List<Claim>{
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub,new_User.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email,new_User.Email)
+                new Claim(JwtRegisteredClaimNames.Email,new_User.UserName)
             };
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration["JWT:Mock-Key"]));
             SigningCredentials signingcredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             JwtSecurityToken tokengenerator = new JwtSecurityToken(
                 _configuration["JWT:Issuer"],
-                claims:claims,
-                expires:Expiration,
-                signingCredentials:signingcredentials);
+                claims: claims,
+                expires: Expiration,
+                signingCredentials: signingcredentials);
             JwtSecurityTokenHandler tokenhandler = new JwtSecurityTokenHandler();
-            string token=tokenhandler.WriteToken(tokengenerator);
-            return new AuthenticationResponse() { Email=new_User.Email,JWT_Token=token,
-            Expiration=Expiration};
+            string token = tokenhandler.WriteToken(tokengenerator);
+            return new AuthenticationResponse()
+            {
+                Email = new_User.Email,
+                JWT_Token = token,
+                Expiration = Expiration
+            };
         }
 
         public bool Token_Validation(string token)
         {
             //Parsing the input token
-            JwtSecurityTokenHandler tokenHandler= new JwtSecurityTokenHandler();
-            JwtSecurityToken tokengenerator=tokenHandler.ReadJwtToken(token);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityToken tokengenerator = tokenHandler.ReadJwtToken(token);
             IEnumerable<Claim> request_claims = tokengenerator.Claims;
             DateTime request_expiration = tokengenerator.ValidTo;
             string request_issuer = tokengenerator.Issuer;
@@ -81,7 +89,7 @@ namespace Gourmet.Core.Services
                 return true;
             else
                 return false;
-            
+
 
         }
     }
