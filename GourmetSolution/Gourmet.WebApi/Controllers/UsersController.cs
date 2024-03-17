@@ -41,13 +41,24 @@ namespace Gourmet.WebApi.Controllers
                 return Problem(detail: exception.Message, statusCode: 400, title: "Sign up Error");
             }
         }
-        [HttpGet("Test")]
-        public async Task<IActionResult> Test(string token)
+        [HttpGet("Login")]
+        public async Task<ActionResult<AuthenticationResponse>> Login_User(Login_Request request)
         {
-            if (_jwtservice.Token_Validation(token))
-                return Ok();
-            else
-                return BadRequest();
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
+                    return Problem(detail: errors, statusCode: 400, title: "Sign Up Error");
+                }
+                User user = await _usersService.Login_User(request);
+                AuthenticationResponse response = _jwtservice.CreateJwtToken(request, user.Id);
+                return Ok(response);
+            }
+            catch(Exception exception)
+            {
+                return Problem(detail: exception.Message, statusCode: 400, title: "Login Error");
+            }
         }
     }
 }

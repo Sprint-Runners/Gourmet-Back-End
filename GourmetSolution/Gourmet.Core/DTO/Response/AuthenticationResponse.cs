@@ -14,4 +14,5 @@ namespace Gourmet.Core.DTO.Response
         public DateTime? Expiration { get; set; }
 
     }
+
 }
