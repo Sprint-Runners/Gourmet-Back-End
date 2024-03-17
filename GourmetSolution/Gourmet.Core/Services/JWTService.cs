@@ -52,9 +52,10 @@ namespace Gourmet.Core.Services
             string token = tokenhandler.WriteToken(tokengenerator);
             return new AuthenticationResponse()
             {
-                Email = new_User.Email,
+                Email = new_User.UserName,
                 JWT_Token = token,
-                Expiration = Expiration
+                Expiration = Expiration,
+                Period=_configuration["JWT:Expiration_Time"]
             };
         }
 

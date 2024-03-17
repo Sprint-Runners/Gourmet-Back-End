@@ -41,7 +41,7 @@ namespace Gourmet.WebApi.Controllers
             return BadRequest(signupResult.Message);
         }
         [HttpPost]
-        [Route("login")]
+        [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var loginResult = await _usersService.LoginAsync(request);
