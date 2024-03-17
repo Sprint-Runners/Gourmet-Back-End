@@ -47,7 +47,16 @@ builder.Services.AddScoped<IJwt, JWTService>();
 
 
 builder.Services.AddControllers();
-
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigin",
+            builder =>
+            {
+                builder.WithOrigins("http://localhost:5173")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+    });
 var app = builder.Build();
 
 

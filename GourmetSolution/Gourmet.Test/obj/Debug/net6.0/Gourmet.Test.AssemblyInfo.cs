@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gourmet.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69b181bbfa9a5746baacbf6bd0cc90a47735edd0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9769b2b0a44853a7c1ed495d273ea93a84b2698c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gourmet.Test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gourmet.Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
