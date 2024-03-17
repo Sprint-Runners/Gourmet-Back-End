@@ -20,6 +20,18 @@ namespace Gourmet.Core.Services
             _db=db;
         }
 
+        public async Task<User> Login_User(Login_Request request)
+        {
+            HashHelper hashHelper = new HashHelper();
+            string Hash_Pass = hashHelper.HashString(request.Password);
+
+            List<User> list=_db.Users.Select(user => user).Where(user => user.Email == request.Email && user.Password == Hash_Pass)
+                .ToList();
+            if (list.Count == 0)
+                throw new Exception("The user could not be found");
+            return list[0];
+        }
+
         public async Task<User> Sign_Up_User(SignUpRequest request)
         {
             User new_user=request.ToUser();

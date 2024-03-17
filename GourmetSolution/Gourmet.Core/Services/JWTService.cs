@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+
 namespace Gourmet.Core.Services
 {
     public class JWTService : IJwt
@@ -25,9 +26,9 @@ namespace Gourmet.Core.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public AuthenticationResponse CreateJwtToken(SignUpRequest request)
+        public AuthenticationResponse CreateJwtToken(Login_Request request,Guid id)
         {
-            User new_User=request.ToUser();
+            User new_User=new User() { Email=request.Email,Password=request.Password,Id=id};
             DateTime Expiration = DateTime.UtcNow.AddMinutes(
                 Convert.ToDouble(_configuration["JWT:Expiration_Time"]));
             Claim[] claims = new Claim[]{
