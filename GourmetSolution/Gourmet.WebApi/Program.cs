@@ -4,7 +4,13 @@ using Gourmet.Core.ServiceContracts;
 using Gourmet.Infrastructure.GourmetDbcontext;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:5173/");
+    });
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
 });
@@ -18,7 +24,7 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -18,7 +18,6 @@ namespace Gourmet.Core.DTO.Request
         "Your password is not strong")]
             public string? Password { get; set; }
 
-
         }
     
 }
