@@ -27,7 +27,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<Response> Sign_Up_User(SignUpRequest request)
         {
-            var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+            var isExistsUser = await _userManager.FindByNameAsync(request.Email);
 
             if (isExistsUser != null)
                 return new Response()
@@ -39,7 +39,7 @@ namespace Gourmet.Core.Services
             User new_user = new User()
             {
 
-                UserName = request.UserName,
+                UserName = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
             var createUserResult = await _userManager.CreateAsync(new_user, request.Password);
@@ -70,7 +70,7 @@ namespace Gourmet.Core.Services
 
         public async Task<Response> LoginAsync(LoginRequest request)
         {
-            var new_user = await _userManager.FindByNameAsync(request.UserName);
+            var new_user = await _userManager.FindByNameAsync(request.username);
 
             if (new_user is null)
                 return new Response()
@@ -80,7 +80,7 @@ namespace Gourmet.Core.Services
                     user = null
                 };
 
-            var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.Password);
+            var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.password);
 
             if (!isPasswordCorrect)
                 return new Response()

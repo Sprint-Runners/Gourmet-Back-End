@@ -5,6 +5,8 @@ using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -34,11 +36,16 @@ namespace Gourmet.WebApi.Controllers
             var signupResult = await _usersService.Sign_Up_User(request);
             if (signupResult.IsSucceed)
             {
-                var response = _jwtservice.CreateJwtToken(signupResult.user);
-                return Ok(response);
+
+                SignUpResponse signUpResponse = new SignUpResponse
+                {
+                    Id = Guid.Parse(signupResult.user.Id),
+                    Email=signupResult.user.UserName
+                };
+                return Ok(signUpResponse);
             }
 
-            return BadRequest(signupResult.Message);
+            return Problem(detail:signupResult.Message,statusCode:400);
         }
         [HttpPost]
         [Route("Login")]
