@@ -1,30 +1,73 @@
 using Microsoft.EntityFrameworkCore;
 using Gourmet.Core.Services;
 using Gourmet.Core.ServiceContracts;
-using Gourmet.Infrastructure.GourmetDbcontext;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Gourmet.Core.DataBase.GourmetDbcontext;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddCors(options =>
+
+builder.Services.AddDbContext<AppDbContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
+
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
+
+// Add Identity
+builder.Services
+    .AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+
+// Config Identity
+builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    //options.SignIn.RequireConfirmedEmail = true;
+});
+// Add Authentication and JwtBearer
+builder.Services
+    .AddAuthentication(options =>
     {
-        builder.WithOrigins("http://localhost:5173/");
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     });
-});
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
-});
-builder.Services.AddTransient<IUsersService, UsersService>();
-builder.Services.AddSingleton<IJwt,JWTService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IJwt, JWTService>();
 
 
 
 builder.Services.AddControllers();
-
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigin",
+            builder =>
+            {
+                builder.WithOrigins("http://localhost:5173")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+    });
 var app = builder.Build();
 
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+}
 // Configure the HTTP request pipeline.
-app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
