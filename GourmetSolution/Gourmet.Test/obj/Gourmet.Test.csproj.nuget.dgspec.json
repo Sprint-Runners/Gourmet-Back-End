@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj": {}
+    "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj": {}
   },
   "projects": {
-    "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
+    "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
+        "projectUniqueName": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
         "projectName": "Gourmet.Core",
-        "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
-        "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\obj\\",
+        "projectPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
+        "packagesPath": "C:\\Users\\win_10\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\win_10\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,19 +40,41 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[6.0.9, )"
+              "version": "[6.0.28, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.9, )"
+              "version": "[6.0.28, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.9.0, )"
+              "version": "[7.4.1, )"
             }
           },
           "imports": [
@@ -71,21 +93,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj": {
+    "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj",
+        "projectUniqueName": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj",
         "projectName": "Gourmet.Test",
-        "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj",
-        "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\obj\\",
+        "projectPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\Gourmet.Test.csproj",
+        "packagesPath": "C:\\Users\\win_10\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Test\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\win_10\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -99,11 +121,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
-                "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
+              "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
+                "projectPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
               },
-              "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {
-                "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj"
+              "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {
+                "projectPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj"
               }
             }
           }
@@ -118,13 +140,43 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
             "EntityFrameworkMock.Moq": {
               "target": "Package",
               "version": "[1.0.0.72, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.1.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.4.1, )"
             },
             "coverlet.collector": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -159,21 +211,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {
+    "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
         "projectName": "Gourmet.WebApi",
-        "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
-        "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\obj\\",
+        "projectPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
+        "packagesPath": "C:\\Users\\win_10\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\win_10\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -187,8 +239,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
-                "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
+              "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
+                "projectPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
               }
             }
           }
@@ -203,15 +255,43 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.28, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.9, )"
+              "version": "[6.0.28, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[6.0.9, )"
+              "version": "[6.0.28, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.4.1, )"
             }
           },
           "imports": [
@@ -233,7 +313,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

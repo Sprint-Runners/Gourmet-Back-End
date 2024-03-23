@@ -5,6 +5,8 @@ using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -19,46 +21,79 @@ namespace Gourmet.WebApi.Controllers
             _jwtservice = jwtservice;
             _usersService = usersService;
         }
+        [HttpPost]
+        [Route("seed-roles")]
+        public async Task<IActionResult> SeedRoles()
+        {
+            var seerRoles = await _usersService.SeedRolesAsync();
+
+            return Ok(seerRoles.Message);
+        }
 
         [HttpPost("SignUp")]
-        public async Task<ActionResult<SignUpResponse>> SignUp(SignUpRequest request)
+        public async Task<IActionResult> SignUp([FromBody] SignUpRequest request)
         {
-            try
+            var signupResult = await _usersService.Sign_Up_User(request);
+            if (signupResult.IsSucceed)
             {
-                if (!ModelState.IsValid)
+
+                SignUpResponse signUpResponse = new SignUpResponse
                 {
-                    string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
-                    return Problem(detail:errors,statusCode:400,title:"Sign Up Error");
-                }
-                
-                User new_user = await _usersService.Sign_Up_User(request);
-
-                return Ok(new_user.ToSignUpResponse());
-
+                    Id = Guid.Parse(signupResult.user.Id),
+                    Email=signupResult.user.UserName
+                };
+                return Ok(signUpResponse);
             }
-            catch(Exception exception)
-            {
-                return Problem(detail: exception.Message, statusCode: 400, title: "Sign up Error");
-            }
+
+            return Problem(detail:signupResult.Message,statusCode:400);
         }
-        [HttpGet("Login")]
-        public async Task<ActionResult<AuthenticationResponse>> Login_User(Login_Request request)
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            try
+            var loginResult = await _usersService.LoginAsync(request);
+
+            if (loginResult.IsSucceed)
             {
-                if (!ModelState.IsValid)
-                {
-                    string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
-                    return Problem(detail: errors, statusCode: 400, title: "Sign Up Error");
-                }
-                User user = await _usersService.Login_User(request);
-                AuthenticationResponse response = _jwtservice.CreateJwtToken(request, user.Id);
+                var response = _jwtservice.CreateJwtToken(loginResult.user);
                 return Ok(response);
             }
-            catch(Exception exception)
-            {
-                return Problem(detail: exception.Message, statusCode: 400, title: "Login Error");
-            }
+
+            return Unauthorized(loginResult.Message);
+        }
+        [HttpGet("Test")]
+        public async Task<IActionResult> Test(string token)
+        {
+            if (_jwtservice.Token_Validation(token))
+                return Ok();
+            else
+                return BadRequest();
+        }
+        // Route -> make user -> admin
+        [HttpPost]
+        [Route("make-admin")]
+        public async Task<IActionResult> MakeAdmin([FromBody] UpdatePermissionRequest updatePermission)
+        {
+            var operationResult = await _usersService.MakeAdminAsync(updatePermission);
+
+            if (operationResult.IsSucceed)
+                return Ok(operationResult.Message);
+
+            return BadRequest(operationResult.Message);
+        }
+
+        // Route -> make user -> owner
+        [HttpPost]
+        [Route("make-owner")]
+        public async Task<IActionResult> MakeChef([FromBody] UpdatePermissionRequest updatePermission)
+        {
+            var operationResult = await _usersService.MakeChefAsync(updatePermission);
+
+            if (operationResult.IsSucceed)
+                return Ok(operationResult.Message);
+
+            return BadRequest(operationResult.Message);
         }
     }
 }
+

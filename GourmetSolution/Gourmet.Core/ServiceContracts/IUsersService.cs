@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.Domain.Entities;
-
+using Gourmet.Core.Domain.Other_Object;
 
 namespace Gourmet.Core.ServiceContracts
 {
     public interface IUsersService
     {
-        Task<User> Sign_Up_User(SignUpRequest request);
-        Task<User> Login_User(Login_Request request);
+        Task<Response> Sign_Up_User(SignUpRequest request);
+        Task<Response> LoginAsync(LoginRequest request);
+        Task<Response> MakeAdminAsync(UpdatePermissionRequest updatePermission);
+        Task<Response> MakeChefAsync(UpdatePermissionRequest updatePermission);
+        Task<Response> SeedRolesAsync();
     }
 }

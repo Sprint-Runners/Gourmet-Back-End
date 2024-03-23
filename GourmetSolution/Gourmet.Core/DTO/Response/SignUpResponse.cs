@@ -1,4 +1,4 @@
-﻿using System;
+﻿//using System;
 using Gourmet.Core.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +12,5 @@ namespace Gourmet.Core.DTO.Response
         public Guid Id { get; set; }
         public string? Email { get; set; }
     }
-    public static class UsersExtentions
-    {
-        public static SignUpResponse ToSignUpResponse(this User user)
-        {
-            return new SignUpResponse() {Id=user.Id,Email=user.Email };
-        }
-    }
+
 }
