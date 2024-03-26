@@ -1,4 +1,5 @@
-﻿using Gourmet.Core.Domain.Entities;
+﻿using Gourmet.Core.DataBase.GourmetDbcontext;
+using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.ServiceContracts;
@@ -18,9 +19,10 @@ namespace Gourmet.Core.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-
-        public UsersService(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        private readonly AppDbContext _db;
+        public UsersService(AppDbContext db,UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
+            _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
@@ -36,7 +38,7 @@ namespace Gourmet.Core.Services
                     Message = "UserName Already Exists",
                     user = null
                 };
-            User new_user = new User()
+            IdentityUser new_user = new IdentityUser()
             {
 
                 UserName = request.Email,
@@ -132,7 +134,7 @@ namespace Gourmet.Core.Services
                 };
 
             await _userManager.AddToRoleAsync(new_user, StaticUserRoles.CHEF);
-
+            Chef chef = (Chef)new_user;
             return new Response()
             {
                 IsSucceed = true,

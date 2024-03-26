@@ -2661,11 +2661,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
+      "projectUniqueName": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
       "projectName": "Gourmet.Core",
-      "projectPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
+      "projectPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
       "packagesPath": "C:\\Users\\win_10\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\win_10\\Desktop\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\obj\\",
+      "outputPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\win_10\\AppData\\Roaming\\NuGet\\NuGet.Config",

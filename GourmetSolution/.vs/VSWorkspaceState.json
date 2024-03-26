@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Gourmet.Core",
     "\\Gourmet.WebApi",
     "\\Gourmet.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\Gourmet.WebApi\\Controllers\\UsersController.cs",
+  "SelectedNode": "\\Gourmet.Core",
   "PreviewInSolutionExplorer": false
 }

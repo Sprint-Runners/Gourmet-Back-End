@@ -82,9 +82,9 @@ namespace Gourmet.WebApi.Controllers
             return BadRequest(operationResult.Message);
         }
 
-        // Route -> make user -> owner
+        // Route -> make user -> chef
         [HttpPost]
-        [Route("make-owner")]
+        [Route("make-chef")]
         public async Task<IActionResult> MakeChef([FromBody] UpdatePermissionRequest updatePermission)
         {
             var operationResult = await _usersService.MakeChefAsync(updatePermission);
