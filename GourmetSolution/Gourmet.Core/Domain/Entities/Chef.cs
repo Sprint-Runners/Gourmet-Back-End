@@ -8,6 +8,6 @@ namespace Gourmet.Core.Domain.Entities
 {
     public class Chef:ApplicationUser
     {
-
+        public double Score { get; set; } = 0;
     }
 }
