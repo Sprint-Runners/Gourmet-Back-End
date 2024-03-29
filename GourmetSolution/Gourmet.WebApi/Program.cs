@@ -7,7 +7,7 @@ using Gourmet.Core.DataBase.GourmetDbcontext;
 using Google;
 
 var builder = WebApplication.CreateBuilder(args);
-
+void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
 builder.Services.AddDbContext<AppDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
@@ -43,11 +43,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
-//builder.Services.AddScoped<IChefService, ChefService>();
-//builder.Services.AddScoped<IFoodService, FoodService>();
-//builder.Services.AddScoped<IImageProcessorService, ImageProcessorService>();
-//builder.Services.AddScoped<IUserService, UserService>();
-//builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+builder.Services.AddScoped<IChefService, ChefService>();
+builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IImageProcessorService, ImageProcessorService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
 
 
@@ -75,7 +75,7 @@ if (app.Environment.IsDevelopment())
 // Configure the HTTP request pipeline.
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseStaticFiles();
+app.UseStaticFiles();
 
 app.MapControllers();
 

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Gourmet.Core.Domain.Entities
 {
-    //public class Chef:ApplicationUser
-    //{
-    //    public double Score { get; set; } = 0;
-    //}
+    public class Chef : ApplicationUser
+    {
+        public double Score { get; set; } = 0;
+    }
 }

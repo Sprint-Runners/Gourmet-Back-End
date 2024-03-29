@@ -17,7 +17,7 @@ namespace Gourmet.WebApi.Controllers
     {
         private readonly AppDbContext _db;
         private readonly ChefService _chefservice;
-        public HomeController(AppDbContext db,ChefService chefService)
+        public HomeController(AppDbContext db, ChefService chefService)
         {
             _db = db;
             _chefservice = chefService;
@@ -32,17 +32,17 @@ namespace Gourmet.WebApi.Controllers
             var randomRows = await _db.Foods.Where(x => randomIds.Contains(x.Id)).ToListAsync();
             return randomRows;
         }
-        //[HttpGet]
-        //public async Task<IEnumerable<Chef>> GetِTopChefFromDatabaseAsync()
-        //{
-        //    var chefs = await _db.Chefs.ToListAsync();
+        [HttpGet]
+        public async Task<IEnumerable<Chef>> GetِTopChefFromDatabaseAsync()
+        {
+            var chefs = await _db.Chefs.ToListAsync();
 
-        //    var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
-        //                        .Take(3)
-        //                        .ToList();
+            var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
+                                .Take(3)
+                                .ToList();
 
-        //    return topChefs;
-        //}
+            return topChefs;
+        }
         //public async Task<IEnumerable<>> GetAllCategories()
         //{
 

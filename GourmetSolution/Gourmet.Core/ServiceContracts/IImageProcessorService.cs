@@ -10,11 +10,11 @@ namespace Gourmet.Core.ServiceContracts
 {
     public interface IImageProcessorService
     {
-        //Task<ImageResponse> UploadUserImage(IFormFile file, string username);
-        //Task<ImageResponse> UploadFoodImage(IFormFile file, string Name, string username);
-        //ImageResponse RemoveUserImage(string Username);
-        //ImageResponse RemoveFoodImage(string Name, string username);
-        //string GetImagebyUser(string username);
-        //string GetImagebyFood(string Name,string username);
+        Task<ImageResponse> UploadUserImage(IFormFile file, string username);
+        Task<ImageResponse> UploadFoodImage(IFormFile file, string Name, string username);
+        ImageResponse RemoveUserImage(string Username);
+        ImageResponse RemoveFoodImage(string Name, string username);
+        string GetImagebyUser(string username);
+        string GetImagebyFood(string Name, string username);
     }
 }

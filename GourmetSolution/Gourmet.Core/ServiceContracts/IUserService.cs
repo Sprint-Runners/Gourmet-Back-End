@@ -10,7 +10,7 @@ namespace Gourmet.Core.ServiceContracts
 {
     public interface IUserService
     {
-        //Task<Response> Edit(EditUserRequest request);
-        //Task<Response> Read(ReadUserRequest request);
+        Task<Response> Edit(EditUserRequest request);
+        Task<Response> Read(ReadUserRequest request);
     }
 }
