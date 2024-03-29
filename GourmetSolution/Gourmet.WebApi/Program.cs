@@ -4,12 +4,12 @@ using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Gourmet.Core.DataBase.GourmetDbcontext;
+using Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
-
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
@@ -43,20 +43,26 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
+//builder.Services.AddScoped<IChefService, ChefService>();
+//builder.Services.AddScoped<IFoodService, FoodService>();
+//builder.Services.AddScoped<IImageProcessorService, ImageProcessorService>();
+//builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+
 
 
 
 builder.Services.AddControllers();
-builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowSpecificOrigin",
-            builder =>
-            {
-                builder.WithOrigins("http://localhost:5173")
-                       .AllowAnyHeader()
-                       .AllowAnyMethod();
-            });
-    });
+//builder.Services.AddCors(options =>
+//    {
+//        options.AddPolicy("AllowSpecificOrigin",
+//            builder =>
+//            {
+//                builder.WithOrigins("http://localhost:5173")
+//                       .AllowAnyHeader()
+//                       .AllowAnyMethod();
+//            });
+//    });
 var app = builder.Build();
 
 
@@ -69,6 +75,7 @@ if (app.Environment.IsDevelopment())
 // Configure the HTTP request pipeline.
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseStaticFiles();
 
 app.MapControllers();
 

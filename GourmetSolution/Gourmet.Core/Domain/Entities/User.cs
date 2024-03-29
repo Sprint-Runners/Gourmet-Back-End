@@ -11,7 +11,10 @@ namespace Gourmet.Core.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public String RecentFoods { get; set; }
-        public String FavoritFoods { get; set; }
+        public String FavouritFoods { get; set; }
+        public string ImageURL { get; set; } = string.Empty;
     }
 }

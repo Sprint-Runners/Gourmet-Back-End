@@ -9,7 +9,7 @@ namespace Gourmet.Core.ServiceContracts
 {
     public interface IChefService
     {
-        Task<double> GetChefScore(string chefId);
-        Task<IEnumerable<Recipe>> GetRecipesByChefId(string chefId);
+        //Task<double> GetChefScore(string chefId);
+        //Task<IEnumerable<Recipe>> GetRecipesByChefId(string chefId);
     }
 }

@@ -134,7 +134,7 @@ namespace Gourmet.Core.Services
                 };
 
             await _userManager.AddToRoleAsync(new_user, StaticUserRoles.CHEF);
-            Chef chef = (Chef)new_user;
+            //Chef chef = (Chef)new_user;
             return new Response()
             {
                 IsSucceed = true,
