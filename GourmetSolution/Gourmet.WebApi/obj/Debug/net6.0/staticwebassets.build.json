@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "cfoBAlJyEHmHtsM/CzbOrjiqMa+o2FiOGTLVGUabBZc=",
+  "Hash": "/bZf71HgbUb1EHy56rLZb5+ERvAjRVnr6IbWwXxcCxE=",
   "Source": "Gourmet.WebApi",
   "BasePath": "_content/Gourmet.WebApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Gourmet.WebApi\\wwwroot",
+      "Source": "Gourmet.WebApi",
+      "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
+      "BasePath": "_content/Gourmet.WebApi",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

@@ -10,7 +10,8 @@ namespace Gourmet.Core.DTO.Request
         public string PhoneNumber {  get; set; }
         public string Email { get; set; }
         public string FirstName {  get; set; }
-        public string LastName { get; set; }   
+        public string LastName { get; set; }
+        public string aboutme { get; set; }=string.Empty;
 
     }
 }

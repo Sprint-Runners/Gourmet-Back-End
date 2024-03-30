@@ -16,5 +16,6 @@ namespace Gourmet.Core.Domain.Entities
         public String RecentFoods { get; set; }
         public String FavouritFoods { get; set; }
         public string ImageURL { get; set; } = string.Empty;
+        public string aboutme { get; set; }
     }
 }

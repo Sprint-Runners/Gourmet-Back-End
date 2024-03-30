@@ -39,7 +39,7 @@ namespace Gourmet.Core.Services
             EditUser.FirstName = request.FirstName;
             EditUser.LastName = request.LastName;
             EditUser.PhoneNumber = request.PhoneNumber;
-
+            EditUser.aboutme= request.aboutme;
             var result = await _userManager.UpdateAsync(EditUser);
 
             if (result.Succeeded)

@@ -32,7 +32,17 @@ namespace Gourmet.WebApi.Controllers
             var ReadResult = await _userService.Read(request);
             if (ReadResult.IsSucceed)
             {
-                return Ok(ReadResult);
+                ApplicationUser readuser = (ApplicationUser)ReadResult.user;
+                ReadUserResponse response = new ReadUserResponse
+                {
+                    FirstNmae = readuser.FirstName,
+                    LastNmae = readuser.LastName,
+                    UserNmae = readuser.UserName,
+                    Email = readuser.Email,
+                    PhoneNumber = readuser.PhoneNumber,
+                    aboutme = readuser.aboutme
+                };
+                return Ok(response);
             }
 
             return Problem(detail: ReadResult.Message, statusCode: 400);
@@ -52,21 +62,44 @@ namespace Gourmet.WebApi.Controllers
         [HttpPost("UploadImage")]
         public async Task<ActionResult> UploadImage()
         {
-            string username = Request.Form["message"];
-            var isExistsUser = await _userManager.FindByNameAsync(username);
+            try
+            {
+                //string username = Request.Form["message"];
+                string username = "h2";
+                // var isExistsUser = await _userManager.FindByNameAsync(username);
 
+                // if (isExistsUser != null)
+                //     return Problem(detail: "UserName not Exists", statusCode: 400);
+                var file = Request.Form.Files[0];
+                var Result = await _imageProcessorService.UploadUserImage(file, username);
+                if (Result.IsSucceed)
+                {
+                    //ApplicationUser user = (ApplicationUser)isExistsUser;
+                    //user.ImageURL = _imageProcessorService.GetImagebyUser(username);
+                    //Result.ImagePath = user.ImageURL;
+                    Result.ImagePath = _imageProcessorService.GetImagebyUser(username);
+                    return Ok(Result);
+                }
+                return Problem(detail: Result.Message, statusCode: 400);
+            }
+            catch(Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
+        }
+        [HttpGet("GetUserImage")]
+        public async Task<ActionResult> GetUserImage(string username)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(username);
             if (isExistsUser != null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
-            var file = Request.Form.Files[0];
-            var Result = await _imageProcessorService.UploadUserImage(file, username);
-            if (Result.IsSucceed)
+            ApplicationUser user = (ApplicationUser)isExistsUser;
+            ImageUrlResponse result = new ImageUrlResponse
             {
-                ApplicationUser user = (ApplicationUser)isExistsUser;
-                user.ImageURL = _imageProcessorService.GetImagebyUser(username);
-                Result.ImagePath = user.ImageURL;
-                return Ok(Result);
-            }
-            return Problem(detail: Result.Message, statusCode: 400);
+                IsSucceed = true,
+                ImagePath = user.ImageURL
+            };
+            return Ok(result);
 
         }
     }

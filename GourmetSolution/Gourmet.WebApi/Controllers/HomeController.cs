@@ -22,7 +22,7 @@ namespace Gourmet.WebApi.Controllers
             _db = db;
             _chefservice = chefService;
         }
-        [HttpGet]
+        [HttpGet("DailyOffer")]
         public async Task<IEnumerable<Food>> GetِDailyOfferFromDatabaseAsync()
         {
             var random = new Random();
@@ -32,8 +32,8 @@ namespace Gourmet.WebApi.Controllers
             var randomRows = await _db.Foods.Where(x => randomIds.Contains(x.Id)).ToListAsync();
             return randomRows;
         }
-        [HttpGet]
-        public async Task<IEnumerable<Chef>> GetِTopChefFromDatabaseAsync()
+        [HttpGet("TopChef")]
+        public async Task<IEnumerable<Chef>> GetTopChefFromDatabaseAsync()
         {
             var chefs = await _db.Chefs.ToListAsync();
 
