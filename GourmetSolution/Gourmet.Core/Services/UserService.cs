@@ -1,18 +1,21 @@
-﻿using Gourmet.Core.Domain.Entities;
+﻿using Gourmet.Core.DataBase.GourmetDbcontext;
+using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Identity;
+using System.Data.Entity;
 
 namespace Gourmet.Core.Services
 {
     public class UserService : IUserService
     {
         private readonly UserManager<IdentityUser> _userManager;
-
-        public UserService(UserManager<IdentityUser> userManager)
+        private readonly AppDbContext _db;
+        public UserService(UserManager<IdentityUser> userManager,AppDbContext db)
         {
             _userManager = userManager;
+            _db = db;
         }
         public async Task<Response> Edit(EditUserRequest request)
         {
@@ -79,6 +82,16 @@ namespace Gourmet.Core.Services
                 user = isExistsUser
             };
 
+        }
+        public async Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId)
+        {
+            var Recipes = await _db.FavouritRecipeUsers.Where(r => r.userId == userId).Select(x=>x.recipe).ToListAsync();
+            return Recipes;
+        }
+        public async Task<IEnumerable<Food>> RecentFoodByUser(string userId)
+        {
+            var Foods = await _db.RecentFoodUsers.Where(r => r.userId == userId).Select(x => x.food).ToListAsync();
+            return Foods;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Gourmet.Core.Domain.Other_Object;
+﻿using Gourmet.Core.Domain.Entities;
+using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,7 @@ namespace Gourmet.Core.ServiceContracts
     {
         Task<Response> Edit(EditUserRequest request);
         Task<Response> Read(ReadUserRequest request);
+        Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId);
+        Task<IEnumerable<Food>> RecentFoodByUser(string userId);
     }
 }

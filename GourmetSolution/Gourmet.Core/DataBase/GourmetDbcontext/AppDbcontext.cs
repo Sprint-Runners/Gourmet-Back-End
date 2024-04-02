@@ -30,10 +30,15 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             base.OnModelCreating(modelbuilder);
-            modelbuilder.Entity<FoodIngredients>()
+            modelbuilder.Entity<RecipeIngredients>()
                   .HasKey(m => new { m.RecipeId, m.IngredientId });
+            modelbuilder.Entity<RecentFoodUser>()
+                  .HasKey(m => new { m.userId, m.FoodId });
+            modelbuilder.Entity<FavouritRecipeUser>()
+                  .HasKey(m => new { m.userId, m.RecipeId });
         }
-        public DbSet<FoodIngredients> FoodIngredients { get; set; }
-        
+        public DbSet<RecipeIngredients> RecipeIngredients { get; set; }
+        public DbSet<RecentFoodUser> RecentFoodUsers { get; set; }
+        public DbSet<FavouritRecipeUser> FavouritRecipeUsers { get; set; }
     }
 }

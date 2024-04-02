@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
 builder.Services.AddScoped<IChefService, ChefService>();
-builder.Services.AddScoped<IFoodService, FoodService>();
+//builder.Services.AddScoped<IFoodService, FoodService>();
 builder.Services.AddScoped<IImageProcessorService, ImageProcessorService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
