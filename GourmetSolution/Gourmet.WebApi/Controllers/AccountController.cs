@@ -5,6 +5,7 @@ using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Pipelines;
@@ -18,14 +19,16 @@ namespace Gourmet.WebApi.Controllers
 
         private readonly IUserService _userService;
         private readonly IImageProcessorService _imageProcessorService;
-        private readonly UserManager<IdentityUser> _userManager;
-        public AccountController(IUserService userService, IImageProcessorService imageProcessorServic, UserManager<IdentityUser> userManager)
+        private readonly UserManager<Chef> _userManager;
+        private readonly IChefService _chefService;
+        public AccountController(IUserService userService, IImageProcessorService imageProcessorServic, UserManager<Chef> userManager, IChefService chefService)
         {
             _userService = userService;
             _imageProcessorService = imageProcessorServic;
             _userManager = userManager;
+            _chefService = chefService;
         }
-        [HttpGet]
+        [HttpPost]
         [Route("Read_User")]
         public async Task<IActionResult> Read(ReadUserRequest request)
         {
@@ -119,9 +122,19 @@ namespace Gourmet.WebApi.Controllers
             var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
             if (isExistsUser != null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
-            var result = await _userService.FavouritRecipeByUser(isExistsUser.Id);
+            var result = await _userService.FavouritFoodByUser(isExistsUser.Id);
             return Ok(result);
         }
-
+        [HttpGet]
+        [Route("Recipe_Chef")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
+        public async Task<IActionResult> Recipe_Chef(ReadUserRequest request)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+            if (isExistsUser != null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            var result=await _chefService.GetRecipesByChefId(isExistsUser.Id);
+            return Ok(result);
+        }
     }
 }

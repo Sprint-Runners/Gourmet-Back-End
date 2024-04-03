@@ -1,6 +1,9 @@
 ﻿using Gourmet.Core.DataBase.GourmetDbcontext;
 using Gourmet.Core.Domain.Entities;
+using Gourmet.Core.Domain.Other_Object;
+using Gourmet.Core.DTO.Request;
 using Gourmet.Core.ServiceContracts;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,9 +16,11 @@ namespace Gourmet.Core.Services
     public class ChefService : IChefService
     {
         private readonly AppDbContext _db;
-        public ChefService(AppDbContext db)
+        private readonly UserManager<Chef> _userManager;
+        public ChefService(AppDbContext db, UserManager<Chef> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
         public async Task<IEnumerable<Recipe>> GetRecipesByChefId(string chefId)
         {
@@ -30,6 +35,29 @@ namespace Gourmet.Core.Services
             //var chef= await _db.Chefs.FindAsync(chefId);
             //chef.Score = score;
             return score;
+        }
+        public async Task<Response> MakeChefAsync(UpdatePermissionRequest updatePermission)
+        {
+            var new_user = await _userManager.FindByNameAsync(updatePermission.UserName);
+
+            if (new_user is null)
+                return new Response()
+                {
+                    IsSucceed = false,
+                    Message = "Invalid User name!",
+                    user = null
+                };
+
+            await _userManager.AddToRoleAsync(new_user, StaticUserRoles.CHEF);
+            var chef = await _userManager.FindByNameAsync(updatePermission.UserName);
+            chef.Score = 0;
+            return new Response()
+            {
+                IsSucceed = true,
+                user = (IdentityUser)new_user,
+                Message = "User is now an CHEF"
+            };
+
         }
     }
 }

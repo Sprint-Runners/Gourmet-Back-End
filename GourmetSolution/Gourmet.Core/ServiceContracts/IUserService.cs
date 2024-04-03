@@ -13,7 +13,7 @@ namespace Gourmet.Core.ServiceContracts
     {
         Task<Response> Edit(EditUserRequest request);
         Task<Response> Read(ReadUserRequest request);
-        Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId);
+        Task<IEnumerable<Food>> FavouritFoodByUser(string userId);
         Task<IEnumerable<Food>> RecentFoodByUser(string userId);
     }
 }

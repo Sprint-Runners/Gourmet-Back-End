@@ -10,9 +10,9 @@ namespace Gourmet.Core.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Chef> _userManager;
         private readonly AppDbContext _db;
-        public UserService(UserManager<IdentityUser> userManager,AppDbContext db)
+        public UserService(UserManager<Chef> userManager,AppDbContext db)
         {
             _userManager = userManager;
             _db = db;
@@ -21,7 +21,7 @@ namespace Gourmet.Core.Services
         {
             var isExistsUser = await _userManager.FindByNameAsync(request.oldusername);
 
-            if (isExistsUser != null)
+            if (isExistsUser == null)
                 return new Response()
                 {
                     IsSucceed = false,
@@ -36,7 +36,7 @@ namespace Gourmet.Core.Services
                     Message = "NewUserName is already exist",
                     user = null
                 };
-            ApplicationUser EditUser = (ApplicationUser)isExistsUser;
+            Chef EditUser = (Chef)isExistsUser;
             EditUser.UserName = request.newusername;
             EditUser.Email = request.Email;
             EditUser.FirstName = request.FirstName;
@@ -68,7 +68,7 @@ namespace Gourmet.Core.Services
         {
             var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
 
-            if (isExistsUser != null)
+            if (isExistsUser == null)
                 return new Response()
                 {
                     IsSucceed = false,
@@ -83,10 +83,10 @@ namespace Gourmet.Core.Services
             };
 
         }
-        public async Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId)
+        public async Task<IEnumerable<Food>> FavouritFoodByUser(string userId)
         {
-            var Recipes = await _db.FavouritRecipeUsers.Where(r => r.userId == userId).Select(x=>x.recipe).ToListAsync();
-            return Recipes;
+            var Foods = await _db.FavouritFoodUsers.Where(r => r.userId == userId).Select(x=>x.Food).ToListAsync();
+            return Foods;
         }
         public async Task<IEnumerable<Food>> RecentFoodByUser(string userId)
         {
