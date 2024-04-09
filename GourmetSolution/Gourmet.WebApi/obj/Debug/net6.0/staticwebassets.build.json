@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "cfoBAlJyEHmHtsM/CzbOrjiqMa+o2FiOGTLVGUabBZc=",
+  "Hash": "dLtv9wAkZy2P37nS+ymA7hX/OW1NCclpm/XJ49LuiGU=",
   "Source": "Gourmet.WebApi",
   "BasePath": "_content/Gourmet.WebApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "Gourmet.WebApi\\wwwroot",
+      "Source": "Gourmet.WebApi",
+      "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
+      "BasePath": "_content/Gourmet.WebApi",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\h2\\image.png",
+      "SourceId": "Gourmet.WebApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
+      "BasePath": "_content/Gourmet.WebApi",
+      "RelativePath": "Uploads/User/h2/image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\User\\h2\\image.png"
+    }
+  ]
 }

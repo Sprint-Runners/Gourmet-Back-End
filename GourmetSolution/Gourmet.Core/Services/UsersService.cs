@@ -1,4 +1,5 @@
-﻿using Gourmet.Core.Domain.Entities;
+﻿using Gourmet.Core.DataBase.GourmetDbcontext;
+using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.ServiceContracts;
@@ -8,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Gourmet.Core.Services
@@ -15,15 +17,20 @@ namespace Gourmet.Core.Services
 
     public class UsersService : IUsersService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        //private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Chef> _userManager;
+        //private readonly UserManager<Chef> _userManager2;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-
-        public UsersService(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        private readonly AppDbContext _db;
+        public UsersService(AppDbContext db, UserManager<Chef> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
+            _db = db;
             _userManager = userManager;
+            //_userManager1 = userManager1;
             _roleManager = roleManager;
             _configuration = configuration;
+            //_userManager2 = userManager2;
         }
         public async Task<Response> Sign_Up_User(SignUpRequest request)
         {
@@ -36,7 +43,7 @@ namespace Gourmet.Core.Services
                     Message = "UserName Already Exists",
                     user = null
                 };
-            User new_user = new User()
+            Chef new_user = new Chef()
             {
 
                 UserName = request.Email,
@@ -119,28 +126,7 @@ namespace Gourmet.Core.Services
                 Message = "User is now an ADMIN"
             };
         }
-        public async Task<Response> MakeChefAsync(UpdatePermissionRequest updatePermission)
-        {
-            var new_user = await _userManager.FindByNameAsync(updatePermission.UserName);
-
-            if (new_user is null)
-                return new Response()
-                {
-                    IsSucceed = false,
-                    Message = "Invalid User name!",
-                    user = null
-                };
-
-            await _userManager.AddToRoleAsync(new_user, StaticUserRoles.CHEF);
-
-            return new Response()
-            {
-                IsSucceed = true,
-                user = (IdentityUser)new_user,
-                Message = "User is now an CHEF"
-            };
-
-        }
+        
         public async Task<Response> SeedRolesAsync()
         {
             bool isChefRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.CHEF);

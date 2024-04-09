@@ -15,7 +15,7 @@ namespace Gourmet.Core.ServiceContracts
         Task<Response> Sign_Up_User(SignUpRequest request);
         Task<Response> LoginAsync(LoginRequest request);
         Task<Response> MakeAdminAsync(UpdatePermissionRequest updatePermission);
-        Task<Response> MakeChefAsync(UpdatePermissionRequest updatePermission);
+        
         Task<Response> SeedRolesAsync();
     }
 }
