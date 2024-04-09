@@ -16,9 +16,13 @@ namespace Gourmet.Core.Services
         {
             return this._environment.WebRootPath + "\\Uploads\\User\\" + Username;
         }
-        private string GetFilePathFood(string Name, string username)
+        private string GetFilePathRecipe(string Name, string username)
         {
             return this._environment.WebRootPath + "\\Uploads\\Food\\" + username + "\\" + Name;
+        }
+        private string GetFilePathFood(string Name)
+        {
+            return this._environment.WebRootPath + "\\Uploads\\Food\\" + Name;
         }
         public async Task<ImageResponse> UploadUserImage(IFormFile file, string username)
         {
@@ -69,7 +73,7 @@ namespace Gourmet.Core.Services
                 };
             }
         }
-        public async Task<ImageResponse> UploadFoodImage(IFormFile file, string Name, string username)
+        public async Task<ImageResponse> UploadRecipeImage(IFormFile file, string Name, string username)
         {
             try
             {
@@ -82,7 +86,56 @@ namespace Gourmet.Core.Services
 
                     };
                 string Filename = Name;
-                string Filepath = GetFilePathFood(Filename, username);
+                string Filepath = GetFilePathRecipe(Filename, username);
+
+                if (!System.IO.Directory.Exists(Filepath))
+                {
+                    System.IO.Directory.CreateDirectory(Filepath);
+                }
+
+                string imagepath = Filepath + "\\image.png";
+                //age aks vojood dash
+                if (System.IO.File.Exists(imagepath))
+                {
+                    System.IO.File.Delete(imagepath);
+                }
+                using (FileStream stream = System.IO.File.Create(imagepath))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                return new ImageResponse
+                {
+                    IsSucceed = true,
+                    Message = "uploade successful",
+                    ImagePath = imagepath
+
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ImageResponse
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    ImagePath = null
+
+                };
+            }
+        }
+        public async Task<ImageResponse> UploadFoodImage(IFormFile file, string Name)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                    return new ImageResponse
+                    {
+                        IsSucceed = false,
+                        Message = "No file uploaded.",
+                        ImagePath = null
+
+                    };
+                string Filename = Name;
+                string Filepath = GetFilePathFood(Filename);
 
                 if (!System.IO.Directory.Exists(Filepath))
                 {
@@ -147,9 +200,38 @@ namespace Gourmet.Core.Services
                 };
             }
         }
-        public ImageResponse RemoveFoodImage(string Name, string username)
+        public ImageResponse RemoveRecipeImage(string Name, string username)
         {
-            string Filepath = GetFilePathFood(Name, username);
+            string Filepath = GetFilePathRecipe(Name, username);
+            string Imagepath = Filepath + "\\image.png";
+            try
+            {
+                if (System.IO.File.Exists(Imagepath))
+                {
+                    System.IO.File.Delete(Imagepath);
+                }
+                return new ImageResponse
+                {
+                    IsSucceed = true,
+                    Message = "Delete successful",
+                    ImagePath = null
+
+                };
+            }
+            catch (Exception ext)
+            {
+                return new ImageResponse
+                {
+                    IsSucceed = false,
+                    Message = ext.Message,
+                    ImagePath = null
+
+                };
+            }
+        }
+        public ImageResponse RemoveFoodImage(string Name)
+        {
+            string Filepath = GetFilePathFood(Name);
             string Imagepath = Filepath + "\\image.png";
             try
             {
@@ -193,11 +275,11 @@ namespace Gourmet.Core.Services
             return ImageUrl;
 
         }
-        public string GetImagebyFood(string Name, string username)
+        public string GetImagebyRecipe(string Name, string username)
         {
             string ImageUrl = string.Empty;
             string HostUrl = "http://localhost:5286";
-            string Filepath = GetFilePathFood(Name, username);
+            string Filepath = GetFilePathRecipe(Name, username);
             string Imagepath = Filepath + "\\image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
@@ -206,6 +288,23 @@ namespace Gourmet.Core.Services
             else
             {
                 ImageUrl = HostUrl + "/uploads/Food/" + username + "/" + Name + "/image.png";
+            }
+            return ImageUrl;
+
+        }
+        public string GetImagebyFood(string Name)
+        {
+            string ImageUrl = string.Empty;
+            string HostUrl = "http://localhost:5286";
+            string Filepath = GetFilePathFood(Name);
+            string Imagepath = Filepath + "\\image.png";
+            if (!System.IO.File.Exists(Imagepath))
+            {
+                ImageUrl = HostUrl + "/uploads/common/noimage.png";
+            }
+            else
+            {
+                ImageUrl = HostUrl + "/uploads/Food/" +  Name + "/image.png";
             }
             return ImageUrl;
 

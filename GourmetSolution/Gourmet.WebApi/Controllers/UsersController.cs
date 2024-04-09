@@ -16,10 +16,12 @@ namespace Gourmet.WebApi.Controllers
     {
         private readonly IJwt _jwtservice;
         private readonly IUsersService _usersService;
-        public UsersController(IJwt jwtservice, IUsersService usersService)
+        private readonly IChefService _chefService;
+        public UsersController(IJwt jwtservice, IUsersService usersService, IChefService chefService)
         {
             _jwtservice = jwtservice;
             _usersService = usersService;
+            _chefService = chefService;
         }
         [HttpPost]
         [Route("seed-roles")]
@@ -87,7 +89,7 @@ namespace Gourmet.WebApi.Controllers
         [Route("make-chef")]
         public async Task<IActionResult> MakeChef([FromBody] UpdatePermissionRequest updatePermission)
         {
-            var operationResult = await _usersService.MakeChefAsync(updatePermission);
+            var operationResult = await _chefService.MakeChefAsync(updatePermission);
 
             if (operationResult.IsSucceed)
                 return Ok(operationResult.Message);

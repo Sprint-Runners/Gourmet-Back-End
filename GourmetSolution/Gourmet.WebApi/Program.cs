@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Gourmet.Core.DataBase.GourmetDbcontext;
 using Google;
+using Gourmet.Core.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 
 // Add Identity
 builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>()
+    .AddIdentity<Chef, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
@@ -44,7 +45,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
 builder.Services.AddScoped<IChefService, ChefService>();
-builder.Services.AddScoped<IFoodService, FoodService>();
+//builder.Services.AddScoped<IFoodService, FoodService>();
 builder.Services.AddScoped<IImageProcessorService, ImageProcessorService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();

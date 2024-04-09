@@ -16,9 +16,9 @@ namespace Gourmet.Core.Services
     public class JWTService : IJwt
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Chef> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public JWTService(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public JWTService(UserManager<Chef> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
