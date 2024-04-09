@@ -8,9 +8,9 @@ using Google;
 using Gourmet.Core.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
-void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
+void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Ali");
 builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
