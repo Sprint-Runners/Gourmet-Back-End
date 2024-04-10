@@ -11,8 +11,8 @@ namespace Gourmet.Core.ServiceContracts
 {
     public interface IUserService
     {
-        Task<Response> Edit(EditUserRequest request);
-        Task<Response> Read(ReadUserRequest request);
+        Task<Response> Edit(EditUserRequest request, string username);
+        Task<Response> Read(string username);
         Task<IEnumerable<Food>> FavouritFoodByUser(string userId);
         Task<IEnumerable<Food>> RecentFoodByUser(string userId);
     }

@@ -28,7 +28,7 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Food> Foods { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
-        
+        public DbSet<InCompleteRecipe> InCompleteRecipes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             base.OnModelCreating(modelbuilder);

@@ -27,15 +27,14 @@ namespace Gourmet.WebApi.Controllers
             _chefservice = chefService;
             _imageProcessorService = imageProcessorService;
         }
-        [HttpGet("DailyOffer")]
-        public async Task<IActionResult> GetِDailyOfferFromDatabaseAsync()
+        [HttpGet("Home")]
+        public async Task<IActionResult> HomeAsync()
         {
             try
             {
                 var random = new Random();
                 var allIds = await _db.Foods.Select(x => x.Id).ToListAsync();
                 var randomIds = allIds.OrderBy(x => random.Next()).Take(3).ToList();
-
                 var randomRows = await _db.Foods.Where(x => randomIds.Contains(x.Id)).ToListAsync();
                 List<FoodInformationResponse> randomFood = new List<FoodInformationResponse>();
                 foreach (Food row in randomRows)
@@ -47,20 +46,7 @@ namespace Gourmet.WebApi.Controllers
                         ImagePath = row.ImgeUrl
                     }); ;
                 }
-                return Ok(randomFood);
-            }
-            catch(Exception ex)
-            {
-                return Problem(detail:ex.Message, statusCode: 400);
-            }
-        }
-        [HttpGet("TopChef")]
-        public async Task<IActionResult> GetTopChefFromDatabaseAsync()
-        {
-            try
-            {
                 var chefs = await _db.Chefs.ToListAsync();
-
                 var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
                                     .Take(3)
                                     .ToList();
@@ -75,13 +61,41 @@ namespace Gourmet.WebApi.Controllers
                         ImagePath = row.ImageURL
                     }); ;
                 }
-                return Ok(TopChefs);
+                //return Ok(TopChefs);
+                return Ok((randomFood, TopChefs));
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                return Problem(detail: ex.Message, statusCode: 400);
+                return Problem(detail:ex.Message, statusCode: 400);
             }
         }
+        //[HttpGet("TopChef")]
+        //public async Task<IActionResult> GetTopChefFromDatabaseAsync()
+        //{
+        //    try
+        //    {
+        //        var chefs = await _db.Chefs.ToListAsync();
+        //        var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
+        //                            .Take(3)
+        //                            .ToList();
+        //        List<TopChefResponse> TopChefs = new List<TopChefResponse>();
+        //        foreach (Chef row in topChefs)
+        //        {
+        //            row.ImageURL = _imageProcessorService.GetImagebyUser(row.UserName);
+        //            TopChefs.Add(new TopChefResponse
+        //            {
+        //                Name = row.UserName,
+        //                Score = row.Score,
+        //                ImagePath = row.ImageURL
+        //            }); ;
+        //        }
+        //        return Ok(TopChefs);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Problem(detail: ex.Message, statusCode: 400);
+        //    }
+        //}
         //public async Task<IEnumerable<>> GetAllCategories()
         //{
 

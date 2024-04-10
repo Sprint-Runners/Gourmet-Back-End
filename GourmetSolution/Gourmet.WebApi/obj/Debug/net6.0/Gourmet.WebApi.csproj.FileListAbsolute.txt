@@ -234,3 +234,4 @@ C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\
 C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\bin\Debug\net6.0\Google.Apis.Core.dll
 C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\bin\Debug\net6.0\Gourmet.WebApi.staticwebassets.runtime.json
+C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\bin\Debug\net6.0\FuzzySharp.dll

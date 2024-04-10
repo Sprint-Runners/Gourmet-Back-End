@@ -10,6 +10,8 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace Gourmet.Core.Services
 {
@@ -38,7 +40,7 @@ namespace Gourmet.Core.Services
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub,new_User.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email,new_User.UserName)
+                new Claim(JwtRegisteredClaimNames.UniqueName,new_User.UserName)
             };
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration["JWT:Mock-Key"]));
@@ -92,6 +94,15 @@ namespace Gourmet.Core.Services
                 return false;
 
 
+        }
+        public string DecodeToken(string jwtToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(jwtToken);
+
+            string decodedToken = token.Claims.Last().Value;
+
+            return decodedToken;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Gourmet.Core.Services
                 if (file == null || file.Length == 0)
                     return new ImageResponse
                     {
-                        IsSucceed = false,
+                        IsSucceed = true,
                         Message = "No file uploaded.",
                         ImagePath = null
 

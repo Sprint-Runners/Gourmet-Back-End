@@ -17,9 +17,9 @@ namespace Gourmet.Core.Services
             _userManager = userManager;
             _db = db;
         }
-        public async Task<Response> Edit(EditUserRequest request)
+        public async Task<Response> Edit(EditUserRequest request,string username)
         {
-            var isExistsUser = await _userManager.FindByNameAsync(request.oldusername);
+            var isExistsUser = await _userManager.FindByNameAsync(username);
 
             if (isExistsUser == null)
                 return new Response()
@@ -28,21 +28,11 @@ namespace Gourmet.Core.Services
                     Message = "UserName not Exists",
                     user = null
                 };
-            var isExitNewUsername = await _userManager.FindByEmailAsync(request.newusername);
-            if (isExitNewUsername != null && request.oldusername != isExitNewUsername.UserName)
-                return new Response()
-                {
-                    IsSucceed = false,
-                    Message = "NewUserName is already exist",
-                    user = null
-                };
             Chef EditUser = (Chef)isExistsUser;
-            EditUser.UserName = request.newusername;
             EditUser.Email = request.Email;
-            EditUser.FirstName = request.FirstName;
-            EditUser.LastName = request.LastName;
+            EditUser.FullName = request.FullName;
             EditUser.PhoneNumber = request.PhoneNumber;
-            EditUser.aboutme= request.aboutme;
+            EditUser.Aboutme= request.Aboutme;
             var result = await _userManager.UpdateAsync(EditUser);
 
             if (result.Succeeded)
@@ -64,9 +54,9 @@ namespace Gourmet.Core.Services
                 user = null
             };
         }
-        public async Task<Response> Read(ReadUserRequest request)
+        public async Task<Response> Read(string username)
         {
-            var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+            var isExistsUser = await _userManager.FindByNameAsync(username);
 
             if (isExistsUser == null)
                 return new Response()
@@ -85,12 +75,17 @@ namespace Gourmet.Core.Services
         }
         public async Task<IEnumerable<Food>> FavouritFoodByUser(string userId)
         {
-            var Foods = await _db.FavouritFoodUsers.Where(r => r.userId == userId).Select(x=>x.Food).ToListAsync();
+            var Foods = await _db.FavouritFoodUsers.Where(r => r.userId == userId).OrderByDescending(r=>r.TimeToLike).Select(x=>x.Food).ToListAsync();
             return Foods;
         }
+        //public async Task<IEnumerable<Food>> FavouritFoodByUserSortedRate(string userId)
+        //{
+        //    var Foods = await _db.FavouritFoodUsers.Where(r => r.userId == userId).OrderByDescending(r => r.Food.).Select(x => x.Food).ToListAsync();
+        //    return Foods;
+        //}
         public async Task<IEnumerable<Food>> RecentFoodByUser(string userId)
         {
-            var Foods = await _db.RecentFoodUsers.Where(r => r.userId == userId).Select(x => x.food).ToListAsync();
+            var Foods = await _db.RecentFoodUsers.Where(r => r.userId == userId).OrderByDescending(r => r.VisitTime).Select(x => x.food).ToListAsync();
             return Foods;
         }
     }
