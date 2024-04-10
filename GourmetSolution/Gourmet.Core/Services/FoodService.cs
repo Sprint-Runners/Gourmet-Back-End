@@ -1,5 +1,7 @@
 ﻿using Gourmet.Core.DataBase.GourmetDbcontext;
 using Gourmet.Core.Domain.Entities;
+using Gourmet.Core.Domain.OtherObject;
+using Gourmet.Core.DTO.Request;
 using Gourmet.Core.ServiceContracts;
 using System;
 using System.Collections.Generic;
@@ -10,12 +12,39 @@ using System.Threading.Tasks;
 
 namespace Gourmet.Core.Services
 {
-    public class FoodService //: /IFoodService
+    public class FoodService : IFoodService
     {
         private readonly AppDbContext _db;
         public FoodService(AppDbContext db)
         {
             _db = db;
+        }
+        public async Task<FoodResponse> Create(AddFoodRequest request)
+        {
+            var isExistFood = _db.Foods.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            if (isExistFood != null)
+            {
+                return new FoodResponse
+                {
+                    IsSucceed = false,
+                    Message = "This Food Already Exists",
+                    food=null
+                };
+            }
+            Food food = new Food
+            {
+                Id = new Guid(),
+                Name = request.Name.ToLower(),
+
+            };
+            _db.Foods.Add(food);
+            _db.SaveChanges();
+            return new FoodResponse
+            {
+                IsSucceed = true,
+                Message = "Food Added Successfully",
+                food=food
+            };
         }
         //public async Task<IEnumerable<Food>> GetAllFoodWithOnePSOI(Guid category)
         //{

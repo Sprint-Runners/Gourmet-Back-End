@@ -18,15 +18,17 @@ namespace Gourmet.WebApi.Controllers
     {
         private readonly AppDbContext _db;
         //bayad dorost she inteface nadare
-        private readonly RecipeService _recipeService;
+        private readonly IRecipeService _recipeService;
         private readonly UserManager<Chef> _userManager;
         private readonly IJwt _jwtService;
-        public RecipeController(AppDbContext db,RecipeService recipeService,UserManager<Chef>userManager,IJwt jwt)
+        private readonly IImageProcessorService _imageProcessorService;
+        public RecipeController(AppDbContext db, RecipeService recipeService, UserManager<Chef> userManager, IJwt jwt, IImageProcessorService imageProcessorService)
         {
             _db = db;
             _recipeService = recipeService;
             _userManager = userManager;
             _jwtService = jwt;
+            _imageProcessorService = imageProcessorService;
         }
         [HttpGet("Search_Ingredient")]
         public async Task<IActionResult> Search_Ingredient(string searchTerm)
@@ -81,27 +83,49 @@ namespace Gourmet.WebApi.Controllers
         [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Add_Recipe(AddRecipeRequest request)
         {
-            string token = HttpContext.Request.Headers["Authorization"];
-            string username = _jwtService.DecodeToken(token);
-            var isExistsUser = await _userManager.FindByNameAsync(username);
-            if (isExistsUser != null)
-                return Problem(detail: "UserName not Exists", statusCode: 400);
-            if (request.NotExistFoodName!=null || request.Not_Exist_List_Ingriedents != null)
+            try
             {
-                var result = await _recipeService.CreateInCompleteRecipe(request,isExistsUser.Id,username);
-                if (result.IsSucceed)
-                {
-                    return Ok(result);
-                }
-                return Problem(detail: result.Message, statusCode: 400);
-            }
-            var result1 = await _recipeService.CreateRecipeByChef(request, isExistsUser.Id, username);
-            if (result1.IsSucceed)
-            {
-                return Ok(result1);
-            }
-            return Problem(detail: result1.Message, statusCode: 400);
+                string token = HttpContext.Request.Headers["Authorization"];
+                string username = _jwtService.DecodeToken(token);
+                var isExistsUser = await _userManager.FindByNameAsync(username);
+                if (isExistsUser != null)
+                    return Problem(detail: "UserName not Exists", statusCode: 400);
 
+                if (request.NotExistFoodName != null || request.Not_Exist_List_Ingriedents != null)
+                {
+                    var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, username);
+                    if (result.IsSucceed)
+                    {
+                        var file = Request.Form.Files[0];
+                        var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result.recipe.FoodString, result.recipe.chef.UserName);
+                        if (ResultImage.IsSucceed)
+                        {
+                            result.recipe.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName);
+                            return Ok(result.recipe);
+                        }
+                        return Problem(detail: ResultImage.Message, statusCode: 400);
+                    }
+                    return Problem(detail: result.Message, statusCode: 400);
+                }
+                var result1 = await _recipeService.CreateRecipeByChef(request, isExistsUser.Id, username);
+                if (result1.IsSucceed)
+                {
+
+                    var file = Request.Form.Files[0];
+                    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result1.recipe.food.Name, result1.recipe.chef.UserName);
+                    if (ResultImage.IsSucceed)
+                    {
+                        result1.recipe.ImgeUrl =await _imageProcessorService.GetImagebyRecipe(result1.recipe.food.Name, result1.recipe.chef.UserName);
+                        return Ok(result1.recipe);
+                    }
+                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                }
+                return Problem(detail: result1.Message, statusCode: 400);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ using Gourmet.Core.Domain.Relations;
 
 namespace Gourmet.Core.Services
 {
-    public class RecipeService
+    public class RecipeService:IRecipeService
     {
 
         private readonly AppDbContext _db;
@@ -69,7 +69,7 @@ namespace Gourmet.Core.Services
                 chef = isExitsUser,
                 Description = request.Description,
                 Score = 0,
-                ImgeUrl = _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName),
+                ImgeUrl =await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName),
                 List_Ingriedents = ingredients,
                 Primary_Source_of_IngredientId = isExitsPSOI.Id,
                 primary_source_of_ingredient = isExitsPSOI,
@@ -140,7 +140,7 @@ namespace Gourmet.Core.Services
                 ChefId = userId,
                 chef = isExitsUser,
                 Description = request.Description,
-                ImgeUrl = _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName),
+                ImgeUrl =await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName),
                 IngredientsString=ingredients,
                 NotExistIngredients=NotExistingredients,
                 Primary_Source_of_IngredientId = isExitsPSOI.Id,

@@ -40,7 +40,7 @@ namespace Gourmet.WebApi.Controllers
                 ApplicationUser readuser = (ApplicationUser)ReadResult.user;
                 ReadUserResponse response = new ReadUserResponse
                 {
-                    ImageUrl = _imageProcessorService.GetImagebyUser(username),
+                    ImageUrl = await _imageProcessorService.GetImagebyUser(username),
                     FullName = readuser.FullName,
                     UserName = readuser.UserName,
                     Email = readuser.Email,
@@ -70,10 +70,10 @@ namespace Gourmet.WebApi.Controllers
                     {
                         var isExistsUser = await _userManager.FindByNameAsync(username);
                         ApplicationUser user = (ApplicationUser)isExistsUser;
-                        user.ImageURL = _imageProcessorService.GetImagebyUser(username);
+                        user.ImageURL =await _imageProcessorService.GetImagebyUser(username);
                         ReadUserResponse response = new ReadUserResponse
                         {
-                            ImageUrl = _imageProcessorService.GetImagebyUser(username),
+                            ImageUrl =await _imageProcessorService.GetImagebyUser(username),
                             FullName = user.FullName,
                             UserName = user.UserName,
                             Email = user.Email,
