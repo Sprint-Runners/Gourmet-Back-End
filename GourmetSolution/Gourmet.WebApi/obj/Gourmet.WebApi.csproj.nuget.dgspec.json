@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {}
+    "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
+    "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
+        "projectUniqueName": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
         "projectName": "Gourmet.Core",
-        "projectPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
-        "packagesPath": "C:\\Users\\win_10\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\obj\\",
+        "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj",
+        "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
+        "outputPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\win_10\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -97,21 +97,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {
+    "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
+        "projectUniqueName": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
         "projectName": "Gourmet.WebApi",
-        "projectPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
-        "packagesPath": "C:\\Users\\win_10\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\obj\\",
+        "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
+        "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
+        "outputPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\win_10\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -125,8 +125,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
-                "projectPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
+              "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
+                "projectPath": "E:\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
               }
             }
           }
@@ -199,7 +199,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

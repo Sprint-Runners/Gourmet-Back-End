@@ -38,6 +38,19 @@ namespace Gourmet.Core.Migrations
                     b.ToTable("CMs");
                 });
 
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Email_Pass", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Temp_Password")
+                        .HasColumnType("int");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Email_Passwords");
+                });
+
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Food", b =>
                 {
                     b.Property<Guid>("Id")
@@ -202,6 +215,32 @@ namespace Gourmet.Core.Migrations
                     b.HasIndex("Primary_Source_of_IngredientId");
 
                     b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Secret", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Secrets");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Temp_Password", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Temproary_Passwords");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritFoodUser", b =>

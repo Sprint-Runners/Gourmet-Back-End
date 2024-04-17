@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gourmet.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240403011700_check7")]
-    partial class check7
+    [Migration("20240417160830_Secret")]
+    partial class Secret
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,19 @@ namespace Gourmet.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CMs");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Email_Pass", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Temp_Password")
+                        .HasColumnType("int");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Email_Passwords");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Food", b =>
@@ -204,6 +217,32 @@ namespace Gourmet.Core.Migrations
                     b.HasIndex("Primary_Source_of_IngredientId");
 
                     b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Secret", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Secrets");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Temp_Password", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Temproary_Passwords");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritFoodUser", b =>
