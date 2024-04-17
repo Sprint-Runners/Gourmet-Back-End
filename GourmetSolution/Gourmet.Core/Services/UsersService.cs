@@ -34,7 +34,7 @@ namespace Gourmet.Core.Services
             _roleManager = roleManager;
             _configuration = configuration;
             Email_Address = "GourmetFoodWebSite@gmail.com";
-            Email_Password = "essb vuoz fpui kwxt";
+            Email_Password = _db.Secrets.Find(Email_Address).Password;
         }
         public async Task<Response> Sign_Up_User(SignUpRequest request)
         {
@@ -53,6 +53,16 @@ namespace Gourmet.Core.Services
                 UserName = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
+            var user=_db.Email_Passwords.Find(request.Email);
+            
+            if (user == null || user.Temp_Password != request.Temp_Code) 
+                return new Response()
+                {
+                    IsSucceed = false,
+                    user = null,
+                    Message = "The Authentication code or the email is incorrect"
+                };
+            
             var createUserResult = await _userManager.CreateAsync(new_user, request.Password);
 
             if (!createUserResult.Succeeded)
@@ -90,16 +100,26 @@ namespace Gourmet.Core.Services
                     Message = "Invalid Credentials",
                     user = null
                 };
-
+            
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.password);
 
             if (!isPasswordCorrect)
-                return new Response()
+            {
+                var Temp = await _db.Temproary_Passwords.FindAsync(request.username);
+                if(Temp is null || Temp.Password != request.password)
+                    return new Response()
+                    {
+                        IsSucceed = false,
+                        Message = "Invalid Credentials",
+                        user = null
+                    };
+                else
                 {
-                    IsSucceed = false,
-                    Message = "Invalid Credentials",
-                    user = null
-                };
+                    _db.Temproary_Passwords.Remove(Temp);
+                    _db.SaveChanges();
+                }
+
+            }
 
             return new Response()
             {
@@ -162,7 +182,7 @@ namespace Gourmet.Core.Services
             if (isExistsUser != null)
                 return new Email_Response() { IsSucceed = false, Message = "The username already exists" };
 
-            MailAddress From = new MailAddress("GourmetFoodWebSite@gmail.com");
+            MailAddress From = new MailAddress(Email_Address);
             MailAddress To = new MailAddress(request.Email);
             Random random = new Random();
             int Temp_Pass= random.Next(10000, 99999);
@@ -193,12 +213,12 @@ namespace Gourmet.Core.Services
         {
             var isExistsUser = await _userManager.FindByNameAsync(request.Email);
 
-            //if (isExistsUser == null)
-                //return new Email_Response() { IsSucceed = false, Message = "The Email does not exist" };
+            if (isExistsUser == null)
+                return new Email_Response() { IsSucceed = false, Message = "The Email does not exist" };
             var temp= await _db.Temproary_Passwords.FindAsync(request.Email);
             if(temp!=null)
                 _db.Remove(temp);
-            MailAddress From = new MailAddress("GourmetFoodWebSite@gmail.com");
+            MailAddress From = new MailAddress(Email_Address);
             MailAddress To = new MailAddress(request.Email);
             Random random = new Random();
             int Temp_Pass = random.Next(10000, 99999);

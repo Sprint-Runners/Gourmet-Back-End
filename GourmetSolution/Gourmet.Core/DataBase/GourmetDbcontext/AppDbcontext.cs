@@ -30,7 +30,7 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Email_Pass> Email_Passwords { get; set; }
         public DbSet<Temp_Password> Temproary_Passwords { get; set; }
-
+        public DbSet<Secret> Secrets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             base.OnModelCreating(modelbuilder);
