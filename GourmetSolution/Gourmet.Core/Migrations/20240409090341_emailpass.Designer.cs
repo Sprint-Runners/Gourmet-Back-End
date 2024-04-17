@@ -4,6 +4,7 @@ using Gourmet.Core.DataBase.GourmetDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gourmet.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240409090341_emailpass")]
+    partial class emailpass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,19 +217,6 @@ namespace Gourmet.Core.Migrations
                     b.HasIndex("Primary_Source_of_IngredientId");
 
                     b.ToTable("Recipes");
-                });
-
-            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Temp_Password", b =>
-                {
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Email");
-
-                    b.ToTable("Temproary_Passwords");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritFoodUser", b =>

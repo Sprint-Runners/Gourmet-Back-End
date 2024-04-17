@@ -14,4 +14,9 @@ namespace Gourmet.Core.Domain.Other_Object
         public string Message { get; set; }
         public IdentityUser user { get; set; }
     }
+    public class Email_Response
+    {
+        public bool IsSucceed { get; set; }
+        public string Message { get; set; }
+    }
 }

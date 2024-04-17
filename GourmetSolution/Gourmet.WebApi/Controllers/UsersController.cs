@@ -96,6 +96,24 @@ namespace Gourmet.WebApi.Controllers
 
             return BadRequest(operationResult.Message);
         }
+        [HttpPost("Authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] SignUpRequest request)
+        {
+            var EmailResult = await _usersService.Authenticate_Email(request);
+            if (EmailResult.IsSucceed)
+                return Ok(EmailResult);
+            
+            return Problem(detail: EmailResult.Message, statusCode: 400);
+        }
+        [HttpPost("Forget")]
+        public async Task<IActionResult> Generate_Temp([FromBody] Add_Temp_Password request)
+        {
+            var EmailResult = await _usersService.Temproary_Password(request);
+            if (EmailResult.IsSucceed)
+                return Ok(EmailResult);
+
+            return Problem(detail: EmailResult.Message, statusCode: 400);
+        }
     }
 }
 
