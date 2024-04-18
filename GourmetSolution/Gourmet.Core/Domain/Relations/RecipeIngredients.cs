@@ -20,6 +20,8 @@ namespace Gourmet.Core.Domain.Relations
         public Guid IngredientId { get; set; }
         [ForeignKey("IngredientId")]
         public Ingredient ingredient { get; set; }
+        [Required]
+        public double Quantity {  get; set; }
 
 
     }

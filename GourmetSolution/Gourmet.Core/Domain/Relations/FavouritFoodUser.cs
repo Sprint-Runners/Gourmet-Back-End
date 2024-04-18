@@ -20,7 +20,8 @@ namespace Gourmet.Core.Domain.Relations
         public string userId { get; set; }
         [ForeignKey("userId")]
         public ApplicationUser user { get; set; }
-
+        [Required]
+        public DateTime TimeToLike { get; set; }
 
     }
 }

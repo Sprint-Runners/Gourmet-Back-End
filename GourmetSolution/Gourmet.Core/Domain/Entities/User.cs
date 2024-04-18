@@ -11,9 +11,8 @@ namespace Gourmet.Core.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string ImageURL { get; set; } = string.Empty;
-        public string aboutme { get; set; }
+        public string Aboutme { get; set; }
     }
 }

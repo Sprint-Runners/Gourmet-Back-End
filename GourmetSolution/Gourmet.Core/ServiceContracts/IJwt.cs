@@ -9,5 +9,6 @@ namespace Gourmet.Core.ServiceContracts
     {
         AuthenticationResponse CreateJwtToken(IdentityUser new_user);
         bool Token_Validation(string token);
+        string DecodeToken(string jwtToken);
     }
 }

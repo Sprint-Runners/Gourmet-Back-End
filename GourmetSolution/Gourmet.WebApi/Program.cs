@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Gourmet.Core.DataBase.GourmetDbcontext;
 using Google;
 using Gourmet.Core.Domain.Entities;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
@@ -32,6 +34,20 @@ builder.Services.Configure<IdentityOptions>(options =>
     //options.SignIn.RequireConfirmedEmail = true;
 });
 // Add Authentication and JwtBearer
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+       .AddJwtBearer(options =>
+       {
+           options.TokenValidationParameters = new TokenValidationParameters
+           {
+               ValidateIssuer = true,
+               ValidateAudience = true,
+               ValidateLifetime = true,
+               ValidateIssuerSigningKey = true,
+               ValidIssuer = "YourIssuer",
+               ValidAudience = "YourAudience",
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKey"))
+           };
+       });
 builder.Services
     .AddAuthentication(options =>
     {
@@ -45,11 +61,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
 builder.Services.AddScoped<IChefService, ChefService>();
-//builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IFoodService, FoodService>();
 builder.Services.AddScoped<IImageProcessorService, ImageProcessorService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
-
+builder.Services.AddScoped<IRecipeService, RecipeService>();
+builder.Services.AddScoped<IIngredientService, IngredientService>();
 
 
 

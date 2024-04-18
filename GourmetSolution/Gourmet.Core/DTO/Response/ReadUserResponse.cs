@@ -8,11 +8,11 @@ namespace Gourmet.Core.DTO.Response
 {
     public class ReadUserResponse
     {
-        public string FirstNmae {  get; set; }
-        public string LastNmae { get; set; }
-        public string UserNmae { get; set; }
+        public string FullName {  get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string aboutme { get; set; }
+        public string Aboutme { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

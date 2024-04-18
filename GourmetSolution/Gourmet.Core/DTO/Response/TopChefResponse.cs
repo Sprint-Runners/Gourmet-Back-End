@@ -11,5 +11,6 @@ namespace Gourmet.Core.DTO.Response
         public string Name {  get; set; }
         public string ImagePath {  get; set; }
         public double Score {  get; set; }
+        public string AboutMe { get; set; }
     }
 }
