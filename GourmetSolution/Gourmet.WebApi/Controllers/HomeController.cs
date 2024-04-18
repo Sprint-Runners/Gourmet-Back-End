@@ -26,14 +26,14 @@ namespace Gourmet.WebApi.Controllers
             _recipeservice = recipeservice;
         }
         [HttpGet("Home")]
-        public async Task<IActionResult> HomeAsync()
+        public async Task<IActionResult>  HomeAsync()
         {
             try
             {
                 var random = new Random();
-                var allIds = await _db.Foods.Select(x => x.Id).ToListAsync();
+                var allIds = _db.Foods.Select(x => x.Id).ToList();
                 var randomIds = allIds.OrderBy(x => random.Next()).Take(3).ToList();
-                var randomRows = await _db.Foods.Where(x => randomIds.Contains(x.Id)).ToListAsync();
+                var randomRows = _db.Foods.Where(x => randomIds.Contains(x.Id)).ToList();
                 List<FoodInformationResponse> randomFood = new List<FoodInformationResponse>();
                 List<SummaryRecipeInfoResponse> Top_Recipes = new List<SummaryRecipeInfoResponse>();
                 foreach (Food row in randomRows)
@@ -45,38 +45,41 @@ namespace Gourmet.WebApi.Controllers
                         ImagePath = row.ImgeUrl,
                     }); ;
                 }
-                var chefs = await _db.Chefs.ToListAsync();
-                var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
+                var chefs =  _db.Chefs.ToList();
+                //var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
+                //                    .Take(3)
+                //                    .ToList();
+                var topChefs = chefs.OrderByDescending(x=>x.Score)
                                     .Take(3)
                                     .ToList();
                 List<TopChefResponse> TopChefs = new List<TopChefResponse>();
                 foreach (Chef row in topChefs)
                 {
                     row.ImageURL = await _imageProcessorService.GetImagebyUser(row.UserName);
-                    var chefrecipes = await _chefservice.GetRecipesByChefId(row.Id);
+                    //var chefrecipes = await _chefservice.GetRecipesByChefId(row.Id);
 
-                    var topchefrecipes = chefrecipes.OrderByDescending(x => x.Score)
-                                    .Take(5)
-                                    .ToList();
-                    List<SummaryRecipeInfoResponse> Top_Special_Chef_Recipes = new List<SummaryRecipeInfoResponse>();
-                    foreach (Recipe r in topchefrecipes)
-                    {
-                        r.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName);
-                        Top_Special_Chef_Recipes.Add(new SummaryRecipeInfoResponse
-                        {
-                            Name = r.food.Name,
-                            ChefName = r.chef.FullName,
-                            ImagePath = r.ImgeUrl,
-                            Score = r.Score
-                        });
-                    }
+                    //var topchefrecipes = chefrecipes.OrderByDescending(x => x.Score)
+                    //                .Take(5)
+                    //                .ToList();
+                    //List<SummaryRecipeInfoResponse> Top_Special_Chef_Recipes = new List<SummaryRecipeInfoResponse>();
+                    //foreach (Recipe r in topchefrecipes)
+                    //{
+                    //    r.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName);
+                    //    Top_Special_Chef_Recipes.Add(new SummaryRecipeInfoResponse
+                    //    {
+                    //        Name = r.food.Name,
+                    //        ChefName = r.chef.FullName,
+                    //        ImagePath = r.ImgeUrl,
+                    //        Score = r.Score
+                    //    });
+                    //}
                     TopChefs.Add(new TopChefResponse
                     {
                         Name = row.FullName,
                         Score = row.Score,
                         AboutMe = row.Aboutme,
                         ImagePath = row.ImageURL,
-                        Top_Chef_Recipes = Top_Special_Chef_Recipes
+                        //Top_Chef_Recipes = Top_Special_Chef_Recipes
                     });
                 }
                 var PSOIS = await _categoriesService.GetAllPSOICategory();
@@ -115,23 +118,25 @@ namespace Gourmet.WebApi.Controllers
                 }
                 var random_category = new Random();
                 Categories = Categories.OrderBy(x => random_category.Next()).ToList();
-                var allrecipe = await _recipeservice.Get_All_Recipe();
-                var toprecipes = allrecipe.OrderByDescending(x => x.Score)
-                                    .Take(5)
-                                    .ToList();
-                foreach (Recipe row in toprecipes)
-                {
-                    row.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(row.food.Name, row.chef.UserName);
-                    Top_Recipes.Add(new SummaryRecipeInfoResponse
-                    {
-                        Name = row.food.Name,
-                        ChefName = row.chef.FullName,
-                        ImagePath = row.ImgeUrl,
-                        Score = row.Score
-                    });
-                }
+                //var allrecipe = await _recipeservice.Get_All_Recipe();
+                //var toprecipes = allrecipe.OrderByDescending(x => x.Score)
+                //                    .Take(5)
+                //                    .ToList();
+                //foreach (Recipe row in toprecipes)
+                //{
+                //    row.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(row.food.Name, row.chef.UserName);
+                //    Top_Recipes.Add(new SummaryRecipeInfoResponse
+                //    {
+                //        Name = row.food.Name,
+                //        ChefName = row.chef.FullName,
+                //        ImagePath = row.ImgeUrl,
+                //        Score = row.Score
+                //    });
+                //}
                 //return Ok(TopChefs);
-                return Ok((randomFood, TopChefs, Categories, Top_Recipes));
+                Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>> result = new Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>>(randomFood, TopChefs, Categories);
+                return Ok(result);
+                return Ok((randomFood));
             }
             catch (Exception ex)
             {

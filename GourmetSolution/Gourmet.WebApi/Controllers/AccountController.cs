@@ -54,7 +54,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPut]
         [Route("Update_User")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Update(EditUserRequest request)
         {
             try

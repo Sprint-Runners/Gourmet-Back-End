@@ -1,6 +1,70 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Bread\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\Bread\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Cookie\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\Cookie\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\FastFood\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\FastFood\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Salad\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\Salad\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Breakfast\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Breakfast\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Desert\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Desert\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Dinner\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Dinner\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegeterian\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Vegeterian\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Air_Fryer_Chicken_Legs\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Food\\Air_Fryer_Chicken_Legs\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Chicken_Katsu\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Food\\Chicken_Katsu\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Chicken_Parmesan_Pasta\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Food\\Chicken_Parmesan_Pasta\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Egg_Rolls\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Food\\Egg_Rolls\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Shrimp_Scampi_with_Pasta\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Food\\Shrimp_Scampi_with_Pasta\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\Alain_Ducasse\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\User\\Alain_Ducasse\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\Martin_Berasategui\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\User\\Martin_Berasategui\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\Pierre_Gagnaire\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\User\\Pierre_Gagnaire\\image.png"
+    },
+    {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\h2\\image.png",
       "PackagePath": "staticwebassets\\Uploads\\User\\h2\\image.png"
     },

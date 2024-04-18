@@ -155,27 +155,27 @@ namespace Gourmet.Core.Services
         }
         public async Task<IEnumerable<Primary_Source_of_Ingredient>> GetAllPSOICategory()
         {
-            var PSOIs = await _db.PSOIs.ToListAsync();
+            var PSOIs =  _db.PSOIs.ToList();
             return PSOIs;
         }
         public async Task<IEnumerable<Cooking_Method>> GetAllCMCategory()
         {
-            var CMs = await _db.CMs.ToListAsync();
+            var CMs =  _db.CMs.ToList();
             return CMs;
         }
         public async Task<IEnumerable<Food_type>> GetAllFTCategory()
         {
-            var FTs = await _db.FTs.ToListAsync();
+            var FTs =  _db.FTs.ToList();
             return FTs;
         }
         public async Task<IEnumerable<Nationality>> GetAllNCategory()
         {
-            var Ns = await _db.Ns.ToListAsync();
+            var Ns = _db.Ns.ToList();
             return Ns;
         }
         public async Task<IEnumerable<Meal_Type>> GetAllMTCategory()
         {
-            var MTs = await _db.MTs.ToListAsync();
+            var MTs = _db.MTs.ToList();
             return MTs;
         }
     }
