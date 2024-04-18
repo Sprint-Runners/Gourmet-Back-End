@@ -1,17 +1,19 @@
-﻿using Gourmet.Core.DTO.Request;
+﻿using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.DTO.Response;
-using Gourmet.Core.Domain.Entities;
-using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.Exceptions;
-using Microsoft.Extensions.Configuration;
-using System.IdentityModel.Tokens.Jwt;
-using System;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Gourmet.Core.Services
 {
@@ -20,11 +22,16 @@ namespace Gourmet.Core.Services
         private readonly IConfiguration _configuration;
         private readonly UserManager<Chef> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly JsonSerializerOptions _jsonOptions;
         public JWTService(UserManager<Chef> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _jsonOptions = new JsonSerializerOptions
+            {
+                NumberHandling = JsonNumberHandling.AllowReadingFromString
+            };
         }
         /// <summary>
         /// Provides the jwt token creation service by using token's guid,user's id,
@@ -39,7 +46,8 @@ namespace Gourmet.Core.Services
             List<Claim> claims = new List<Claim>{
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub,new_User.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
+                //new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
                 new Claim(JwtRegisteredClaimNames.UniqueName,new_User.UserName)
             };
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
@@ -57,7 +65,7 @@ namespace Gourmet.Core.Services
                 Email = new_User.UserName,
                 JWT_Token = token,
                 Expiration = Expiration,
-                Period=_configuration["JWT:Expiration_Time"]
+                Period = _configuration["JWT:Expiration_Time"]
             };
         }
 
@@ -97,12 +105,11 @@ namespace Gourmet.Core.Services
         }
         public string DecodeToken(string jwtToken)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.ReadJwtToken(jwtToken);
-
-            string decodedToken = token.Claims.Last().Value;
-
-            return decodedToken;
+            jwtToken = jwtToken.Replace("Bearer ", "");
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtSecurityToken = handler.ReadJwtToken(jwtToken);
+            var username = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type.ToLower() == "unique_name")?.Value;
+            return username;
         }
     }
 }

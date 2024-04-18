@@ -45,7 +45,8 @@ namespace Gourmet.WebApi.Controllers
                     randomFood.Add(new FoodInformationResponse
                     {
                         Name = row.Name,
-                        ImagePath = row.ImgeUrl
+                        ImagePath = row.ImgeUrl,
+                        Score
                     }); ;
                 }
                 var chefs = await _db.Chefs.ToListAsync();
@@ -58,9 +59,11 @@ namespace Gourmet.WebApi.Controllers
                     row.ImageURL = await _imageProcessorService.GetImagebyUser(row.UserName);
                     TopChefs.Add(new TopChefResponse
                     {
-                        Name = row.UserName,
+                        Name = row.FullName,
                         Score = row.Score,
-                        ImagePath = row.ImageURL
+                        AboutMe=row.Aboutme,
+                        ImagePath = row.ImageURL,
+                        TopRecipe(List<food>)
                     }); ;
                 }
                 var PSOIS =await _categoriesService.GetAllPSOICategory();

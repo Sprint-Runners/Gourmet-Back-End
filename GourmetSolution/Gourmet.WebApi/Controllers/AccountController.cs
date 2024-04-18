@@ -198,35 +198,83 @@ namespace Gourmet.WebApi.Controllers
         [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Recipe_Chef()
         {
-            string token = HttpContext.Request.Headers["Authorization"];
-            string username = _jwtService.DecodeToken(token);
-            var isExistsUser = await _userManager.FindByNameAsync(username);
-            if (isExistsUser != null)
-                return Problem(detail: "UserName not Exists", statusCode: 400);
-            var result = await _chefService.GetRecipesByChefId(isExistsUser.Id);
-            return Ok(result);
-        }
-        [HttpPut]
-        [Route("Change_Password")]
-        [Authorize]
-        public async Task<IActionResult> Change_Password(ChangePasswordRequest request)
-        {
-            string token = HttpContext.Request.Headers["Authorization"];
-            string username = _jwtService.DecodeToken(token);
-            var isExistsUser = await _userManager.FindByNameAsync(username);
-            if (isExistsUser != null)
-                return Problem(detail: "UserName not Exists", statusCode: 400);
-            var result = await _userManager.ChangePasswordAsync(isExistsUser, request.OldPassword, request.OldPassword);
-            if (result.Succeeded)
+            try
             {
+                string token = HttpContext.Request.Headers["Authorization"];
+                string username = _jwtService.DecodeToken(token);
+                var isExistsUser = await _userManager.FindByNameAsync(username);
+                if (isExistsUser != null)
+                    return Problem(detail: "UserName not Exists", statusCode: 400);
+                var result = await _chefService.GetRecipesByChefId(isExistsUser.Id);
                 return Ok(result);
             }
-            string error_message = "";
-            foreach(var error in result.Errors)
+            catch (Exception ex)
             {
-                error_message= error_message +" "+error.Description;
+                return Problem(detail: ex.Message, statusCode: 400);
             }
-            return Problem(detail: error_message, statusCode: 400);
+        }
+        [HttpPut("Change_Password")]
+        //[Authorize]
+        public async Task<IActionResult> Change_Password(ChangePasswordRequest request)
+
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"];
+                string username = _jwtService.DecodeToken(token);
+                var isExistsUser = await _userManager.FindByNameAsync(username);
+                if (isExistsUser == null)
+                {
+                    GeneralResponse response = new GeneralResponse { Message = "UserName not Exists" };
+                    return BadRequest(response);
+                }
+                var result = await _userManager.ChangePasswordAsync(isExistsUser, request.OldPassword, request.NewPassword);
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                string error_message = "";
+                foreach (var error in result.Errors)
+                {
+                    error_message = error_message + " " + error.Description;
+                }
+                GeneralResponse response1 = new GeneralResponse { Message = error_message };
+                return BadRequest(response1);
+            }
+            catch (Exception ex)
+            {
+                GeneralResponse response2 = new GeneralResponse { Message = ex.Message };
+                return BadRequest( response2);
+            }
+        }
+        [HttpPost("test")]
+        public async Task<IActionResult> Change_Passwjord(AddIngredientRequest request)
+        {
+            //string token = HttpContext.Request.Headers["Authorization"];
+            try{
+                string token=request.Name;
+                string username = _jwtService.DecodeToken(token);
+                var isExistsUser = await _userManager.FindByNameAsync(username);
+                if (isExistsUser == null)
+                    return BadRequest(new GeneralResponse { Message = "UserName not Exists" });
+                var result = await _userManager.ChangePasswordAsync(isExistsUser, "stringHHJJ123@gmail.com", "stringDD132@gmail.com11");
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                string error_message = "";
+                foreach (var error in result.Errors)
+                {
+                    error_message = error_message + " " + error.Description;
+                }
+                return BadRequest(new GeneralResponse { Message = error_message });
+                return Ok(username);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
         }
     }
+    
 }
