@@ -27,9 +27,9 @@ namespace Gourmet.WebApi.Controllers
             _chefService = chefService;
             _jwtService = jwtService;
         }
-        [HttpPost]
+        [HttpGet]
         [Route("Read_User")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Read()
         {
             string token = HttpContext.Request.Headers["Authorization"];
