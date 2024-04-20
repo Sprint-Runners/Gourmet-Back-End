@@ -55,7 +55,7 @@ namespace Gourmet.Core.Services
             };
             var user=_db.Email_Passwords.Find(request.Email);
             
-            if (user == null || user.Temp_Password != request.Temp_Code) 
+            if (user == null || user.Temp_Password.ToString() != request.Temp_Code) 
                 return new Response()
                 {
                     IsSucceed = false,
@@ -175,7 +175,7 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<Email_Response> Authenticate_Email(SignUpRequest request)
+        public async Task<Email_Response> Authenticate_Email(Authrequest request)
         {
             var isExistsUser = await _userManager.FindByNameAsync(request.Email);
 
@@ -193,9 +193,13 @@ namespace Gourmet.Core.Services
             smtpClient.UseDefaultCredentials = false;
             smtpClient.EnableSsl = true;
             smtpClient.Credentials = new NetworkCredential(Email_Address,Email_Password);
+            Email_Pass Response = new Email_Pass() { Email = request.Email, Temp_Password = Temp_Pass };
+            var sample = _db.Email_Passwords.Find(request.Email);
+            if (sample!=null)
+                _db.Email_Passwords.Remove(sample);
             try
             {
-                Email_Pass Response = new Email_Pass() { Email = request.Email, Temp_Password = Temp_Pass };
+                
                 var res=await _db.Email_Passwords.AddAsync(Response);
                 _db.SaveChanges();
                 smtpClient.Send(message);
@@ -204,7 +208,9 @@ namespace Gourmet.Core.Services
             }
             catch (Exception ex)
             {
+                _db.Email_Passwords.Remove(Response);
                 Email_Response response = new Email_Response() { IsSucceed = false, Message = "Email could not be sent" };
+                _db.SaveChanges();
                 return response;
             }
         }

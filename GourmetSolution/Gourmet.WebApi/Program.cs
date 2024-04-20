@@ -8,6 +8,17 @@ using Google;
 using Gourmet.Core.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin();
+            builder.AllowAnyHeader();
+            builder.AllowAnyMethod();
+        });
+});
+
 void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Ali");
 builder.Services.AddDbContext<AppDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
@@ -31,6 +42,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     //options.SignIn.RequireConfirmedEmail = true;
 });
+
 // Add Authentication and JwtBearer
 builder.Services
     .AddAuthentication(options =>
@@ -54,16 +66,6 @@ builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
 
 builder.Services.AddControllers();
-//builder.Services.AddCors(options =>
-//    {
-//        options.AddPolicy("AllowSpecificOrigin",
-//            builder =>
-//            {
-//                builder.WithOrigins("http://localhost:5173")
-//                       .AllowAnyHeader()
-//                       .AllowAnyMethod();
-//            });
-//    });
 
 var app = builder.Build();
 
@@ -75,8 +77,10 @@ if (app.Environment.IsDevelopment())
 
 }
 // Configure the HTTP request pipeline.
+
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors();
 app.UseStaticFiles();
 
 app.MapControllers();
