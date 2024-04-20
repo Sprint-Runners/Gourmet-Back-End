@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Net.Mail;
+using System.Net;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -17,6 +19,8 @@ namespace Gourmet.Core.Services
 
     public class UsersService : IUsersService
     {
+        private static string Email_Address;
+        private static string Email_Password;
         //private readonly UserManager<IdentityUser> _userManager;
         private readonly UserManager<Chef> _userManager;
         //private readonly UserManager<Chef> _userManager2;
@@ -27,10 +31,10 @@ namespace Gourmet.Core.Services
         {
             _db = db;
             _userManager = userManager;
-            //_userManager1 = userManager1;
             _roleManager = roleManager;
             _configuration = configuration;
-            //_userManager2 = userManager2;
+            Email_Address = "GourmetFoodWebSite@gmail.com";
+            Email_Password = _db.Secrets.Find(Email_Address).Password;
         }
         public async Task<Response> Sign_Up_User(SignUpRequest request)
         {
@@ -49,6 +53,16 @@ namespace Gourmet.Core.Services
                 UserName = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
+            var user = _db.Email_Passwords.Find(request.Email);
+
+            if (user == null || user.Temp_Password.ToString() != request.Temp_Code)
+                return new Response()
+                {
+                    IsSucceed = false,
+                    user = null,
+                    Message = "The Authentication code or the email is incorrect"
+                };
+
             var createUserResult = await _userManager.CreateAsync(new_user, request.Password);
 
             if (!createUserResult.Succeeded)
@@ -90,12 +104,22 @@ namespace Gourmet.Core.Services
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.password);
 
             if (!isPasswordCorrect)
-                return new Response()
+            {
+                var Temp = await _db.Temproary_Passwords.FindAsync(request.username);
+                if (Temp is null || Temp.Password != request.password)
+                    return new Response()
+                    {
+                        IsSucceed = false,
+                        Message = "Invalid Credentials",
+                        user = null
+                    };
+                else
                 {
-                    IsSucceed = false,
-                    Message = "Invalid Credentials",
-                    user = null
-                };
+                    _db.Temproary_Passwords.Remove(Temp);
+                    _db.SaveChanges();
+                }
+
+            }
 
             return new Response()
             {
@@ -126,7 +150,7 @@ namespace Gourmet.Core.Services
                 Message = "User is now an ADMIN"
             };
         }
-        
+
         public async Task<Response> SeedRolesAsync()
         {
             bool isChefRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.CHEF);
@@ -149,6 +173,82 @@ namespace Gourmet.Core.Services
                 IsSucceed = true,
                 Message = "Role Seeding Done Successfully"
             };
+        }
+
+        public async Task<Email_Response> Authenticate_Email(Authrequest request)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(request.Email);
+
+            if (isExistsUser != null)
+                return new Email_Response() { IsSucceed = false, Message = "The username already exists" };
+
+            MailAddress From = new MailAddress(Email_Address);
+            MailAddress To = new MailAddress(request.Email);
+            Random random = new Random();
+            int Temp_Pass = random.Next(10000, 99999);
+
+            string Body_Message = "Your Security Code is " + Temp_Pass.ToString();
+            MailMessage message = new MailMessage(From, To) { Subject = "Gourmet Authentication", Body = Body_Message };
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.EnableSsl = true;
+            smtpClient.Credentials = new NetworkCredential(Email_Address, Email_Password);
+            Email_Pass Response = new Email_Pass() { Email = request.Email, Temp_Password = Temp_Pass };
+            var sample = _db.Email_Passwords.Find(request.Email);
+            if (sample != null)
+                _db.Email_Passwords.Remove(sample);
+            try
+            {
+
+                var res = await _db.Email_Passwords.AddAsync(Response);
+                _db.SaveChanges();
+                smtpClient.Send(message);
+                Email_Response response = new Email_Response() { IsSucceed = true, Message = "Email has been sent" };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _db.Email_Passwords.Remove(Response);
+                Email_Response response = new Email_Response() { IsSucceed = false, Message = "Email could not be sent" };
+                _db.SaveChanges();
+                return response;
+            }
+        }
+
+        public async Task<Email_Response> Temproary_Password(Add_Temp_Password request)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(request.Email);
+
+            if (isExistsUser == null)
+                return new Email_Response() { IsSucceed = false, Message = "The Email does not exist" };
+            var temp = await _db.Temproary_Passwords.FindAsync(request.Email);
+            if (temp != null)
+                _db.Remove(temp);
+            MailAddress From = new MailAddress(Email_Address);
+            MailAddress To = new MailAddress(request.Email);
+            Random random = new Random();
+            int Temp_Pass = random.Next(10000, 99999);
+            string password = "Gourmet$" + Temp_Pass.ToString();
+            string Body_Message = "Your Temproary password is " + password + "\nPlease change your password once you log in";
+            MailMessage message = new MailMessage(From, To) { Subject = "Gourmet Temproary Password", Body = Body_Message };
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.EnableSsl = true;
+            smtpClient.Credentials = new NetworkCredential(Email_Address, Email_Password);
+            try
+            {
+                Temp_Password Response = new Temp_Password() { Email = request.Email, Password = password };
+                var res = await _db.Temproary_Passwords.AddAsync(Response);
+                _db.SaveChanges();
+                smtpClient.Send(message);
+                Email_Response response = new Email_Response() { IsSucceed = true, Message = "Email has been sent" };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Email_Response response = new Email_Response() { IsSucceed = false, Message = "Email could not be sent" };
+                return response;
+            }
         }
     }
 }

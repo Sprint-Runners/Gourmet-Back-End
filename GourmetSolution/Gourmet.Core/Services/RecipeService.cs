@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.Domain.Relations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gourmet.Core.Services
 {
@@ -164,6 +165,11 @@ namespace Gourmet.Core.Services
                 recipe = new_recipe
             };
 
+        }
+        public async Task<IEnumerable<Recipe>> Get_All_Recipe()
+        {
+            var Recipes = await _db.Recipes.ToListAsync();
+            return Recipes;
         }
 
     }

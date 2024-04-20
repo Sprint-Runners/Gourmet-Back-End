@@ -347,7 +347,7 @@ namespace Gourmet.Core.Services
             string Imagepath = Filepath + "\\image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
-                ImageUrl = HostUrl + "/uploads/common/noimage.png";
+                ImageUrl = HostUrl + "/uploads/User/common/noimage.png";
             }
             else
             {

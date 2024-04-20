@@ -15,6 +15,17 @@ namespace Gourmet.Core.DTO.Request
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+        [Required(ErrorMessage = "The Authentication code is required")]
+        public string Temp_Code { get; set; }
+
+    }
+    public class Authrequest
+    {
+        [Required(ErrorMessage = "UserName is required")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
 
     }
 }

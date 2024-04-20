@@ -12,5 +12,6 @@ namespace Gourmet.Core.DTO.Response
         public string ImagePath {  get; set; }
         public double Score {  get; set; }
         public string AboutMe { get; set; }
+        public List<SummaryRecipeInfoResponse> Top_Chef_Recipes { get; set; }
     }
 }

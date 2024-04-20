@@ -69,7 +69,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_PSOI_Category")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_PSOI_Category(AddCategoryRequest request)
         {
             try

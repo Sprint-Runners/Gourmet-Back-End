@@ -13,6 +13,7 @@ namespace Gourmet.Core.DTO.Response
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Aboutme { get; set; }
+        public string Gen { get; set; }
         public string ImageUrl { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using Gourmet.Core.Domain.Relations;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Gourmet.Core.DataBase.GourmetDbcontext
 {
@@ -29,6 +30,9 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<Food> Foods { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<InCompleteRecipe> InCompleteRecipes { get; set; }
+        public DbSet<Email_Pass> Email_Passwords { get; set; }
+        public DbSet<Temp_Password> Temproary_Passwords { get; set; }
+        public DbSet<Secret> Secrets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             base.OnModelCreating(modelbuilder);
