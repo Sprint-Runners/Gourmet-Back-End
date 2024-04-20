@@ -65,6 +65,10 @@
       "PackagePath": "staticwebassets\\Uploads\\User\\Pierre_Gagnaire\\image.png"
     },
     {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\common\\noimage.png",
+      "PackagePath": "staticwebassets\\Uploads\\User\\common\\noimage.png"
+    },
+    {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\h2\\image.png",
       "PackagePath": "staticwebassets\\Uploads\\User\\h2\\image.png"
     },

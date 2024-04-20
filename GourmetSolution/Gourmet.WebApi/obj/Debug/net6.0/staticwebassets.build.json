@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TSmbjmEOTYk32RiK/IuiKxmpd4FI7jWVnYf25mZuotQ=",
+  "Hash": "iDXUoURin1wrqEhd1Y6X9FUYDTtUyCNuhvP6UGUuSes=",
   "Source": "Gourmet.WebApi",
   "BasePath": "_content/Gourmet.WebApi",
   "Mode": "Default",
@@ -281,6 +281,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\User\\Alain_Ducasse\\image.png"
+    },
+    {
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\common\\noimage.png",
+      "SourceId": "Gourmet.WebApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
+      "BasePath": "_content/Gourmet.WebApi",
+      "RelativePath": "Uploads/User/common/noimage.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\User\\common\\noimage.png"
     },
     {
       "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\h2\\image.png",

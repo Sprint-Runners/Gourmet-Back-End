@@ -42,12 +42,12 @@ namespace Gourmet.WebApi.Controllers
                 SignUpResponse signUpResponse = new SignUpResponse
                 {
                     Id = Guid.Parse(signupResult.user.Id),
-                    Email=signupResult.user.UserName
+                    Email = signupResult.user.UserName
                 };
                 return Ok(signUpResponse);
             }
 
-            return Problem(detail:signupResult.Message,statusCode:400);
+            return Problem(detail: signupResult.Message, statusCode: 400);
         }
         [HttpPost]
         [Route("Login")]
@@ -96,6 +96,23 @@ namespace Gourmet.WebApi.Controllers
 
             return BadRequest(operationResult.Message);
         }
+        [HttpPost("Authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] SignUpRequest request)
+        {
+            var EmailResult = await _usersService.Authenticate_Email(request);
+            if (EmailResult.IsSucceed)
+                return Ok(EmailResult);
+
+            return Problem(detail: EmailResult.Message, statusCode: 400);
+        }
+        [HttpPost("Forget")]
+        public async Task<IActionResult> Generate_Temp([FromBody] Add_Temp_Password request)
+        {
+            var EmailResult = await _usersService.Temproary_Password(request);
+            if (EmailResult.IsSucceed)
+                return Ok(EmailResult);
+
+            return Problem(detail: EmailResult.Message, statusCode: 400);
+        }
     }
 }
-

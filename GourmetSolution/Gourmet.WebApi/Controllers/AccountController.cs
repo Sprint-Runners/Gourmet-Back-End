@@ -52,7 +52,7 @@ namespace Gourmet.WebApi.Controllers
 
             return Problem(detail: ReadResult.Message, statusCode: 400);
         }
-        [HttpPut]
+        [HttpPost]
         [Route("Update_User")]
         //[Authorize]
         public async Task<IActionResult> Update(EditUserRequest request)
@@ -64,26 +64,32 @@ namespace Gourmet.WebApi.Controllers
                 var EditResult = await _userService.Edit(request, username);
                 if (EditResult.IsSucceed)
                 {
-                    var file = Request.Form.Files[0];
-                    var Result = await _imageProcessorService.UploadUserImage(file, username);
-                    if (Result.IsSucceed)
-                    {
-                        var isExistsUser = await _userManager.FindByNameAsync(username);
-                        ApplicationUser user = (ApplicationUser)isExistsUser;
-                        user.ImageURL =await _imageProcessorService.GetImagebyUser(username);
-                        ReadUserResponse response = new ReadUserResponse
+                    try{
+                        var file = Request.Form.Files[0];
+                        
+                        var Result = await _imageProcessorService.UploadUserImage(file, username);
+                        if (Result.IsSucceed)
                         {
-                            ImageUrl =await _imageProcessorService.GetImagebyUser(username),
-                            FullName = user.FullName,
-                            UserName = user.UserName,
-                            Email = user.Email,
-                            PhoneNumber = user.PhoneNumber,
-                            Aboutme = user.Aboutme
-                        };
-                        //Result.ImagePath = user.ImageURL;
-                        return Ok(Response);
+                            var isExistsUser = await _userManager.FindByNameAsync(username);
+                            ApplicationUser user = (ApplicationUser)isExistsUser;
+                            user.ImageURL =await _imageProcessorService.GetImagebyUser(username);
+                            ReadUserResponse response = new ReadUserResponse
+                            {
+                                ImageUrl =await _imageProcessorService.GetImagebyUser(username),
+                                FullName = user.FullName,
+                                UserName = user.UserName,
+                                Email = user.Email,
+                                PhoneNumber = user.PhoneNumber,
+                                Aboutme = user.Aboutme
+                            };
+                            //Result.ImagePath = user.ImageURL;
+                            return Ok(Response);
+                        }
+                        return Ok(EditResult.Message);
+
+                    }catch(Exception ex){
+                        return Ok(EditResult.Message);
                     }
-                    return Problem(detail: Result.Message, statusCode: 400);
                 }
 
                 return Problem(detail: EditResult.Message, statusCode: 400);

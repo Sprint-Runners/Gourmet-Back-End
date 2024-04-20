@@ -20,7 +20,6 @@ namespace Gourmet.Core.Services
         public async Task<Response> Edit(EditUserRequest request,string username)
         {
             var isExistsUser = await _userManager.FindByNameAsync(username);
-
             if (isExistsUser == null)
                 return new Response()
                 {
@@ -28,6 +27,7 @@ namespace Gourmet.Core.Services
                     Message = "UserName not Exists",
                     user = null
                 };
+               
             Chef EditUser = (Chef)isExistsUser;
             EditUser.Email = request.Email;
             EditUser.FullName = request.FullName;
