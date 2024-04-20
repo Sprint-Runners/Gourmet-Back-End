@@ -55,43 +55,46 @@ namespace Gourmet.WebApi.Controllers
         [HttpPost]
         [Route("Update_User")]
         //[Authorize]
-        public async Task<IActionResult> Update(EditUserRequest request)
+        public async Task<IActionResult> Update()
         {
             try
             {
+                EditUserRequest request = new EditUserRequest
+                {
+                    PhoneNumber = "09225067228",
+                    Email = Request.Form["email"],
+                    Aboutme = Request.Form["aboutYou"],
+                    FullName = Request.Form["fullName"],
+                    Gen = "zan"
+                };
                 string token = HttpContext.Request.Headers["Authorization"];
                 string username = _jwtService.DecodeToken(token);
                 var EditResult = await _userService.Edit(request, username);
                 if (EditResult.IsSucceed)
                 {
-                    try{
-                        var file = Request.Form.Files[0];
-                        
-                        var Result = await _imageProcessorService.UploadUserImage(file, username);
-                        if (Result.IsSucceed)
+                    var file = Request.Form.Files[0];
+                    var Result = await _imageProcessorService.UploadUserImage(file, username);
+                    if (Result.IsSucceed)
+                    {
+                        var isExistsUser = await _userManager.FindByNameAsync(username);
+                        ApplicationUser user = (ApplicationUser)isExistsUser;
+                        user.ImageURL = await _imageProcessorService.GetImagebyUser(username);
+                        ReadUserResponse response = new ReadUserResponse
                         {
-                            var isExistsUser = await _userManager.FindByNameAsync(username);
-                            ApplicationUser user = (ApplicationUser)isExistsUser;
-                            user.ImageURL =await _imageProcessorService.GetImagebyUser(username);
-                            ReadUserResponse response = new ReadUserResponse
-                            {
-                                ImageUrl =await _imageProcessorService.GetImagebyUser(username),
-                                FullName = user.FullName,
-                                UserName = user.UserName,
-                                Email = user.Email,
-                                PhoneNumber = user.PhoneNumber,
-                                Aboutme = user.Aboutme
-                            };
-                            //Result.ImagePath = user.ImageURL;
-                            return Ok(Response);
-                        }
-                        return Ok(EditResult.Message);
+                            ImageUrl = await _imageProcessorService.GetImagebyUser(username),
+                            FullName = user.FullName,
+                            UserName = user.UserName,
+                            Email = user.Email,
+                            PhoneNumber = user.PhoneNumber,
+                            Aboutme = user.Aboutme
+                        };
+                        //Result.ImagePath = user.ImageURL;
+                        return Ok(new GeneralResponse { Message = EditResult.Message });
 
-                    }catch(Exception ex){
-                        return Ok(EditResult.Message);
                     }
-                }
 
+                    return Ok(new GeneralResponse { Message = EditResult.Message });
+                }
                 return Problem(detail: EditResult.Message, statusCode: 400);
             }
             catch (Exception ex)
@@ -250,15 +253,16 @@ namespace Gourmet.WebApi.Controllers
             catch (Exception ex)
             {
                 GeneralResponse response2 = new GeneralResponse { Message = ex.Message };
-                return BadRequest( response2);
+                return BadRequest(response2);
             }
         }
         [HttpPost("test")]
         public async Task<IActionResult> Change_Passwjord(AddIngredientRequest request)
         {
             //string token = HttpContext.Request.Headers["Authorization"];
-            try{
-                string token=request.Name;
+            try
+            {
+                string token = request.Name;
                 string username = _jwtService.DecodeToken(token);
                 var isExistsUser = await _userManager.FindByNameAsync(username);
                 if (isExistsUser == null)
@@ -282,5 +286,5 @@ namespace Gourmet.WebApi.Controllers
             }
         }
     }
-    
+
 }
