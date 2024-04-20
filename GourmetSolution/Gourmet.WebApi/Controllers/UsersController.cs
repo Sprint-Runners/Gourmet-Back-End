@@ -97,7 +97,7 @@ namespace Gourmet.WebApi.Controllers
             return BadRequest(operationResult.Message);
         }
         [HttpPost("Authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] SignUpRequest request)
+        public async Task<IActionResult> Authenticate([FromBody] Authrequest request)
         {
             var EmailResult = await _usersService.Authenticate_Email(request);
             if (EmailResult.IsSucceed)
