@@ -1,0 +1,15 @@
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\bin\Debug\net6.0\Gourmet.Infrastructure.deps.json
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\bin\Debug\net6.0\Gourmet.Infrastructure.dll
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\bin\Debug\net6.0\Gourmet.Infrastructure.pdb
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\bin\Debug\net6.0\Gourmet.Core.dll
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\bin\Debug\net6.0\Gourmet.Core.pdb
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.csproj.AssemblyReference.cache
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.AssemblyInfoInputs.cache
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.AssemblyInfo.cs
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.csproj.CoreCompileInputs.cache
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.csproj.CopyComplete
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.dll
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\refint\Gourmet.Infrastructure.dll
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\Gourmet.Infrastructure.pdb
+E:\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Infrastructure\obj\Debug\net6.0\ref\Gourmet.Infrastructure.dll
