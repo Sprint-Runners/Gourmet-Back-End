@@ -150,16 +150,16 @@ namespace Gourmet.WebApi.Controllers
         [HttpGet]
         [Route("Food_User")]
         [Authorize]
-        public async Task<IActionResult> Recent_and_Favourit_Food_User()
+        public async Task<IActionResult> Recent_Food_and_Favourit_Recipe_User()
         {
             string token = HttpContext.Request.Headers["Authorization"];
             string username = _jwtService.DecodeToken(token);
             var isExistsUser = await _userManager.FindByNameAsync(username);
             if (isExistsUser != null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
-            var result1 = await _userService.RecentFoodByUser(isExistsUser.Id);
-            var result2 = await _userService.FavouritFoodByUser(isExistsUser.Id);
-            Dictionary<string, IEnumerable<Food>> result = new Dictionary<string, IEnumerable<Food>>();
+            var result1 = await _userService.RecentRecipeByUser(isExistsUser.Id);
+            var result2 = await _userService.FavouritRecipeByUser(isExistsUser.Id);
+            Dictionary<string, IEnumerable<Recipe>> result = new Dictionary<string, IEnumerable<Recipe>>();
             result.Add("Recent_Recipe_User", result1);
             result.Add("Favourit_Recipe_User", result2);
 

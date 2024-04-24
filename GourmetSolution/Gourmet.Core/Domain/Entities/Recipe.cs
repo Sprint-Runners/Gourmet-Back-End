@@ -11,8 +11,12 @@ namespace Gourmet.Core.Domain.Entities
 {
     public class Recipe
     {
+        
         [Key]
         public Guid Id { get; set; }
+        [Required]
+        [MaxLength(250)]
+        public string Name { get; set; }
         [Required]
         public Guid FoodId { get; set; }
         [ForeignKey("FoodId")]
@@ -22,7 +26,7 @@ namespace Gourmet.Core.Domain.Entities
         [ForeignKey("ChefId")]
         public ApplicationUser chef { get; set; }
         [Required(ErrorMessage = "Description is required")]
-        [MaxLength(15000)]
+        [MaxLength(1000)]
         public string Description { get; set; }
         [Required]
         [Range(0,5)]
@@ -50,8 +54,13 @@ namespace Gourmet.Core.Domain.Entities
         public Nationality nationality { get; set; }
         [Required]
         public Guid Meal_TypeId { get; set; }
-        [ForeignKey("Meal_Type")]
+        [ForeignKey("Meal_TypeId")]
         public Meal_Type meal_type { get; set; }
+        [Required]
+        public Guid Difficulty_LevelId { get; set; }
+        [ForeignKey("Difficulty_LevelId")]
+        public Difficulty_Level difficulty_Level  { get; set; }
+        public int Time {  get; set; }
 
     }
 }

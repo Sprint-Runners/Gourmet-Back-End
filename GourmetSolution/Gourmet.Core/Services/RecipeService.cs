@@ -171,6 +171,15 @@ namespace Gourmet.Core.Services
             var Recipes = await _db.Recipes.ToListAsync();
             return Recipes;
         }
-
+        public async Task<IEnumerable<Ingredient>> Get_All_Ingredients(string FoodName,string ChefName,string RecipeName)
+        {
+            var Ingredients = _db.RecipeIngredients.Where(r => r.recipe.chef.FullName.ToLower() == ChefName.ToLower() && r.recipe.food.Name.ToLower()==FoodName.ToLower() && r.recipe.Name.ToLower()==RecipeName.ToLower()).Select(r=>r.ingredient).ToList();
+            return Ingredients;
+        }
+        public async Task<IEnumerable<RecipeStep>> Get_All_steps(string FoodName, string ChefName, string RecipeName)
+        {
+            var Steps = _db.RecipeSteps.Where(r => r.recipe.chef.UserName.ToLower() == ChefName.ToLower() && r.recipe.food.Name.ToLower() == FoodName.ToLower() && r.recipe.Name.ToLower() == RecipeName.ToLower()).ToList();
+            return Steps;
+        }
     }
 }

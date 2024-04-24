@@ -53,7 +53,14 @@ namespace Gourmet.Core.Domain.Entities
         public string ImageUrl { get; set; }
 
     }
-
+    public class Difficulty_Level
+    {
+        [Key]
+        public Guid Id { get; set; }
+        [Required(ErrorMessage = "name is required")]
+        [MaxLength(150)]
+        public string Name { get; set; }
+    }
 
 
 }

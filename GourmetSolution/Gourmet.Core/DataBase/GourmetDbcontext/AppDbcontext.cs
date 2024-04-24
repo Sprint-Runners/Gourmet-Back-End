@@ -25,6 +25,7 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<Food_type> FTs { get; set; }
         public DbSet<Nationality> Ns { get; set; }
         public DbSet<Meal_Type> MTs { get; set; }
+        public DbSet<Difficulty_Level> DFs { get; set; }
         public DbSet<Chef> Chefs { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Food> Foods { get; set; }
@@ -38,13 +39,16 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
             base.OnModelCreating(modelbuilder);
             modelbuilder.Entity<RecipeIngredients>()
                   .HasKey(m => new { m.RecipeId, m.IngredientId });
-            modelbuilder.Entity<RecentFoodUser>()
-                  .HasKey(m => new { m.userId, m.FoodId });
-            modelbuilder.Entity<FavouritFoodUser>()
-                  .HasKey(m => new { m.userId, m.FoodId });
+            modelbuilder.Entity<RecentRecipeUser>()
+                  .HasKey(m => new { m.userId, m.RecipeId });
+            modelbuilder.Entity<FavouritRecipeUser>()
+                  .HasKey(m => new { m.userId, m.RecipeId });
+            modelbuilder.Entity<RecipeStep>()
+                  .HasKey(m => new { m.RecipeId, m.Number });
         }
         public DbSet<RecipeIngredients> RecipeIngredients { get; set; }
-        public DbSet<RecentFoodUser> RecentFoodUsers { get; set; }
-        public DbSet<FavouritFoodUser> FavouritFoodUsers { get; set; }
+        public DbSet<RecentRecipeUser> RecentRecipeUsers { get; set; }
+        public DbSet<FavouritRecipeUser> FavouritRecipeUsers { get; set; }
+        public DbSet<RecipeStep> RecipeSteps { get; set; }
     }
 }

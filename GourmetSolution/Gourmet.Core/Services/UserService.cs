@@ -74,9 +74,9 @@ namespace Gourmet.Core.Services
             };
 
         }
-        public async Task<IEnumerable<Food>> FavouritFoodByUser(string userId)
+        public async Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId)
         {
-            var Foods = await _db.FavouritFoodUsers.Where(r => r.userId == userId).OrderByDescending(r=>r.TimeToLike).Select(x=>x.Food).ToListAsync();
+            var Foods = await _db.FavouritRecipeUsers.Where(r => r.userId == userId).OrderByDescending(r=>r.TimeToLike).Select(x=>x.recipe).ToListAsync();
             return Foods;
         }
         //public async Task<IEnumerable<Food>> FavouritFoodByUserSortedRate(string userId)
@@ -84,9 +84,9 @@ namespace Gourmet.Core.Services
         //    var Foods = await _db.FavouritFoodUsers.Where(r => r.userId == userId).OrderByDescending(r => r.Food.).Select(x => x.Food).ToListAsync();
         //    return Foods;
         //}
-        public async Task<IEnumerable<Food>> RecentFoodByUser(string userId)
+        public async Task<IEnumerable<Recipe>> RecentRecipeByUser(string userId)
         {
-            var Foods = await _db.RecentFoodUsers.Where(r => r.userId == userId).OrderByDescending(r => r.VisitTime).Select(x => x.food).ToListAsync();
+            var Foods = await _db.RecentRecipeUsers.Where(r => r.userId == userId).OrderByDescending(r => r.VisitTime).Select(x => x.recipe).ToListAsync();
             return Foods;
         }
     }

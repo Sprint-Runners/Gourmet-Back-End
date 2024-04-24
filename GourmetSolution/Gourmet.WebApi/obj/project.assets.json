@@ -3260,11 +3260,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
+      "projectUniqueName": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
       "projectName": "Gourmet.WebApi",
-      "projectPath": "D:\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
+      "projectPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\Gourmet.WebApi.csproj",
       "packagesPath": "C:\\Users\\win_10\\.nuget\\packages\\",
-      "outputPath": "D:\\GourmetSolution\\Gourmet.WebApi\\obj\\",
+      "outputPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\win_10\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3281,8 +3281,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
-              "projectPath": "D:\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
+            "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj": {
+              "projectPath": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.Core\\Gourmet.Core.csproj"
             }
           }
         }
