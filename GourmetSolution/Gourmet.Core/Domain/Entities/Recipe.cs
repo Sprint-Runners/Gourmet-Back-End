@@ -21,10 +21,9 @@ namespace Gourmet.Core.Domain.Entities
         public Guid FoodId { get; set; }
         [ForeignKey("FoodId")]
         public Food food { get; set; }
-        [Required]
-        public string ChefId { get; set; }
+        public string? ChefId { get; set; }
         [ForeignKey("ChefId")]
-        public ApplicationUser chef { get; set; }
+        public Chef? chef { get; set; }
         [Required(ErrorMessage = "Description is required")]
         [MaxLength(1000)]
         public string Description { get; set; }

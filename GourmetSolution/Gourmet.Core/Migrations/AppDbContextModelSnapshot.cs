@@ -264,7 +264,6 @@ namespace Gourmet.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ChefId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("Cooking_MethodId")
@@ -717,11 +716,9 @@ namespace Gourmet.Core.Migrations
 
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Recipe", b =>
                 {
-                    b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "chef")
+                    b.HasOne("Gourmet.Core.Domain.Entities.Chef", "chef")
                         .WithMany()
-                        .HasForeignKey("ChefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChefId");
 
                     b.HasOne("Gourmet.Core.Domain.Entities.Cooking_Method", "cooking_method")
                         .WithMany()
