@@ -1,5 +1,6 @@
 ﻿using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
+using Gourmet.Core.Domain.OtherObject;
 using Gourmet.Core.DTO.Request;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,13 @@ namespace Gourmet.Core.ServiceContracts
 {
     public interface IUserService
     {
-        Task<Response> Edit(EditUserRequest request, string username);
-        Task<Response> Read(string username);
+        Task<UserResponse> Edit(EditUserRequest request, string username);
+        Task<UserResponse> Read(string username);
         Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId);
         Task<IEnumerable<Recipe>> RecentRecipeByUser(string userId);
+        Task<InterGeneralResponse> AddFavouritRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName);
+        Task<InterGeneralResponse> AddRecentRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName);
+        Task<InterGeneralResponse> AddScoreRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName, int rate);
+        Task<InterGeneralResponse> DeleteScoreRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName, int rate);
     }
 }

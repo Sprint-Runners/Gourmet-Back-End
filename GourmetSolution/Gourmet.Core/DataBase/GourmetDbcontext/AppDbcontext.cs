@@ -45,10 +45,13 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
                   .HasKey(m => new { m.userId, m.RecipeId });
             modelbuilder.Entity<RecipeStep>()
                   .HasKey(m => new { m.RecipeId, m.Number });
+            modelbuilder.Entity<ScoreRecipeUser>()
+                  .HasKey(m => new { m.RecipeId, m.userId });
         }
         public DbSet<RecipeIngredients> RecipeIngredients { get; set; }
         public DbSet<RecentRecipeUser> RecentRecipeUsers { get; set; }
         public DbSet<FavouritRecipeUser> FavouritRecipeUsers { get; set; }
+        public DbSet<ScoreRecipeUser> ScoreRecipeUsers { get; set; }
         public DbSet<RecipeStep> RecipeSteps { get; set; }
     }
 }

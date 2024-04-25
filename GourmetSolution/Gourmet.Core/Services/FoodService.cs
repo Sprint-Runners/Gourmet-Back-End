@@ -58,7 +58,7 @@ namespace Gourmet.Core.Services
                     Recipes = null
                 };
             }
-            var allRecipes = _db.Recipes.Where(r => r.food.Name.ToLower() == request.ToLower()).ToList();
+            var allRecipes = _db.Recipes.Where(r => r.food.Name.ToLower() == request.ToLower()).OrderByDescending(r => r.Score).ToList();
             if (allRecipes.Count == 0)
             {
                 return new SearchRecipesFood

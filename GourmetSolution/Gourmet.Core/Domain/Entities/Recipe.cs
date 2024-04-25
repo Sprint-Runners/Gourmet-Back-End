@@ -28,8 +28,10 @@ namespace Gourmet.Core.Domain.Entities
         [MaxLength(1000)]
         public string Description { get; set; }
         [Required]
-        [Range(0,5)]
-        public double Score {  get; set; }
+        [Range(0, 5)]
+        public double Score { get; set; } 
+        [Required]
+        public int Number_Scorer { get; set; } = 0;
         [Required]
         [ValidateNever]
         public string ImgeUrl { get; set; }

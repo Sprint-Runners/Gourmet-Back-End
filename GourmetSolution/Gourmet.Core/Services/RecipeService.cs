@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.Domain.Relations;
 using Microsoft.EntityFrameworkCore;
+using Gourmet.Core.Domain.OtherObject;
 
 namespace Gourmet.Core.Services
 {
@@ -168,12 +169,31 @@ namespace Gourmet.Core.Services
         }
         public async Task<IEnumerable<Recipe>> Get_All_Recipe()
         {
-            var Recipes = await _db.Recipes.ToListAsync();
+            var Recipes = _db.Recipes.ToList();
             return Recipes;
+        }
+        public async Task<Recipe> Search_Recipe(string FoodName, string ChefName, string RecipeName)
+        {
+            var Recipe = _db.Recipes.Where(r => r.chef.UserName.ToLower() == ChefName.ToLower() && r.food.Name.ToLower() == FoodName.ToLower() && r.Name.ToLower() == RecipeName.ToLower()).FirstOrDefault() ;
+            return Recipe;
+        }
+        public async Task<InterGeneralResponse>RateRecipe(Recipe recipe,int rate)
+        {
+            recipe.Score = (recipe.Score * recipe.Number_Scorer + rate) / (recipe.Number_Scorer + 1);
+            recipe.Number_Scorer += 1;
+            _db.SaveChanges();
+            return new InterGeneralResponse() { Message = "Rating Succesfully", IsSucceed = true };
+        }
+        public async Task<InterGeneralResponse> DeleteRateRecipe(Recipe recipe, int rate)
+        {
+            recipe.Score = (recipe.Score * recipe.Number_Scorer - rate) / (recipe.Number_Scorer - 1);
+            recipe.Number_Scorer -= 1;
+            _db.SaveChanges();
+            return new InterGeneralResponse() { Message = "Delete Rate Succesfully", IsSucceed = true };
         }
         public async Task<IEnumerable<Ingredient>> Get_All_Ingredients(string FoodName,string ChefName,string RecipeName)
         {
-            var Ingredients = _db.RecipeIngredients.Where(r => r.recipe.chef.FullName.ToLower() == ChefName.ToLower() && r.recipe.food.Name.ToLower()==FoodName.ToLower() && r.recipe.Name.ToLower()==RecipeName.ToLower()).Select(r=>r.ingredient).ToList();
+            var Ingredients = _db.RecipeIngredients.Where(r => r.recipe.chef.UserName.ToLower() == ChefName.ToLower() && r.recipe.food.Name.ToLower()==FoodName.ToLower() && r.recipe.Name.ToLower()==RecipeName.ToLower()).Select(r=>r.ingredient).ToList();
             return Ingredients;
         }
         public async Task<IEnumerable<RecipeStep>> Get_All_steps(string FoodName, string ChefName, string RecipeName)

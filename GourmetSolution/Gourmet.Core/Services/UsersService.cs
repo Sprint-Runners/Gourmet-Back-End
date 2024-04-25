@@ -36,12 +36,12 @@ namespace Gourmet.Core.Services
             Email_Address = "GourmetFoodWebSite@gmail.com";
             Email_Password = _db.Secrets.Find(Email_Address).Password;
         }
-        public async Task<Response> Sign_Up_User(SignUpRequest request)
+        public async Task<UserResponse> Sign_Up_User(SignUpRequest request)
         {
             var isExistsUser = await _userManager.FindByNameAsync(request.Email);
 
             if (isExistsUser != null)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = "UserName Already Exists",
@@ -72,7 +72,7 @@ namespace Gourmet.Core.Services
                 {
                     errorString += " # " + error.Description;
                 }
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = errorString,
@@ -81,7 +81,7 @@ namespace Gourmet.Core.Services
             }
             await _userManager.AddToRoleAsync(new_user, StaticUserRoles.USER);
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 Message = "User Created Successfully",
@@ -89,12 +89,12 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<Response> LoginAsync(LoginRequest request)
+        public async Task<UserResponse> LoginAsync(LoginRequest request)
         {
             var new_user = await _userManager.FindByNameAsync(request.username);
 
             if (new_user is null)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = "Invalid Credentials",
@@ -107,7 +107,7 @@ namespace Gourmet.Core.Services
             {
                 var Temp = await _db.Temproary_Passwords.FindAsync(request.username);
                 if (Temp is null || Temp.Password != request.password)
-                    return new Response()
+                    return new UserResponse()
                     {
                         IsSucceed = false,
                         Message = "Invalid Credentials",
@@ -121,7 +121,7 @@ namespace Gourmet.Core.Services
 
             }
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 Message = "Login was successful",
@@ -129,12 +129,12 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<Response> MakeAdminAsync(UpdatePermissionRequest updatePermission)
+        public async Task<UserResponse> MakeAdminAsync(UpdatePermissionRequest updatePermission)
         {
             var new_user = await _userManager.FindByNameAsync(updatePermission.UserName);
 
             if (new_user is null)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = "Invalid User name!",
@@ -143,7 +143,7 @@ namespace Gourmet.Core.Services
 
             await _userManager.AddToRoleAsync(new_user, StaticUserRoles.ADMIN);
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 user = (Chef)new_user,
@@ -151,14 +151,14 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<Response> SeedRolesAsync()
+        public async Task<UserResponse> SeedRolesAsync()
         {
             bool isChefRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.CHEF);
             bool isAdminRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.ADMIN);
             bool isUserRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.USER);
 
             if (isChefRoleExists && isAdminRoleExists && isUserRoleExists)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = true,
                     Message = "Roles Seeding is Already Done"
@@ -168,7 +168,7 @@ namespace Gourmet.Core.Services
             await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.ADMIN));
             await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.CHEF));
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 Message = "Role Seeding Done Successfully"

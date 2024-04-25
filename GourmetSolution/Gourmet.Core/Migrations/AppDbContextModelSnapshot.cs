@@ -302,6 +302,9 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("NationalityId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Number_Scorer")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("Primary_Source_of_IngredientId")
                         .HasColumnType("uniqueidentifier");
 
@@ -428,6 +431,24 @@ namespace Gourmet.Core.Migrations
                     b.HasKey("RecipeId", "Number");
 
                     b.ToTable("RecipeSteps");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ScoreRecipeUser", b =>
+                {
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecipeId", "userId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("ScoreRecipeUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -845,6 +866,25 @@ namespace Gourmet.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("recipe");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ScoreRecipeUser", b =>
+                {
+                    b.HasOne("Gourmet.Core.Domain.Entities.Recipe", "recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("recipe");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

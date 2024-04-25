@@ -36,12 +36,12 @@ namespace Gourmet.Core.Services
             //chef.Score = score;
             return score;
         }
-        public async Task<Response> MakeChefAsync(UpdatePermissionRequest updatePermission)
+        public async Task<UserResponse> MakeChefAsync(UpdatePermissionRequest updatePermission)
         {
             var new_user = await _userManager.FindByNameAsync(updatePermission.UserName);
 
             if (new_user is null)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = "Invalid User name!",
@@ -51,7 +51,7 @@ namespace Gourmet.Core.Services
             await _userManager.AddToRoleAsync(new_user, StaticUserRoles.CHEF);
             var chef = await _userManager.FindByNameAsync(updatePermission.UserName);
             chef.Score = 0;
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 user = (Chef)new_user,
