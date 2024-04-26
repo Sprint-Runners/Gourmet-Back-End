@@ -78,15 +78,20 @@ namespace Gourmet.Core.Services
             };
 
         }
-        public async Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId)
+        public async Task<IEnumerable<FavouritRecipeUser>> FavouritRecipeByUser(string userId)
         {
-            var Foods = await _db.FavouritRecipeUsers.Where(r => r.userId == userId).OrderByDescending(r => r.TimeToLike).Select(x => x.recipe).ToListAsync();
-            return Foods;
+            var Recipes=_db.FavouritRecipeUsers.Where(r => r.userId == userId).OrderByDescending(r => r.TimeToLike).ToList();
+            return Recipes;
         }
-        public async Task<IEnumerable<Recipe>> RecentRecipeByUser(string userId)
+        public async Task<IEnumerable<FavouritRecipeUser>> FavouritRecipeByUserOrderByScore(string userId)
         {
-            var Foods = await _db.RecentRecipeUsers.Where(r => r.userId == userId).OrderByDescending(r => r.VisitTime).Select(x => x.recipe).ToListAsync();
-            return Foods;
+            var Recipes = _db.FavouritRecipeUsers.Where(r => r.userId == userId).OrderByDescending(r => r.recipe.Score).ToList();
+            return Recipes;
+        }
+        public async Task<IEnumerable<RecentRecipeUser>> RecentRecipeByUser(string userId)
+        {
+            var Recipes =  _db.RecentRecipeUsers.Where(r => r.userId == userId).OrderByDescending(r => r.VisitTime).ToList();
+            return Recipes;
         }
         public async Task<InterGeneralResponse> AddFavouritRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName)
         {

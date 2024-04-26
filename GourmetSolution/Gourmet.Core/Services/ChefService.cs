@@ -24,10 +24,14 @@ namespace Gourmet.Core.Services
         }
         public async Task<IEnumerable<Recipe>> GetRecipesByChefId(string chefId)
         {
-            var Recipes = await _db.Recipes.Where(r => r.ChefId == chefId).ToListAsync();
+            var Recipes = _db.Recipes.Where(r => r.ChefId == chefId).ToList();
             return Recipes;
         }
-
+        public async Task<IEnumerable<Recipe>> GetAcceptedRecipesByChefId(string chefId)
+        {
+            var Recipes = _db.Recipes.Where(r => r.ChefId == chefId && r.IsAccepted==true).ToList();
+            return Recipes;
+        }
         public async Task<double> GetChefScore(string chefId)
         {
             var foods = await GetRecipesByChefId(chefId);

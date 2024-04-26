@@ -36,8 +36,7 @@ namespace Gourmet.Core.Services
             Ingredient ingredient = new Ingredient
             {
                 Id = new Guid(),
-                Name = request.Name.ToLower(),
-                Unit = request.Unit.ToLower()
+                Name = request.Name.ToLower()
 
             };
             _db.Ingredients.Add(ingredient);

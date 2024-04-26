@@ -62,6 +62,8 @@ namespace Gourmet.Core.Domain.Entities
         [ForeignKey("Difficulty_LevelId")]
         public Difficulty_Level difficulty_Level  { get; set; }
         public int Time {  get; set; }
+        public DateTime CreatTime { get; set; }
+        public bool IsAccepted {  get; set; }
 
     }
 }

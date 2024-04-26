@@ -14,8 +14,7 @@ namespace Gourmet.Core.Domain.Entities
         [Required(ErrorMessage ="name is required")]
         [MaxLength(150)]
         public string Name { get; set; }
-        [Required]
-        public string Unit {  get; set; }
+        
 
     }
 }

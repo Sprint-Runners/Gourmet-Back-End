@@ -178,5 +178,10 @@ namespace Gourmet.Core.Services
             var MTs = _db.MTs.ToList();
             return MTs;
         }
+        public async Task<IEnumerable<Difficulty_Level>> GetAllDLCategory()
+        {
+            var DLs = _db.DLs.ToList();
+            return DLs;
+        }
     }
 }

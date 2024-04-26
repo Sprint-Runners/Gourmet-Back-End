@@ -16,6 +16,8 @@ namespace Gourmet.Core.Domain.Entities
         [Required]
         public string FoodString { get; set; }
         [Required]
+        public string Name { get; set; }
+        [Required]
         public string ChefId { get; set; }
         [ForeignKey("ChefId")]
         public ApplicationUser chef { get; set; }
