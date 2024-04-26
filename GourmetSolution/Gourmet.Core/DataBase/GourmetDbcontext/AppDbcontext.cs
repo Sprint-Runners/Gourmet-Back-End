@@ -25,7 +25,7 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<Food_type> FTs { get; set; }
         public DbSet<Nationality> Ns { get; set; }
         public DbSet<Meal_Type> MTs { get; set; }
-        public DbSet<Difficulty_Level> DFs { get; set; }
+        public DbSet<Difficulty_Level> DLs { get; set; }
         public DbSet<Chef> Chefs { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Food> Foods { get; set; }

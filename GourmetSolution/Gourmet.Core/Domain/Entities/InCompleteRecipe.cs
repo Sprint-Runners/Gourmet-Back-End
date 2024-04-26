@@ -27,6 +27,7 @@ namespace Gourmet.Core.Domain.Entities
         public string ImgeUrl { get; set; }
         [Required]
         public string IngredientsString { get; set; }
+        public string StepsString { get; set; }
         public string NotExistIngredients { get; set;}
         [Required]
         public Guid Primary_Source_of_IngredientId { get; set; }
@@ -48,6 +49,11 @@ namespace Gourmet.Core.Domain.Entities
         public Guid Meal_TypeId { get; set; }
         [ForeignKey("Meal_Type")]
         public Meal_Type meal_type { get; set; }
+        [Required]
+        public Guid Difficulty_LevelId { get; set; }
+        [ForeignKey("Difficulty_LevelId")]
+        public Difficulty_Level difficulty_Level { get; set; }
+        public int Time { get; set; }
 
     }
 }

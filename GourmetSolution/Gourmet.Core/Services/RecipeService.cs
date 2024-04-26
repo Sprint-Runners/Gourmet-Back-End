@@ -36,6 +36,7 @@ namespace Gourmet.Core.Services
             var isExitsFT = _db.FTs.Where(x => x.Name == request.food_type).FirstOrDefault();
             var isExitsN = _db.Ns.Where(x => x.Name == request.nationality).FirstOrDefault();
             var isExitsMT = _db.MTs.Where(x => x.Name == request.meal_type).FirstOrDefault();
+            var isExistDL = _db.DLs.Where(x => x.Name == request.difficulty_level).FirstOrDefault();
             if (isExistsRecipe != null)
                 return new RecipeResponse()
                 {
@@ -82,7 +83,10 @@ namespace Gourmet.Core.Services
                 NationalityId = isExitsN.Id,
                 nationality = isExitsN,
                 Meal_TypeId = isExitsMT.Id,
-                meal_type = isExitsMT
+                meal_type = isExitsMT,
+                difficulty_Level = isExistDL,
+                Difficulty_LevelId = isExistDL.Id,
+                Time = request.Time
             };
             _db.Recipes.Add(new_recipe);
             foreach(var item in request.List_Ingriedents)
@@ -97,6 +101,17 @@ namespace Gourmet.Core.Services
                     Quantity =item.Item2
                 };
                 _db.RecipeIngredients.Add(row);
+            }
+            foreach (var item in request.Steps)
+            {
+                RecipeStep row = new RecipeStep
+                {
+                    RecipeId = new_recipe.Id,
+                    recipe = new_recipe,
+                    explenation=item.Item2,
+                    Number=item.Item1
+                };
+                _db.RecipeSteps.Add(row);
             }
             _db.SaveChanges();
 
@@ -116,6 +131,7 @@ namespace Gourmet.Core.Services
             var isExitsFT = _db.FTs.Where(x => x.Name == request.food_type).FirstOrDefault();
             var isExitsN = _db.Ns.Where(x => x.Name == request.nationality).FirstOrDefault();
             var isExitsMT = _db.MTs.Where(x => x.Name == request.meal_type).FirstOrDefault();
+            var isExistDL= _db.DLs.Where(x => x.Name == request.difficulty_level).FirstOrDefault();
             if (isExitsUser == null)
                 return new InCompleteRecipeResponse()
                 {
@@ -125,6 +141,7 @@ namespace Gourmet.Core.Services
                 };
             string ingredients = "";
             string NotExistingredients = "";
+            string Steps = "";
             foreach (var item in request.List_Ingriedents)
             {
                 string ingredient = item.Item1 + "," + item.Item2;
@@ -133,6 +150,11 @@ namespace Gourmet.Core.Services
             foreach (var item in request.Not_Exist_List_Ingriedents)
             {
                 string ingredient = item.Item1 + "," + item.Item2+","+item.Item3;
+                NotExistingredients = NotExistingredients + ingredient + ".";
+            }
+            foreach (var item in request.Steps)
+            {
+                string ingredient = item.Item1 + "," + item.Item2;
                 NotExistingredients = NotExistingredients + ingredient + ".";
             }
             InCompleteRecipe new_recipe = new InCompleteRecipe()
@@ -145,6 +167,7 @@ namespace Gourmet.Core.Services
                 ImgeUrl =await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName),
                 IngredientsString=ingredients,
                 NotExistIngredients=NotExistingredients,
+                StepsString=Steps,
                 Primary_Source_of_IngredientId = isExitsPSOI.Id,
                 primary_source_of_ingredient = isExitsPSOI,
                 Cooking_MethodId = isExitsCM.Id,
@@ -154,7 +177,10 @@ namespace Gourmet.Core.Services
                 NationalityId = isExitsN.Id,
                 nationality = isExitsN,
                 Meal_TypeId = isExitsMT.Id,
-                meal_type = isExitsMT
+                meal_type = isExitsMT,
+                difficulty_Level=isExistDL,
+                Difficulty_LevelId=isExistDL.Id,
+                Time=request.Time
             };
             _db.InCompleteRecipes.Add(new_recipe);
             _db.SaveChanges();

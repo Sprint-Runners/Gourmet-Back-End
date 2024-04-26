@@ -56,7 +56,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Update_User")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Update()
         {
             try
@@ -69,21 +69,23 @@ namespace Gourmet.WebApi.Controllers
                     FullName = Request.Form["fullName"],
                     Gen = "zan"
                 };
-                string token = HttpContext.Request.Headers["Authorization"];
-                string username = _jwtService.DecodeToken(token);
-                var EditResult = await _userService.Edit(request, username);
+                //string token = HttpContext.Request.Headers["Authorization"];
+                //string username = _jwtService.DecodeToken(token);
+                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+                var finduser = await _userManager.GetUserAsync(currentUser);
+                var EditResult = await _userService.Edit(request, finduser.UserName);
                 if (EditResult.IsSucceed)
                 {
                     var file = Request.Form.Files[0];
-                    var Result = await _imageProcessorService.UploadUserImage(file, username);
+                    var Result = await _imageProcessorService.UploadUserImage(file, finduser.UserName);
                     if (Result.IsSucceed)
                     {
-                        var isExistsUser = await _userManager.FindByNameAsync(username);
+                        var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
                         ApplicationUser user = (ApplicationUser)isExistsUser;
-                        user.ImageURL = await _imageProcessorService.GetImagebyUser(username);
+                        user.ImageURL = await _imageProcessorService.GetImagebyUser(finduser.UserName);
                         ReadUserResponse response = new ReadUserResponse
                         {
-                            ImageUrl = await _imageProcessorService.GetImagebyUser(username),
+                            ImageUrl = await _imageProcessorService.GetImagebyUser(finduser.UserName),
                             FullName = user.FullName,
                             UserName = user.UserName,
                             Email = user.Email,
@@ -152,9 +154,11 @@ namespace Gourmet.WebApi.Controllers
         [Authorize]
         public async Task<IActionResult> Recent_Food_and_Favourit_Recipe_User()
         {
-            string token = HttpContext.Request.Headers["Authorization"];
-            string username = _jwtService.DecodeToken(token);
-            var isExistsUser = await _userManager.FindByNameAsync(username);
+            //string token = HttpContext.Request.Headers["Authorization"];
+            //string username = _jwtService.DecodeToken(token);
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
             if (isExistsUser != null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
             var result1 = await _userService.RecentRecipeByUser(isExistsUser.Id);
@@ -211,9 +215,11 @@ namespace Gourmet.WebApi.Controllers
         {
             try
             {
-                string token = HttpContext.Request.Headers["Authorization"];
-                string username = _jwtService.DecodeToken(token);
-                var isExistsUser = await _userManager.FindByNameAsync(username);
+                //string token = HttpContext.Request.Headers["Authorization"];
+                //string username = _jwtService.DecodeToken(token);
+                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+                var finduser = await _userManager.GetUserAsync(currentUser);
+                var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
                 if (isExistsUser != null)
                     return Problem(detail: "UserName not Exists", statusCode: 400);
                 var result = await _chefService.GetRecipesByChefId(isExistsUser.Id);
@@ -231,9 +237,11 @@ namespace Gourmet.WebApi.Controllers
         {
             try
             {
-                string token = Request.Headers["Authorization"];
-                string username = _jwtService.DecodeToken(token);
-                var isExistsUser = await _userManager.FindByNameAsync(username);
+                //string token = Request.Headers["Authorization"];
+                //string username = _jwtService.DecodeToken(token);
+                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+                var finduser = await _userManager.GetUserAsync(currentUser);
+                var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
                 if (isExistsUser == null)
                 {
                     GeneralResponse response = new GeneralResponse { Message = "UserName not Exists" };

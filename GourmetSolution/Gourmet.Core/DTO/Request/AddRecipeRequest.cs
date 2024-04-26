@@ -23,6 +23,9 @@ namespace Gourmet.Core.DTO.Request
         public string food_type { get; set; }
         public string nationality { get; set; }
         public string meal_type { get; set; }
+        public List<Tuple<int, string>> Steps { get; set; }
+        public int Time {  get; set; }
+        public string difficulty_level {  get; set; }
     }
     public class AddRecipeByAdminRequest
     {
@@ -35,5 +38,8 @@ namespace Gourmet.Core.DTO.Request
         public string food_type { get; set; }
         public string nationality { get; set; }
         public string meal_type { get; set; }
+        public List<Tuple<int, string>> Steps { get; set; }
+        public int Time { get; set; }
+        public string difficulty_level { get; set; }
     }
 }
