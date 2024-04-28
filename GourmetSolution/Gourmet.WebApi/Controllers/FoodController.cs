@@ -19,12 +19,14 @@ namespace Gourmet.WebApi.Controllers
         private readonly UserManager<Chef> _userManager;
         private readonly IUserService _userService;
         private readonly AppDbContext _db;
-        public FoodController(IFoodService foodService, IRecipeService recipeService, UserManager<Chef> userManager, IUserService userService, AppDbContext db)
+        private readonly IImageProcessorService _imageProcessorService;
+        public FoodController(IFoodService foodService, IRecipeService recipeService, UserManager<Chef> userManager, IUserService userService, AppDbContext db, IImageProcessorService imageProcessorService)
         {
             _foodService = foodService;
             _recipeService = recipeService;
             _userManager = userManager;
             _db = db;
+            _imageProcessorService = imageProcessorService;
         }
         [HttpPut("LikeRecipesByUser")]
         [Authorize]
@@ -113,7 +115,11 @@ namespace Gourmet.WebApi.Controllers
                             ChefImageUrl = item.chef.ImageURL,
                             Description = item.Description,
                             Score = item.Score,
-                            ImgeUrl = item.ImgeUrl,
+                            ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(item.food.Name,item.chef.UserName,item.Name,1),
+                            ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 2),
+                            ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 3),
+                            ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 4),
+                            ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 5),
                             List_Ingriedents = ingredients.ToList(),
                             PSOIName = item.primary_source_of_ingredient.Name,
                             CMName = item.cooking_method.Name,
@@ -154,7 +160,11 @@ namespace Gourmet.WebApi.Controllers
                         ChefImageUrl = item.chef.ImageURL,
                         Description = item.Description,
                         Score = item.Score,
-                        ImgeUrl = item.ImgeUrl,
+                        ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 1),
+                        ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 2),
+                        ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 3),
+                        ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 4),
+                        ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 5),
                         List_Ingriedents = ingredients.ToList(),
                         PSOIName = item.primary_source_of_ingredient.Name,
                         CMName = item.cooking_method.Name,

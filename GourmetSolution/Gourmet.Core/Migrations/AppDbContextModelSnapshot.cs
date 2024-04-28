@@ -55,7 +55,7 @@ namespace Gourmet.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DFs");
+                    b.ToTable("DLs");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Email_Pass", b =>
@@ -129,6 +129,9 @@ namespace Gourmet.Core.Migrations
                         .HasMaxLength(15000)
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("Difficulty_LevelId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FoodString")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -150,6 +153,10 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("Meal_TypeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("NationalityId")
                         .HasColumnType("uniqueidentifier");
 
@@ -160,11 +167,20 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("Primary_Source_of_IngredientId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("StepsString")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Time")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ChefId");
 
                     b.HasIndex("Cooking_MethodId");
+
+                    b.HasIndex("Difficulty_LevelId");
 
                     b.HasIndex("Food_typeId");
 
@@ -187,10 +203,6 @@ namespace Gourmet.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -269,6 +281,9 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("Cooking_MethodId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -286,6 +301,9 @@ namespace Gourmet.Core.Migrations
                     b.Property<string>("ImgeUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("List_Ingriedents")
                         .IsRequired()
@@ -407,6 +425,10 @@ namespace Gourmet.Core.Migrations
 
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RecipeId", "IngredientId");
 
@@ -698,6 +720,12 @@ namespace Gourmet.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Gourmet.Core.Domain.Entities.Difficulty_Level", "difficulty_Level")
+                        .WithMany()
+                        .HasForeignKey("Difficulty_LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Gourmet.Core.Domain.Entities.Food_type", "food_type")
                         .WithMany()
                         .HasForeignKey("Food_typeId")
@@ -725,6 +753,8 @@ namespace Gourmet.Core.Migrations
                     b.Navigation("chef");
 
                     b.Navigation("cooking_method");
+
+                    b.Navigation("difficulty_Level");
 
                     b.Navigation("food_type");
 

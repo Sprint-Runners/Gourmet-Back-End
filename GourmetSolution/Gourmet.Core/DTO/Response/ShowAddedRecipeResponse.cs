@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gourmet.Core.DTO.Response
 {
-    internal class ShowAddedRecipeResponse
+    public class ShowAddedRecipeResponse
     {
     }
 }

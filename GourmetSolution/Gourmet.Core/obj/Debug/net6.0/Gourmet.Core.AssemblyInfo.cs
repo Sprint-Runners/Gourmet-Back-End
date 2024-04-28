@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gourmet.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+171d55ba9f2bb0748e634d0148c0814634f1c69c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6bc27be35075fbe907b3c4878bf18895e6f77047")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gourmet.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gourmet.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

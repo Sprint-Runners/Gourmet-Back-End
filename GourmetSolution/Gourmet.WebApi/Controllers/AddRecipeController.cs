@@ -190,29 +190,39 @@ namespace Gourmet.WebApi.Controllers
                     var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, finduser.UserName);
                     if (result.IsSucceed)
                     {
-                        var file = Request.Form.Files[0];
-                        var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result.recipe.FoodString, result.recipe.chef.UserName,result.recipe.Name);
-                        if (ResultImage.IsSucceed)
+                        for (int i = 0; i < request.NumberOfPicture; i++)
                         {
-                            result.recipe.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name);
-                            return Ok(result.recipe);
+                            var file = Request.Form.Files[i];
+                            var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                            if (!ResultImage.IsSucceed)
+                            {
+                                //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                                //return Ok(result.recipe);
+
+                                return Problem(detail: ResultImage.Message, statusCode: 400);
+                            }
                         }
-                        return Problem(detail: ResultImage.Message, statusCode: 400);
+                        return Ok(result.Message);
                     }
                     return Problem(detail: result.Message, statusCode: 400);
                 }
                 var result1 = await _recipeService.CreateRecipeByChef(request, isExistsUser.Id, finduser.UserName);
                 if (result1.IsSucceed)
                 {
-
-                    var file = Request.Form.Files[0];
-                    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result1.recipe.food.Name, result1.recipe.chef.UserName,result1.recipe.Name);
-                    if (ResultImage.IsSucceed)
+                    for (int i = 0; i < request.NumberOfPicture; i++)
                     {
-                        result1.recipe.ImgeUrl =await _imageProcessorService.GetImagebyRecipe(result1.recipe.food.Name, result1.recipe.chef.UserName, result1.recipe.Name);
-                        return Ok(result1.recipe);
+                        var file = Request.Form.Files[i];
+                        var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result1.recipe.food.Name, result1.recipe.chef.UserName, result1.recipe.Name, i);
+                        if (!ResultImage.IsSucceed)
+                        {
+                            //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                            //return Ok(result.recipe);
+
+                            return Problem(detail: ResultImage.Message, statusCode: 400);
+                        }
                     }
-                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                    return Ok(result1.Message);
+
                 }
                 return Problem(detail: result1.Message, statusCode: 400);
             }

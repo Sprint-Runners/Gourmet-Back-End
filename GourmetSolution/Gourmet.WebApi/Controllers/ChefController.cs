@@ -44,14 +44,14 @@ namespace Gourmet.WebApi.Controllers
                 List<SummaryRecipeInfoResponse> LastChefRecipeResult = new List<SummaryRecipeInfoResponse>();
                 foreach (Recipe r in TopChefRecipes)
                 {
-                    r.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName, r.Name);
+                    r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName, r.Name,1);
                     TopChefRecipeResult.Add(new SummaryRecipeInfoResponse
                     {
                         FoodName = r.food.Name,
                         Name = r.Name,
                         ChefName = r.chef.FullName,
                         ChefUserName = r.chef.UserName,
-                        ImagePath = r.ImgeUrl,
+                        ImagePath = r.ImgeUrl1,
                         Score = r.Score,
                         Description = r.Description,
                         DifficultyLevel = r.difficulty_Level.Name,
@@ -60,14 +60,14 @@ namespace Gourmet.WebApi.Controllers
                 }
                 foreach (Recipe r in LastChefRecipe)
                 {
-                    r.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName, r.Name);
+                    r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName, r.Name,1);
                     LastChefRecipeResult.Add(new SummaryRecipeInfoResponse
                     {
                         FoodName = r.food.Name,
                         Name = r.Name,
                         ChefName = r.chef.FullName,
                         ChefUserName = r.chef.UserName,
-                        ImagePath = r.ImgeUrl,
+                        ImagePath = r.ImgeUrl1,
                         Score = r.Score,
                         Description = r.Description,
                         DifficultyLevel = r.difficulty_Level.Name,
@@ -83,7 +83,8 @@ namespace Gourmet.WebApi.Controllers
                     ImageURL = await _imageProcessorService.GetImagebyUser(isExistsChef.UserName),
                     LastRecipes = LastChefRecipeResult,
                     TopRecipes = TopChefRecipeResult,
-                    PhoneNumber = isExistsChef.PhoneNumber
+                    PhoneNumber = isExistsChef.PhoneNumber,
+                    RecipeCount=LastChefRecipeResult.Count
                 });
             
             }

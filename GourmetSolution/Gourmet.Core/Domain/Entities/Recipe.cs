@@ -34,7 +34,20 @@ namespace Gourmet.Core.Domain.Entities
         public int Number_Scorer { get; set; } = 0;
         [Required]
         [ValidateNever]
-        public string ImgeUrl { get; set; }
+        public string ImgeUrl1 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string ImgeUrl2 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string ImgeUrl3 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string ImgeUrl4 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string ImgeUrl5 { get; set; }
+
         [Required]
         public string List_Ingriedents { get; set; }
         [Required]
@@ -61,9 +74,14 @@ namespace Gourmet.Core.Domain.Entities
         public Guid Difficulty_LevelId { get; set; }
         [ForeignKey("Difficulty_LevelId")]
         public Difficulty_Level difficulty_Level  { get; set; }
+        [Required]
         public int Time {  get; set; }
+        //[Required]
         public DateTime CreatTime { get; set; }
+        [Required]
         public bool IsAccepted {  get; set; }
+        [Required]
+        public int NumberOfPicture {  get; set; }
 
     }
 }

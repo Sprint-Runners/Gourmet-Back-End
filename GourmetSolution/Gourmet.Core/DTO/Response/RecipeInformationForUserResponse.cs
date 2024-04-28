@@ -20,7 +20,11 @@ namespace Gourmet.Core.DTO.Response
         public string ChefImageUrl {  get; set; }
         public string Description { get; set; }
         public double Score { get; set; }
-        public string ImgeUrl { get; set; }
+        public string ImgeUrl1 { get; set; }
+        public string ImgeUrl2{ get; set; }
+        public string ImgeUrl3 { get; set; }
+        public string ImgeUrl4 { get; set; }
+        public string ImgeUrl5 { get; set; }
         public List<Ingredient> List_Ingriedents { get; set; }
         public string PSOIName { get; set; }
         public string CMName { get; set; }

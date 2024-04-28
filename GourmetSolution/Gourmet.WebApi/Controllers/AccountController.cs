@@ -130,7 +130,7 @@ namespace Gourmet.WebApi.Controllers
                     ChefName = item.recipe.chef.FullName,
                     ChefUserName = item.recipe.chef.UserName,
                     VisitTime = item.VisitTime,
-                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName,item.recipe.Name),
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName,item.recipe.Name, 1),
                     Name = item.recipe.Name
                 });
 
@@ -161,7 +161,7 @@ namespace Gourmet.WebApi.Controllers
                     ChefName = item.recipe.chef.FullName,
                     ChefUserName = item.recipe.chef.UserName,
                     IsFavorite=true,
-                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name),
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name, 1),
                     Name = item.recipe.Name
                 });
 
@@ -192,7 +192,7 @@ namespace Gourmet.WebApi.Controllers
                     ChefName = item.recipe.chef.FullName,
                     ChefUserName = item.recipe.chef.UserName,
                     IsFavorite = true,
-                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name),
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name, 1),
                     Name = item.recipe.Name
                 });
 
@@ -217,7 +217,7 @@ namespace Gourmet.WebApi.Controllers
                 List<SummaryRecipeInfoAddedByChefResponse> result = new List<SummaryRecipeInfoAddedByChefResponse>();
                 foreach (var item in AllRecipe)
                 {
-                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(item.food.Name, isExistsUser.UserName, item.Name);
+                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(item.food.Name, isExistsUser.UserName, item.Name, 1);
                     result.Add(new SummaryRecipeInfoAddedByChefResponse
                     {
                         ChefName=item.chef.FullName,
