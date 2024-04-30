@@ -81,10 +81,22 @@ namespace Gourmet.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Is_Main")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Is_breakfast")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("Special_Occasion")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Timetocook")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -139,7 +151,23 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("Food_typeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImgeUrl")
+                    b.Property<string>("ImgeUrl1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl5")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -163,6 +191,9 @@ namespace Gourmet.Core.Migrations
                     b.Property<string>("NotExistIngredients")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfPicture")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("Primary_Source_of_IngredientId")
                         .HasColumnType("uniqueidentifier");
@@ -298,7 +329,23 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("Food_typeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImgeUrl")
+                    b.Property<string>("ImgeUrl1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl5")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -319,6 +366,9 @@ namespace Gourmet.Core.Migrations
 
                     b.Property<Guid>("NationalityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NumberOfPicture")
+                        .HasColumnType("int");
 
                     b.Property<int>("Number_Scorer")
                         .HasColumnType("int");
@@ -364,6 +414,20 @@ namespace Gourmet.Core.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("Secrets");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Special_Category", b =>
+                {
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Title");
+
+                    b.ToTable("Special_Categories");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Temp_Password", b =>

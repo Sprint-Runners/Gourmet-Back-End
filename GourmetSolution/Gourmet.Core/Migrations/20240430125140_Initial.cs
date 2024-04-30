@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Gourmet.Core.Migrations
 {
-    public partial class CHECK0 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -67,7 +67,7 @@ namespace Gourmet.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DFs",
+                name: "DLs",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -75,7 +75,7 @@ namespace Gourmet.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DFs", x => x.Id);
+                    table.PrimaryKey("PK_DLs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,8 +121,7 @@ namespace Gourmet.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -304,17 +303,26 @@ namespace Gourmet.Core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FoodString = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ChefId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", maxLength: 15000, nullable: false),
-                    ImgeUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl3 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl4 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl5 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IngredientsString = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StepsString = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NotExistIngredients = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Primary_Source_of_IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cooking_MethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Food_typeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NationalityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Meal_TypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Meal_Type = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Meal_Type = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Difficulty_LevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Time = table.Column<int>(type: "int", nullable: false),
+                    NumberOfPicture = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -329,6 +337,12 @@ namespace Gourmet.Core.Migrations
                         name: "FK_InCompleteRecipes_CMs_Cooking_MethodId",
                         column: x => x.Cooking_MethodId,
                         principalTable: "CMs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InCompleteRecipes_DLs_Difficulty_LevelId",
+                        column: x => x.Difficulty_LevelId,
+                        principalTable: "DLs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -367,7 +381,12 @@ namespace Gourmet.Core.Migrations
                     ChefId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Score = table.Column<double>(type: "float", nullable: false),
-                    ImgeUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number_Scorer = table.Column<int>(type: "int", nullable: false),
+                    ImgeUrl1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl3 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl4 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl5 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     List_Ingriedents = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Primary_Source_of_IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cooking_MethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -375,7 +394,10 @@ namespace Gourmet.Core.Migrations
                     NationalityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Meal_TypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Difficulty_LevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Time = table.Column<int>(type: "int", nullable: false)
+                    Time = table.Column<int>(type: "int", nullable: false),
+                    CreatTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    NumberOfPicture = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -392,9 +414,9 @@ namespace Gourmet.Core.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Recipes_DFs_Difficulty_LevelId",
+                        name: "FK_Recipes_DLs_Difficulty_LevelId",
                         column: x => x.Difficulty_LevelId,
-                        principalTable: "DFs",
+                        principalTable: "DLs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -485,7 +507,8 @@ namespace Gourmet.Core.Migrations
                 {
                     RecipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<double>(type: "float", nullable: false)
+                    Quantity = table.Column<double>(type: "float", nullable: false),
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -517,6 +540,31 @@ namespace Gourmet.Core.Migrations
                     table.PrimaryKey("PK_RecipeSteps", x => new { x.RecipeId, x.Number });
                     table.ForeignKey(
                         name: "FK_RecipeSteps_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScoreRecipeUsers",
+                columns: table => new
+                {
+                    RecipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    userId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Rate = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScoreRecipeUsers", x => new { x.RecipeId, x.userId });
+                    table.ForeignKey(
+                        name: "FK_ScoreRecipeUsers_AspNetUsers_userId",
+                        column: x => x.userId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ScoreRecipeUsers_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
@@ -576,6 +624,11 @@ namespace Gourmet.Core.Migrations
                 name: "IX_InCompleteRecipes_Cooking_MethodId",
                 table: "InCompleteRecipes",
                 column: "Cooking_MethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InCompleteRecipes_Difficulty_LevelId",
+                table: "InCompleteRecipes",
+                column: "Difficulty_LevelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InCompleteRecipes_Food_typeId",
@@ -646,6 +699,11 @@ namespace Gourmet.Core.Migrations
                 name: "IX_Recipes_Primary_Source_of_IngredientId",
                 table: "Recipes",
                 column: "Primary_Source_of_IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScoreRecipeUsers_userId",
+                table: "ScoreRecipeUsers",
+                column: "userId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -684,6 +742,9 @@ namespace Gourmet.Core.Migrations
                 name: "RecipeSteps");
 
             migrationBuilder.DropTable(
+                name: "ScoreRecipeUsers");
+
+            migrationBuilder.DropTable(
                 name: "Secrets");
 
             migrationBuilder.DropTable(
@@ -705,7 +766,7 @@ namespace Gourmet.Core.Migrations
                 name: "CMs");
 
             migrationBuilder.DropTable(
-                name: "DFs");
+                name: "DLs");
 
             migrationBuilder.DropTable(
                 name: "Foods");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gourmet.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240426181856_check2")]
-    partial class check2
+    [Migration("20240430125140_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -141,7 +141,23 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("Food_typeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImgeUrl")
+                    b.Property<string>("ImgeUrl1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl5")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -165,6 +181,9 @@ namespace Gourmet.Core.Migrations
                     b.Property<string>("NotExistIngredients")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfPicture")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("Primary_Source_of_IngredientId")
                         .HasColumnType("uniqueidentifier");
@@ -300,7 +319,23 @@ namespace Gourmet.Core.Migrations
                     b.Property<Guid>("Food_typeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImgeUrl")
+                    b.Property<string>("ImgeUrl1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl5")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -321,6 +356,9 @@ namespace Gourmet.Core.Migrations
 
                     b.Property<Guid>("NationalityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NumberOfPicture")
+                        .HasColumnType("int");
 
                     b.Property<int>("Number_Scorer")
                         .HasColumnType("int");

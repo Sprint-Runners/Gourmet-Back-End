@@ -180,5 +180,12 @@ namespace Gourmet.WebApi.Controllers
             }
             return Problem(detail: response.Message, statusCode: 400);
         }
+        [HttpGet("Special")]
+        public async Task<IActionResult> Get_Special_Foods()
+        {
+            var response = await _foodService.Get_Special();
+            List<RecipeInformationResponse> results = new List<RecipeInformationResponse>();
+            return Ok(results);
+        }
     }
 }
