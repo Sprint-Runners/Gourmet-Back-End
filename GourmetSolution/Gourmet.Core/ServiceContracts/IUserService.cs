@@ -1,6 +1,7 @@
 ﻿using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.Domain.OtherObject;
+using Gourmet.Core.Domain.Relations;
 using Gourmet.Core.DTO.Request;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,9 @@ namespace Gourmet.Core.ServiceContracts
     {
         Task<UserResponse> Edit(EditUserRequest request, string username);
         Task<UserResponse> Read(string username);
-        Task<IEnumerable<Recipe>> FavouritRecipeByUser(string userId);
-        Task<IEnumerable<Recipe>> RecentRecipeByUser(string userId);
+        Task<IEnumerable<FavouritRecipeUser>> FavouritRecipeByUser(string userId);
+        Task<IEnumerable<FavouritRecipeUser>> FavouritRecipeByUserOrderByScore(string userId);
+        Task<IEnumerable<RecentRecipeUser>> RecentRecipeByUser(string userId);
         Task<InterGeneralResponse> AddFavouritRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName);
         Task<InterGeneralResponse> AddRecentRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName);
         Task<InterGeneralResponse> AddScoreRecipeForUser(Chef user, string FoodName, string ChefName, string RecipeName, int rate);

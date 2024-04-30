@@ -15,6 +15,7 @@ namespace Gourmet.Core.ServiceContracts
     {
         Task<RecipeResponse> CreateRecipeByChef(AddRecipeRequest request, string userId, string username);
         Task<InCompleteRecipeResponse> CreateInCompleteRecipe(AddRecipeRequest request, string userId, string username);
+        Task<InterGeneralResponse> AcceptedRecipe(string FoodName, string UserName, string Name);
         Task<IEnumerable<Recipe>> Get_All_Recipe();
         Task<IEnumerable<Ingredient>> Get_All_Ingredients(string FoodName, string ChefName, string RecipeName);
         Task<IEnumerable<RecipeStep>> Get_All_steps(string FoodName, string ChefName, string RecipeName);

@@ -55,13 +55,13 @@ namespace Gourmet.Core.Services
             };
             var user = _db.Email_Passwords.Find(request.Email);
 
-            //if (user == null || user.Temp_Password.ToString() != request.Temp_Code)
-            //    return new Response()
-            //    {
-            //        IsSucceed = false,
-            //        user = null,
-            //        Message = "The Authentication code or the email is incorrect"
-            //    };
+            if (user == null || user.Temp_Password.ToString() != request.Temp_Code)
+                return new UserResponse()
+                {
+                    IsSucceed = false,
+                    user = null,
+                    Message = "The Authentication code or the email is incorrect"
+                };
 
             var createUserResult = await _userManager.CreateAsync(new_user, request.Password);
 

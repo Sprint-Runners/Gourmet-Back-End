@@ -1,5 +1,6 @@
 ﻿using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
+using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,12 +16,14 @@ namespace Gourmet.WebApi.Controllers
         private readonly IIngredientService _ingredientService;
         private readonly IFoodService _foodService;
         private readonly ICategoriesService _categoriesService;
-        public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService)
+        private readonly IRecipeService _recipeService;
+        public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService,IRecipeService recipeService)
         {
             _imageProcessorService = imageProcessorService;
             _ingredientService = ingredientService;
             _foodService = foodService;
             _categoriesService = categoriesService;
+            _recipeService = recipeService;
         }
         [HttpPost]
         [Route("Add_Ingredient")]
@@ -192,6 +195,28 @@ namespace Gourmet.WebApi.Controllers
                     return Problem(detail: ResultImage.Message, statusCode: 400);
                 }
                 return Problem(detail: result.Message, statusCode: 400);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
+        }
+        [HttpPost]
+        [Route("Accept_recipe")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> Accept_recipe(AcceptedRecipeRequest request)
+        {
+            try
+            {
+                var result = await _recipeService.AcceptedRecipe(request.FoodName, request.username, request.Name);
+                if (result.IsSucceed)
+                {
+                    return Ok(new GeneralResponse
+                    {
+                        Message = "Recipe Accepted"
+                    });
+                }
+                return Problem(detail:result.Message,statusCode:400);
             }
             catch (Exception ex)
             {

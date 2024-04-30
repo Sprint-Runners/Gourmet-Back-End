@@ -68,11 +68,16 @@ namespace Gourmet.Core.Services
                 Id = new Guid(),
                 FoodId = isExitsFood.Id,
                 food = isExitsFood,
+                Name=request.Name,
                 ChefId = userId,
                 chef = isExitsUser,
                 Description = request.Description,
                 Score = 0,
-                ImgeUrl =await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName),
+                ImgeUrl1 =await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName,request.Name,1),
+                ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName, request.Name, 2),
+                ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName, request.Name, 3),
+                ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName, request.Name, 4),
+                ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName, request.Name, 5),
                 List_Ingriedents = ingredients,
                 Primary_Source_of_IngredientId = isExitsPSOI.Id,
                 primary_source_of_ingredient = isExitsPSOI,
@@ -86,7 +91,9 @@ namespace Gourmet.Core.Services
                 meal_type = isExitsMT,
                 difficulty_Level = isExistDL,
                 Difficulty_LevelId = isExistDL.Id,
-                Time = request.Time
+                Time = request.Time,
+                IsAccepted=false
+                
             };
             _db.Recipes.Add(new_recipe);
             foreach(var item in request.List_Ingriedents)
@@ -98,7 +105,8 @@ namespace Gourmet.Core.Services
                     recipe =new_recipe,
                     IngredientId =isExitsIngredient.Id,
                     ingredient =isExitsIngredient,
-                    Quantity =item.Item2
+                    Quantity =item.Item2,
+                    Unit=item.Item3
                 };
                 _db.RecipeIngredients.Add(row);
             }
@@ -144,7 +152,7 @@ namespace Gourmet.Core.Services
             string Steps = "";
             foreach (var item in request.List_Ingriedents)
             {
-                string ingredient = item.Item1 + "," + item.Item2;
+                string ingredient = item.Item1 + "," + item.Item2+","+item.Item3;
                 ingredients = ingredients+ingredient+".";
             }
             foreach (var item in request.Not_Exist_List_Ingriedents)
@@ -163,9 +171,14 @@ namespace Gourmet.Core.Services
                 FoodString=request.FoodName,
                 ChefId = userId,
                 chef = isExitsUser,
+                Name=request.Name,
                 Description = request.Description,
-                ImgeUrl =await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName),
-                IngredientsString=ingredients,
+                ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, request.Name, 1),
+                ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, request.Name, 2),
+                ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, request.Name, 3),
+                ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, request.Name, 4),
+                ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, request.Name, 5),
+                IngredientsString =ingredients,
                 NotExistIngredients=NotExistingredients,
                 StepsString=Steps,
                 Primary_Source_of_IngredientId = isExitsPSOI.Id,
@@ -192,6 +205,25 @@ namespace Gourmet.Core.Services
                 recipe = new_recipe
             };
 
+        }
+        public async Task<InterGeneralResponse> AcceptedRecipe(string FoodName,string UserName,string Name)
+        {
+            var isExistsRecipe = _db.Recipes.Where(x => x.food.Name==FoodName && x.chef.UserName==UserName && x.Name==Name).FirstOrDefault();
+            if (isExistsRecipe == null)
+            {
+                return new InterGeneralResponse
+                {
+                    IsSucceed=false,
+                    Message="Recipe Not Exist"
+                };
+            }
+            isExistsRecipe.CreatTime = DateTime.Now;
+            isExistsRecipe.IsAccepted = true;
+            return new InterGeneralResponse
+            {
+                IsSucceed = true,
+                Message = "Recipe accepted"
+            };
         }
         public async Task<IEnumerable<Recipe>> Get_All_Recipe()
         {

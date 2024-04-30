@@ -3,6 +3,7 @@ using Gourmet.Core.DataBase.GourmetDbcontext;
 using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
+using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
 using Gourmet.Core.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,15 +23,105 @@ namespace Gourmet.WebApi.Controllers
         private readonly UserManager<Chef> _userManager;
         private readonly IJwt _jwtService;
         private readonly IImageProcessorService _imageProcessorService;
-        public AddRecipeController(AppDbContext db, RecipeService recipeService, UserManager<Chef> userManager, IJwt jwt, IImageProcessorService imageProcessorService)
+        private readonly ICategoriesService _categoriesService;
+        public AddRecipeController(AppDbContext db, RecipeService recipeService, UserManager<Chef> userManager, IJwt jwt, IImageProcessorService imageProcessorService, ICategoriesService categoriesService)
         {
             _db = db;
             _recipeService = recipeService;
             _userManager = userManager;
             _jwtService = jwt;
             _imageProcessorService = imageProcessorService;
+            _categoriesService = categoriesService;
+        }
+        [HttpGet("GetAllCategory")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
+        public async Task<IActionResult> GetAllCategory()
+        {
+            var PSOIS = await _categoriesService.GetAllPSOICategory();
+            var FTS = await _categoriesService.GetAllFTCategory();
+            var MTS = await _categoriesService.GetAllMTCategory();
+            var NS = await _categoriesService.GetAllNCategory();
+            var DLS = await _categoriesService.GetAllDLCategory();
+            var CMS = await _categoriesService.GetAllCMCategory();
+            Dictionary<string,List<CategoriesResponse>> Categories =new Dictionary<string, List<CategoriesResponse>>();
+            List<CategoriesResponse> PSOIsResopnse = new List<CategoriesResponse>();
+            foreach (var category in PSOIS)
+            {
+                PSOIsResopnse.Add(new CategoriesResponse
+                {
+                    Name = category.Name,
+                    CategoryName = "Primary source of ingredient",
+                    ImageUrl = await _imageProcessorService.GetImagebyCategory("PSOI", category.Name)
+
+                });
+            }
+            Categories.Add("Primary source of ingredient", PSOIsResopnse);
+            List<CategoriesResponse> FTsResopnse = new List<CategoriesResponse>();
+            foreach (var category in FTS)
+            {
+                FTsResopnse.Add(new CategoriesResponse
+                {
+                    Name = category.Name,
+                    CategoryName = "Food Type",
+                    ImageUrl = await _imageProcessorService.GetImagebyCategory("FT", category.Name)
+
+                });
+            }
+            Categories.Add("Food Type", FTsResopnse);
+            List<CategoriesResponse> CMsResopnse = new List<CategoriesResponse>();
+            foreach (var category in CMS)
+            {
+                CMsResopnse.Add(new CategoriesResponse
+                {
+                    Name = category.Name,
+                    CategoryName = "Cooking Method",
+                    ImageUrl = await _imageProcessorService.GetImagebyCategory("CM", category.Name)
+
+                });
+            }
+            Categories.Add("Cooking Method", CMsResopnse);
+            List<CategoriesResponse> NsResopnse = new List<CategoriesResponse>();
+            foreach (var category in NS)
+            {
+                NsResopnse.Add(new CategoriesResponse
+                {
+                    Name = category.Name,
+                    CategoryName = "Nationality",
+                    ImageUrl = await _imageProcessorService.GetImagebyCategory("N", category.Name)
+
+                });
+            }
+            Categories.Add("Nationality", NsResopnse);
+            List<CategoriesResponse> MTsResopnse = new List<CategoriesResponse>();
+            foreach (var category in MTS)
+            {
+                MTsResopnse.Add(new CategoriesResponse
+                {
+                    Name = category.Name,
+                    CategoryName = "Meal Type",
+                    ImageUrl = await _imageProcessorService.GetImagebyCategory("MT", category.Name)
+
+                });
+            }
+            Categories.Add("Meal Type", MTsResopnse);
+            List<CategoriesResponse> DLsResopnse = new List<CategoriesResponse>();
+            foreach (var category in DLS)
+            {
+                DLsResopnse.Add(new CategoriesResponse
+                {
+                    Name = category.Name,
+                    CategoryName = "Difficulty_Level",
+                    ImageUrl = await _imageProcessorService.GetImagebyCategory("DL", category.Name)
+
+                });
+            }
+            Categories.Add("Difficulty_Level", DLsResopnse);
+            return Ok(Categories);
+
+
         }
         [HttpGet("Search_Ingredient")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Search_Ingredient(string searchTerm)
         {
             searchTerm = searchTerm.ToLower().Trim();
@@ -55,6 +146,7 @@ namespace Gourmet.WebApi.Controllers
             }
         }
         [HttpGet("Search_Food")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Search_Food(string searchTerm)
         {
             searchTerm = searchTerm.ToLower().Trim();
@@ -85,40 +177,52 @@ namespace Gourmet.WebApi.Controllers
         {
             try
             {
-                string token = HttpContext.Request.Headers["Authorization"];
-                string username = _jwtService.DecodeToken(token);
-                var isExistsUser = await _userManager.FindByNameAsync(username);
+                //string token = HttpContext.Request.Headers["Authorization"];
+                //string username = _jwtService.DecodeToken(token);
+                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+                var finduser = await _userManager.GetUserAsync(currentUser);
+                var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
                 if (isExistsUser != null)
                     return Problem(detail: "UserName not Exists", statusCode: 400);
 
                 if (request.NotExistFoodName != null || request.Not_Exist_List_Ingriedents != null)
                 {
-                    var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, username);
+                    var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, finduser.UserName);
                     if (result.IsSucceed)
                     {
-                        var file = Request.Form.Files[0];
-                        var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result.recipe.FoodString, result.recipe.chef.UserName);
-                        if (ResultImage.IsSucceed)
+                        for (int i = 0; i < request.NumberOfPicture; i++)
                         {
-                            result.recipe.ImgeUrl = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName);
-                            return Ok(result.recipe);
+                            var file = Request.Form.Files[i];
+                            var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                            if (!ResultImage.IsSucceed)
+                            {
+                                //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                                //return Ok(result.recipe);
+
+                                return Problem(detail: ResultImage.Message, statusCode: 400);
+                            }
                         }
-                        return Problem(detail: ResultImage.Message, statusCode: 400);
+                        return Ok(result.Message);
                     }
                     return Problem(detail: result.Message, statusCode: 400);
                 }
-                var result1 = await _recipeService.CreateRecipeByChef(request, isExistsUser.Id, username);
+                var result1 = await _recipeService.CreateRecipeByChef(request, isExistsUser.Id, finduser.UserName);
                 if (result1.IsSucceed)
                 {
-
-                    var file = Request.Form.Files[0];
-                    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result1.recipe.food.Name, result1.recipe.chef.UserName);
-                    if (ResultImage.IsSucceed)
+                    for (int i = 0; i < request.NumberOfPicture; i++)
                     {
-                        result1.recipe.ImgeUrl =await _imageProcessorService.GetImagebyRecipe(result1.recipe.food.Name, result1.recipe.chef.UserName);
-                        return Ok(result1.recipe);
+                        var file = Request.Form.Files[i];
+                        var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result1.recipe.food.Name, result1.recipe.chef.UserName, result1.recipe.Name, i);
+                        if (!ResultImage.IsSucceed)
+                        {
+                            //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                            //return Ok(result.recipe);
+
+                            return Problem(detail: ResultImage.Message, statusCode: 400);
+                        }
                     }
-                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                    return Ok(result1.Message);
+
                 }
                 return Problem(detail: result1.Message, statusCode: 400);
             }

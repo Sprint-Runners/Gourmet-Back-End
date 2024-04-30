@@ -13,6 +13,7 @@ namespace Gourmet.Core.ServiceContracts
     {
         Task<double> GetChefScore(string chefId);
         Task<IEnumerable<Recipe>> GetRecipesByChefId(string chefId);
+        Task<IEnumerable<Recipe>> GetAcceptedRecipesByChefId(string chefId);
         Task<UserResponse> MakeChefAsync(UpdatePermissionRequest updatePermission);
     }
 }

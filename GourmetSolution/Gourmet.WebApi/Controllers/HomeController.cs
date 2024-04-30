@@ -35,7 +35,7 @@ namespace Gourmet.WebApi.Controllers
                 var randomIds = allIds.OrderBy(x => random.Next()).Take(3).ToList();
                 var randomRows = _db.Foods.Where(x => randomIds.Contains(x.Id)).ToList();
                 List<FoodInformationResponse> randomFood = new List<FoodInformationResponse>();
-                List<SummaryRecipeInfoResponse> Top_Recipes = new List<SummaryRecipeInfoResponse>();
+                //List<SummaryRecipeInfoResponse> Top_Recipes = new List<SummaryRecipeInfoResponse>();
                 foreach (Food row in randomRows)
                 {
                     row.ImgeUrl = await _imageProcessorService.GetImagebyFood(row.Name);
@@ -76,6 +76,7 @@ namespace Gourmet.WebApi.Controllers
                     TopChefs.Add(new TopChefResponse
                     {
                         Name = row.FullName,
+                        UserName=row.UserName,
                         Score = row.Score,
                         AboutMe = row.Aboutme,
                         ImagePath = row.ImageURL,
@@ -136,7 +137,6 @@ namespace Gourmet.WebApi.Controllers
                 //return Ok(TopChefs);
                 Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>> result = new Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>>(randomFood, TopChefs, Categories);
                 return Ok(result);
-                return Ok((randomFood));
             }
             catch (Exception ex)
             {

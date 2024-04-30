@@ -106,53 +106,11 @@ namespace Gourmet.WebApi.Controllers
                 return Problem(detail: ex.Message, statusCode: 400);
             }
         }
-        //[HttpPost("UploadImage")]
-        //public async Task<ActionResult> UploadImage()
-        //{
-        //    try
-        //    {
-        //        string username = Request.Form["message"];
-        //        //string username = "h2";
-        //        var isExistsUser = await _userManager.FindByNameAsync(username);
-
-        //        if (isExistsUser != null)
-        //            return Problem(detail: "UserName not Exists", statusCode: 400);
-        //        var file = Request.Form.Files[0];
-        //        var Result = await _imageProcessorService.UploadUserImage(file, username);
-        //        if (Result.IsSucceed)
-        //        {
-        //            ApplicationUser user = (ApplicationUser)isExistsUser;
-        //            user.ImageURL = _imageProcessorService.GetImagebyUser(username);
-        //            Result.ImagePath = user.ImageURL;
-        //            //Result.ImagePath = _imageProcessorService.GetImagebyUser(username);
-        //            return Ok(Result);
-        //        }
-        //        return Problem(detail: Result.Message, statusCode: 400);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Problem(detail: ex.Message, statusCode: 400);
-        //    }
-        //}
-        //[HttpGet("GetUserImage")]
-        //public async Task<ActionResult> GetUserImage(ReadUserRequest request)
-        //{
-        //    var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
-        //    if (isExistsUser != null)
-        //        return Problem(detail: "UserName not Exists", statusCode: 400);
-        //    ApplicationUser user = (ApplicationUser)isExistsUser;
-        //    ImageUrlResponse result = new ImageUrlResponse
-        //    {
-        //        IsSucceed = true,
-        //        ImagePath = user.ImageURL
-        //    };
-        //    return Ok(result);
-
-        //}
+ 
         [HttpGet]
-        [Route("Food_User")]
+        [Route("Recent_Recipes_User")]
         [Authorize]
-        public async Task<IActionResult> Recent_Food_and_Favourit_Recipe_User()
+        public async Task<IActionResult> Recent_Recipes_User()
         {
             //string token = HttpContext.Request.Headers["Authorization"];
             //string username = _jwtService.DecodeToken(token);
@@ -161,53 +119,86 @@ namespace Gourmet.WebApi.Controllers
             var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
             if (isExistsUser != null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
-            var result1 = await _userService.RecentRecipeByUser(isExistsUser.Id);
-            var result2 = await _userService.FavouritRecipeByUser(isExistsUser.Id);
-            Dictionary<string, IEnumerable<Recipe>> result = new Dictionary<string, IEnumerable<Recipe>>();
-            result.Add("Recent_Recipe_User", result1);
-            result.Add("Favourit_Recipe_User", result2);
+            var result = await _userService.RecentRecipeByUser(isExistsUser.Id);
+            List<SummaryRecipeInfoForUserResponse> recentRecipe = new List<SummaryRecipeInfoForUserResponse>();
+            foreach (var item in result)
+            {
+
+                recentRecipe.Add(new SummaryRecipeInfoForUserResponse
+                {
+                    Score = item.recipe.Score,
+                    ChefName = item.recipe.chef.FullName,
+                    ChefUserName = item.recipe.chef.UserName,
+                    VisitTime = item.VisitTime,
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName,item.recipe.Name, 1),
+                    Name = item.recipe.Name
+                });
+
+            }
 
             return Ok(result);
         }
-        //[HttpGet]
-        //[Route("Recent_Food_User")]
-        //[Authorize]
-        //public async Task<IActionResult> Recent_Food_User()
-        //{
-        //    string token = HttpContext.Request.Headers["Authorization"];
-        //    string username = _jwtService.DecodeToken(token);
-        //    var isExistsUser = await _userManager.FindByNameAsync(username);
-        //    if (isExistsUser != null)
-        //        return Problem(detail: "UserName not Exists", statusCode: 400);
-        //    var result = await _userService.RecentFoodByUser(isExistsUser.Id);
-        //    return Ok(result);
-        //}
-        //[HttpGet]
-        //[Route("Favourit_Recipe_User_Sorted_By_Time")]
-        //[Authorize]
-        //public async Task<IActionResult> Favourit_Recipe_User(ReadUserRequest request)
-        //{
-        //    string token = HttpContext.Request.Headers["Authorization"];
-        //    string username = _jwtService.DecodeToken(token);
-        //    var isExistsUser = await _userManager.FindByNameAsync(username);
-        //    if (isExistsUser != null)
-        //        return Problem(detail: "UserName not Exists", statusCode: 400);
-        //    var result = await _userService.FavouritFoodByUser(isExistsUser.Id);
-        //    return Ok(result);
-        //}
-        //[HttpGet]
-        //[Route("Favourit_Recipe_User_Sorted_By_Rating")]
-        //[Authorize]
-        //public async Task<IActionResult> Favourit_Recipe_User(ReadUserRequest request)
-        //{
-        //    string token = HttpContext.Request.Headers["Authorization"];
-        //    string username = _jwtService.DecodeToken(token);
-        //    var isExistsUser = await _userManager.FindByNameAsync(username);
-        //    if (isExistsUser != null)
-        //        return Problem(detail: "UserName not Exists", statusCode: 400);
-        //    var result = await _userService.FavouritFoodByUser(isExistsUser.Id);
-        //    return Ok(result);
-        //}
+        [HttpGet]
+        [Route("Favourite_Recipes_User")]
+        [Authorize]
+        public async Task<IActionResult> Favourite_Recipes_User()
+        {
+            //string token = HttpContext.Request.Headers["Authorization"];
+            //string username = _jwtService.DecodeToken(token);
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            if (isExistsUser != null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            var result = await _userService.FavouritRecipeByUser(isExistsUser.Id);
+            List<SummaryRecipeInfoForUserResponse> favouriteRecipe = new List<SummaryRecipeInfoForUserResponse>();
+            foreach (var item in result)
+            {
+
+                favouriteRecipe.Add(new SummaryRecipeInfoForUserResponse
+                {
+                    Score = item.recipe.Score,
+                    ChefName = item.recipe.chef.FullName,
+                    ChefUserName = item.recipe.chef.UserName,
+                    IsFavorite=true,
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name, 1),
+                    Name = item.recipe.Name
+                });
+
+            }
+
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("Favourite_Recipes_User_OrderBy_Score")]
+        [Authorize]
+        public async Task<IActionResult> Favourite_Recipes_User_OrderBy_Score()
+        {
+            //string token = HttpContext.Request.Headers["Authorization"];
+            //string username = _jwtService.DecodeToken(token);
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            if (isExistsUser != null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            var result = await _userService.FavouritRecipeByUserOrderByScore(isExistsUser.Id);
+            List<SummaryRecipeInfoForUserResponse> favouriteRecipe = new List<SummaryRecipeInfoForUserResponse>();
+            foreach (var item in result)
+            {
+
+                favouriteRecipe.Add(new SummaryRecipeInfoForUserResponse
+                {
+                    Score = item.recipe.Score,
+                    ChefName = item.recipe.chef.FullName,
+                    ChefUserName = item.recipe.chef.UserName,
+                    IsFavorite = true,
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name, 1),
+                    Name = item.recipe.Name
+                });
+
+            }
+            return Ok(result);
+        }
         [HttpGet]
         [Route("Recipe_Chef")]
         [Authorize(Roles = StaticUserRoles.CHEF)]
@@ -222,7 +213,21 @@ namespace Gourmet.WebApi.Controllers
                 var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
                 if (isExistsUser != null)
                     return Problem(detail: "UserName not Exists", statusCode: 400);
-                var result = await _chefService.GetRecipesByChefId(isExistsUser.Id);
+                var AllRecipe = await _chefService.GetRecipesByChefId(isExistsUser.Id);
+                List<SummaryRecipeInfoAddedByChefResponse> result = new List<SummaryRecipeInfoAddedByChefResponse>();
+                foreach (var item in AllRecipe)
+                {
+                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(item.food.Name, isExistsUser.UserName, item.Name, 1);
+                    result.Add(new SummaryRecipeInfoAddedByChefResponse
+                    {
+                        ChefName=item.chef.FullName,
+                        ChefUserName=item.chef.UserName,
+                        ImagePath=ImageUrlRecipe,
+                        IsAccepted=item.IsAccepted,
+                        Name=item.Name,
+                        Score=item.Score
+                    });
+                }
                 return Ok(result);
             }
             catch (Exception ex)
@@ -295,6 +300,88 @@ namespace Gourmet.WebApi.Controllers
                 return Problem(detail: ex.Message, statusCode: 400);
             }
         }
+        //[HttpPost("UploadImage")]
+        //public async Task<ActionResult> UploadImage()
+        //{
+        //    try
+        //    {
+        //        string username = Request.Form["message"];
+        //        //string username = "h2";
+        //        var isExistsUser = await _userManager.FindByNameAsync(username);
+
+        //        if (isExistsUser != null)
+        //            return Problem(detail: "UserName not Exists", statusCode: 400);
+        //        var file = Request.Form.Files[0];
+        //        var Result = await _imageProcessorService.UploadUserImage(file, username);
+        //        if (Result.IsSucceed)
+        //        {
+        //            ApplicationUser user = (ApplicationUser)isExistsUser;
+        //            user.ImageURL = _imageProcessorService.GetImagebyUser(username);
+        //            Result.ImagePath = user.ImageURL;
+        //            //Result.ImagePath = _imageProcessorService.GetImagebyUser(username);
+        //            return Ok(Result);
+        //        }
+        //        return Problem(detail: Result.Message, statusCode: 400);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Problem(detail: ex.Message, statusCode: 400);
+        //    }
+        //}
+        //[HttpGet("GetUserImage")]
+        //public async Task<ActionResult> GetUserImage(ReadUserRequest request)
+        //{
+        //    var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+        //    if (isExistsUser != null)
+        //        return Problem(detail: "UserName not Exists", statusCode: 400);
+        //    ApplicationUser user = (ApplicationUser)isExistsUser;
+        //    ImageUrlResponse result = new ImageUrlResponse
+        //    {
+        //        IsSucceed = true,
+        //        ImagePath = user.ImageURL
+        //    };
+        //    return Ok(result);
+
+        //}
+        //[HttpGet]
+        //[Route("Recent_Food_User")]
+        //[Authorize]
+        //public async Task<IActionResult> Recent_Food_User()
+        //{
+        //    string token = HttpContext.Request.Headers["Authorization"];
+        //    string username = _jwtService.DecodeToken(token);
+        //    var isExistsUser = await _userManager.FindByNameAsync(username);
+        //    if (isExistsUser != null)
+        //        return Problem(detail: "UserName not Exists", statusCode: 400);
+        //    var result = await _userService.RecentFoodByUser(isExistsUser.Id);
+        //    return Ok(result);
+        //}
+        //[HttpGet]
+        //[Route("Favourit_Recipe_User_Sorted_By_Time")]
+        //[Authorize]
+        //public async Task<IActionResult> Favourit_Recipe_User(ReadUserRequest request)
+        //{
+        //    string token = HttpContext.Request.Headers["Authorization"];
+        //    string username = _jwtService.DecodeToken(token);
+        //    var isExistsUser = await _userManager.FindByNameAsync(username);
+        //    if (isExistsUser != null)
+        //        return Problem(detail: "UserName not Exists", statusCode: 400);
+        //    var result = await _userService.FavouritFoodByUser(isExistsUser.Id);
+        //    return Ok(result);
+        //}
+        //[HttpGet]
+        //[Route("Favourit_Recipe_User_Sorted_By_Rating")]
+        //[Authorize]
+        //public async Task<IActionResult> Favourit_Recipe_User(ReadUserRequest request)
+        //{
+        //    string token = HttpContext.Request.Headers["Authorization"];
+        //    string username = _jwtService.DecodeToken(token);
+        //    var isExistsUser = await _userManager.FindByNameAsync(username);
+        //    if (isExistsUser != null)
+        //        return Problem(detail: "UserName not Exists", statusCode: 400);
+        //    var result = await _userService.FavouritFoodByUser(isExistsUser.Id);
+        //    return Ok(result);
+        //}
     }
 
 }

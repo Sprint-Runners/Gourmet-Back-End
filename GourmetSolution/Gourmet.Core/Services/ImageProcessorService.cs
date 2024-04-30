@@ -2,6 +2,7 @@
 using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.Xml.Linq;
 namespace Gourmet.Core.Services
 {
     public class ImageProcessorService : IImageProcessorService
@@ -15,9 +16,9 @@ namespace Gourmet.Core.Services
         {
             return this._environment.WebRootPath + "\\Uploads\\User\\" + Username;
         }
-        private string GetFilePathRecipe(string Name, string username)
+        private string GetFilePathRecipe(string FoodName, string username,string Name)
         {
-            return this._environment.WebRootPath + "\\Uploads\\Food\\" + username + "\\" + Name;
+            return this._environment.WebRootPath + "\\Uploads\\Food\\" + FoodName + "\\"+username + "\\" + Name;
         }
         private string GetFilePathFood(string Name)
         {
@@ -76,7 +77,7 @@ namespace Gourmet.Core.Services
                 };
             }
         }
-        public async Task<ImageResponse> UploadRecipeImage(IFormFile file, string Name, string username)
+        public async Task<ImageResponse> UploadRecipeImage(IFormFile file, string FoodName, string username,string Name, int number)
         {
             try
             {
@@ -88,15 +89,15 @@ namespace Gourmet.Core.Services
                         ImagePath = null
 
                     };
-                string Filename = Name;
-                string Filepath = GetFilePathRecipe(Filename, username);
+                //string Filename = Name;
+                string Filepath = GetFilePathRecipe(FoodName, username,Name);
 
                 if (!System.IO.Directory.Exists(Filepath))
                 {
                     System.IO.Directory.CreateDirectory(Filepath);
                 }
 
-                string imagepath = Filepath + "\\image.png";
+                string imagepath = Filepath + "\\image"+ number + ".png";
                 //age aks vojood dash
                 if (System.IO.File.Exists(imagepath))
                 {
@@ -252,10 +253,10 @@ namespace Gourmet.Core.Services
                 };
             }
         }
-        public async Task<ImageResponse> RemoveRecipeImage(string Name, string username)
+        public async Task<ImageResponse> RemoveRecipeImage(string FoodName, string username,string Name,int number)
         {
-            string Filepath = GetFilePathRecipe(Name, username);
-            string Imagepath = Filepath + "\\image.png";
+            string Filepath = GetFilePathRecipe(FoodName, username,Name);
+            string Imagepath = Filepath + "\\image"+number+".png";
             try
             {
                 if (System.IO.File.Exists(Imagepath))
@@ -342,7 +343,7 @@ namespace Gourmet.Core.Services
         public async Task<string> GetImagebyUser(string username)
         {
             string ImageUrl = string.Empty;
-            string HostUrl = "http://localhost:5286";
+            string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathUser(username);
             string Imagepath = Filepath + "\\image.png";
             if (!System.IO.File.Exists(Imagepath))
@@ -356,19 +357,19 @@ namespace Gourmet.Core.Services
             return ImageUrl;
 
         }
-        public async Task<string> GetImagebyRecipe(string Name, string username)
+        public async Task<string> GetImagebyRecipe(string FoodName, string username, string Name, int number)
         {
             string ImageUrl = string.Empty;
-            string HostUrl = "http://localhost:5286";
-            string Filepath = GetFilePathRecipe(Name, username);
-            string Imagepath = Filepath + "\\image.png";
+            string HostUrl = "http://185.129.119.228:4100";
+            string Filepath = GetFilePathRecipe(FoodName, username,Name);
+            string Imagepath = Filepath + "\\image"+number+".png";
             if (!System.IO.File.Exists(Imagepath))
             {
                 ImageUrl = HostUrl + "/uploads/common/noimage.png";
             }
             else
             {
-                ImageUrl = HostUrl + "/uploads/Food/" + username + "/" + Name + "/image.png";
+                ImageUrl = HostUrl + "/uploads/Food/"  + FoodName + "/" + username + "/" + Name + "/image"+number+".png";
             }
             return ImageUrl;
 
@@ -376,7 +377,7 @@ namespace Gourmet.Core.Services
         public async Task<string> GetImagebyFood(string Name)
         {
             string ImageUrl = string.Empty;
-            string HostUrl = "http://localhost:5286";
+            string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathFood(Name);
             string Imagepath = Filepath + "\\image.png";
             if (!System.IO.File.Exists(Imagepath))
@@ -393,7 +394,7 @@ namespace Gourmet.Core.Services
         public async Task<string> GetImagebyCategory(string CategoryName, string Name)
         {
             string ImageUrl = string.Empty;
-            string HostUrl = "http://localhost:5286";
+            string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathCategory(CategoryName, Name);
             string Imagepath = Filepath + "\\image.png";
             if (!System.IO.File.Exists(Imagepath))

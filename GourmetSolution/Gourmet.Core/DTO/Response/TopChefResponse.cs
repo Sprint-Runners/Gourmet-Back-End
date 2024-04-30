@@ -9,6 +9,7 @@ namespace Gourmet.Core.DTO.Response
     public class TopChefResponse
     {
         public string Name {  get; set; }
+        public string UserName {  get; set; }
         public string ImagePath {  get; set; }
         public double Score {  get; set; }
         public string AboutMe { get; set; }
