@@ -14,19 +14,19 @@ namespace Gourmet.Core.Services
         }
         private string GetFilePathUser(string Username)
         {
-            return this._environment.WebRootPath + "\\Uploads\\User\\" + Username;
+            return this._environment.WebRootPath + "/Uploads/User/" + Username;
         }
         private string GetFilePathRecipe(string FoodName, string username,string Name)
         {
-            return this._environment.WebRootPath + "\\Uploads\\Food\\" + FoodName + "\\"+username + "\\" + Name;
+            return this._environment.WebRootPath + "/Uploads/Food/" + FoodName + "/"+username + "/" + Name;
         }
         private string GetFilePathFood(string Name)
         {
-            return this._environment.WebRootPath + "\\Uploads\\Food\\" + Name;
+            return this._environment.WebRootPath + "/Uploads/Food/" + Name;
         }
         private string GetFilePathCategory(string CategoryName, string Name)
         {
-            return this._environment.WebRootPath + "\\Uploads\\Category\\" + CategoryName + "\\" + Name;
+            return this._environment.WebRootPath + "/Uploads/Category/" + CategoryName + "/" + Name;
         }
         public async Task<ImageResponse> UploadUserImage(IFormFile file, string username)
         {
@@ -48,7 +48,7 @@ namespace Gourmet.Core.Services
                     System.IO.Directory.CreateDirectory(Filepath);
                 }
 
-                string imagepath = Filepath + "\\image.png";
+                string imagepath = Filepath + "/image.png";
                 //age aks vojood dash
                 if (System.IO.File.Exists(imagepath))
                 {
@@ -97,7 +97,7 @@ namespace Gourmet.Core.Services
                     System.IO.Directory.CreateDirectory(Filepath);
                 }
 
-                string imagepath = Filepath + "\\image"+ number + ".png";
+                string imagepath = Filepath + "/image"+ number + ".png";
                 //age aks vojood dash
                 if (System.IO.File.Exists(imagepath))
                 {
@@ -146,7 +146,7 @@ namespace Gourmet.Core.Services
                     System.IO.Directory.CreateDirectory(Filepath);
                 }
 
-                string imagepath = Filepath + "\\image.png";
+                string imagepath = Filepath + "/image.png";
                 //age aks vojood dash
                 if (System.IO.File.Exists(imagepath))
                 {
@@ -195,7 +195,7 @@ namespace Gourmet.Core.Services
                     System.IO.Directory.CreateDirectory(Filepath);
                 }
 
-                string imagepath = Filepath + "\\image.png";
+                string imagepath = Filepath + "/image.png";
                 //age aks vojood dash
                 if (System.IO.File.Exists(imagepath))
                 {
@@ -227,7 +227,7 @@ namespace Gourmet.Core.Services
         public async Task<ImageResponse> RemoveUserImage(string Username)
         {
             string Filepath = GetFilePathUser(Username);
-            string Imagepath = Filepath + "\\image.png";
+            string Imagepath = Filepath + "/image.png";
             try
             {
                 if (System.IO.File.Exists(Imagepath))
@@ -256,7 +256,7 @@ namespace Gourmet.Core.Services
         public async Task<ImageResponse> RemoveRecipeImage(string FoodName, string username,string Name,int number)
         {
             string Filepath = GetFilePathRecipe(FoodName, username,Name);
-            string Imagepath = Filepath + "\\image"+number+".png";
+            string Imagepath = Filepath + "/image"+number+".png";
             try
             {
                 if (System.IO.File.Exists(Imagepath))
@@ -285,7 +285,7 @@ namespace Gourmet.Core.Services
         public async Task<ImageResponse> RemoveFoodImage(string Name)
         {
             string Filepath = GetFilePathFood(Name);
-            string Imagepath = Filepath + "\\image.png";
+            string Imagepath = Filepath + "/image.png";
             try
             {
                 if (System.IO.File.Exists(Imagepath))
@@ -314,7 +314,7 @@ namespace Gourmet.Core.Services
         public async Task<ImageResponse> RemoveCategoryImage(string CategoryName, string Name)
         {
             string Filepath = GetFilePathCategory(CategoryName, Name);
-            string Imagepath = Filepath + "\\image.png";
+            string Imagepath = Filepath + "/image.png";
             try
             {
                 if (System.IO.File.Exists(Imagepath))
@@ -345,7 +345,7 @@ namespace Gourmet.Core.Services
             string ImageUrl = string.Empty;
             string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathUser(username);
-            string Imagepath = Filepath + "\\image.png";
+            string Imagepath = Filepath + "/image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
                 ImageUrl = HostUrl + "/uploads/User/common/noimage.png";
@@ -362,7 +362,7 @@ namespace Gourmet.Core.Services
             string ImageUrl = string.Empty;
             string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathRecipe(FoodName, username,Name);
-            string Imagepath = Filepath + "\\image"+number+".png";
+            string Imagepath = Filepath + "/image"+number+".png";
             if (!System.IO.File.Exists(Imagepath))
             {
                 ImageUrl = HostUrl + "/uploads/common/noimage.png";
@@ -379,7 +379,7 @@ namespace Gourmet.Core.Services
             string ImageUrl = string.Empty;
             string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathFood(Name);
-            string Imagepath = Filepath + "\\image.png";
+            string Imagepath = Filepath + "/image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
                 ImageUrl = HostUrl + "/uploads/common/noimage.png";
@@ -396,7 +396,7 @@ namespace Gourmet.Core.Services
             string ImageUrl = string.Empty;
             string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathCategory(CategoryName, Name);
-            string Imagepath = Filepath + "\\image.png";
+            string Imagepath = Filepath + "/image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
                 ImageUrl = HostUrl + "/uploads/common/noimage.png";
