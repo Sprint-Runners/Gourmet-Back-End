@@ -50,9 +50,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
+void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Ali");
 builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
@@ -127,7 +127,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => {
+	    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+	    c.RoutePrefix = "docs";
+}
+	);
+
 
 }
 // Configure the HTTP request pipeline.

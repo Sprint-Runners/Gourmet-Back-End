@@ -22,7 +22,12 @@ namespace Gourmet.Core.Services
         }
         private string GetFilePathFood(string Name)
         {
+<<<<<<< Updated upstream
             return this._environment.WebRootPath + "/Uploads/Food/" + Name;
+=======
+            Console.WriteLine(this._environment.WebRootPath + "\\Uploads\\Food\\" + Name);
+            return this._environment.WebRootPath + "\\Uploads\\Food\\" + Name;
+>>>>>>> Stashed changes
         }
         private string GetFilePathCategory(string CategoryName, string Name)
         {
