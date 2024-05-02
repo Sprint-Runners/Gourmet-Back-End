@@ -4,7 +4,7 @@
 
 namespace Gourmet.Core.Migrations
 {
-    public partial class chech4 : Migration
+    public partial class check2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

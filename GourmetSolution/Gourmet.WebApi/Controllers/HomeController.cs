@@ -32,7 +32,7 @@ namespace Gourmet.WebApi.Controllers
             {
                 var random = new Random();
                 var allIds = _db.Foods.Select(x => x.Id).ToList();
-                var randomIds = allIds.OrderBy(x => random.Next()).Take(3).ToList();
+                var randomIds = allIds.OrderBy(x => random.Next()).Take(4).ToList();
                 var randomRows = _db.Foods.Where(x => randomIds.Contains(x.Id)).ToList();
                 List<FoodInformationResponse> randomFood = new List<FoodInformationResponse>();
                 //List<SummaryRecipeInfoResponse> Top_Recipes = new List<SummaryRecipeInfoResponse>();

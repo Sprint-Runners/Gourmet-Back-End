@@ -72,7 +72,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_PSOI_Category")]
-        //[Authorize(Roles = StaticUserRoles.ADMIN)]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_PSOI_Category(AddCategoryRequest request)
         {
             try
@@ -80,6 +80,10 @@ namespace Gourmet.WebApi.Controllers
                 var result = await _categoriesService.CreatePSOICategory(request);
                 if (result.IsSucceed)
                 {
+                    if (Request.Form.Files.Count == 0)
+                    {
+                        return Ok("Not Image Uploaded");
+                    }
                     var file = Request.Form.Files[0];
                     var ResultImage = await _imageProcessorService.UploadCategoryImage(file, "PSOI",result.PSOI.Name);
                     if (ResultImage.IsSucceed)
@@ -87,7 +91,8 @@ namespace Gourmet.WebApi.Controllers
                         result.PSOI.ImageUrl = await _imageProcessorService.GetImagebyCategory("PSOI", result.PSOI.Name);
                         return Ok(result.PSOI);
                     }
-                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                    //return Problem(detail: ResultImage.Message, statusCode: 400);
+                    return Ok("Not Image Uploaded");
                 }
                 return Problem(detail: result.Message, statusCode: 400);
             }
@@ -99,14 +104,19 @@ namespace Gourmet.WebApi.Controllers
 
         [HttpPost]
         [Route("Add_CM_Category")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_CM_Category(AddCategoryRequest request)
         {
             try
             {
+                Console.WriteLine("vkfhfjhgcgjhdcgddhd**********");
                 var result = await _categoriesService.CreateCMCategory(request);
                 if (result.IsSucceed)
                 {
+                    if (Request.Form.Files.Count == 0)
+                    {
+                        return Ok("Not Image Uploaded");
+                    }
                     var file = Request.Form.Files[0];
                     var ResultImage = await _imageProcessorService.UploadCategoryImage(file, "CM", result.CM.Name);
                     if (ResultImage.IsSucceed)
@@ -114,7 +124,8 @@ namespace Gourmet.WebApi.Controllers
                         result.CM.ImageUrl = await _imageProcessorService.GetImagebyCategory("CM", result.CM.Name);
                         return Ok(result.CM);
                     }
-                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                    //return Problem(detail: ResultImage.Message, statusCode: 400);
+                    return Ok("Not Image Uploaded");
                 }
                 return Problem(detail: result.Message, statusCode: 400);
             }
@@ -133,6 +144,10 @@ namespace Gourmet.WebApi.Controllers
                 var result = await _categoriesService.CreateFTCategory(request);
                 if (result.IsSucceed)
                 {
+                    if (Request.Form.Files.Count == 0)
+                    {
+                        return Ok("Not Image Uploaded");
+                    }
                     var file = Request.Form.Files[0];
                     var ResultImage = await _imageProcessorService.UploadCategoryImage(file, "FT", result.FT.Name);
                     if (ResultImage.IsSucceed)
@@ -140,7 +155,8 @@ namespace Gourmet.WebApi.Controllers
                         result.FT.ImageUrl = await _imageProcessorService.GetImagebyCategory("FT", result.FT.Name);
                         return Ok(result.FT);
                     }
-                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                    //return Problem(detail: ResultImage.Message, statusCode: 400);
+                    return Ok("Not Image Uploaded");
                 }
                 return Problem(detail: result.Message, statusCode: 400);
             }
@@ -159,6 +175,10 @@ namespace Gourmet.WebApi.Controllers
                 var result = await _categoriesService.CreateNCategory(request);
                 if (result.IsSucceed)
                 {
+                    if (Request.Form.Files.Count == 0)
+                    {
+                        return Ok("Not Image Uploaded");
+                    }
                     var file = Request.Form.Files[0];
                     var ResultImage = await _imageProcessorService.UploadCategoryImage(file, "N", result.N.Name);
                     if (ResultImage.IsSucceed)
@@ -166,7 +186,8 @@ namespace Gourmet.WebApi.Controllers
                         result.N.ImageUrl = await _imageProcessorService.GetImagebyCategory("N", result.N.Name);
                         return Ok(result.N);
                     }
-                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                    //return Problem(detail: ResultImage.Message, statusCode: 400);
+                    return Ok("Not Image Uploaded");
                 }
                 return Problem(detail: result.Message, statusCode: 400);
             }
@@ -185,6 +206,10 @@ namespace Gourmet.WebApi.Controllers
                 var result = await _categoriesService.CreateMTCategory(request);
                 if (result.IsSucceed)
                 {
+                    if (Request.Form.Files.Count == 0)
+                    {
+                        return Ok("Not Image Uploaded");
+                    }
                     var file = Request.Form.Files[0];
                     var ResultImage = await _imageProcessorService.UploadCategoryImage(file, "MT", result.MT.Name);
                     if (ResultImage.IsSucceed)
@@ -192,7 +217,27 @@ namespace Gourmet.WebApi.Controllers
                         result.MT.ImageUrl = await _imageProcessorService.GetImagebyCategory("MT", result.MT.Name);
                         return Ok(result.MT);
                     }
-                    return Problem(detail: ResultImage.Message, statusCode: 400);
+                    //return Problem(detail: ResultImage.Message, statusCode: 400);
+                    return Ok("Not Image Uploaded");
+                }
+                return Problem(detail: result.Message, statusCode: 400);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
+        }
+        [HttpPost]
+        [Route("Add_DL_Category")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> Add_DL_Category(AddCategoryRequest request)
+        {
+            try
+            {
+                var result = await _categoriesService.CreateDLCategory(request);
+                if (result.IsSucceed)
+                {
+                    return Ok(result.DL);
                 }
                 return Problem(detail: result.Message, statusCode: 400);
             }

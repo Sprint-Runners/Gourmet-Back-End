@@ -34,7 +34,7 @@ namespace Gourmet.Core.Services
             Primary_Source_of_Ingredient PSOI = new Primary_Source_of_Ingredient
             {
                 Id = new Guid(),
-                Name = request.Name.ToLower(),
+                Name = request.Name,
 
             };
             _db.PSOIs.Add(PSOI);
@@ -61,7 +61,7 @@ namespace Gourmet.Core.Services
             Cooking_Method CM = new Cooking_Method
             {
                 Id = new Guid(),
-                Name = request.Name.ToLower(),
+                Name = request.Name,
 
             };
             _db.CMs.Add(CM);
@@ -87,7 +87,7 @@ namespace Gourmet.Core.Services
             }
             Food_type FT = new Food_type            {
                 Id = new Guid(),
-                Name = request.Name.ToLower(),
+                Name = request.Name,
 
             };
             _db.FTs.Add(FT);
@@ -114,7 +114,7 @@ namespace Gourmet.Core.Services
             Nationality N = new Nationality
             {
                 Id = new Guid(),
-                Name = request.Name.ToLower(),
+                Name = request.Name,
 
             };
             _db.Ns.Add(N);
@@ -141,7 +141,7 @@ namespace Gourmet.Core.Services
             Meal_Type MT = new Meal_Type
             {
                 Id = new Guid(),
-                Name = request.Name.ToLower(),
+                Name = request.Name,
 
             };
             _db.MTs.Add(MT);
@@ -151,6 +151,33 @@ namespace Gourmet.Core.Services
                 IsSucceed = true,
                 Message = "MT Added Successfully",
                 MT=MT
+            };
+        }
+        public async Task<DLResponse> CreateDLCategory(AddCategoryRequest request)
+        {
+            var isExistMT = _db.DLs.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            if (isExistMT != null)
+            {
+                return new DLResponse
+                {
+                    IsSucceed = false,
+                    Message = "This DL Already Exists",
+                    DL = null
+                };
+            }
+            Difficulty_Level DL = new Difficulty_Level
+            {
+                Id = new Guid(),
+                Name = request.Name,
+
+            };
+            _db.DLs.Add(DL);
+            _db.SaveChanges();
+            return new DLResponse
+            {
+                IsSucceed = true,
+                Message = "DL Added Successfully",
+                DL = DL
             };
         }
         public async Task<IEnumerable<Primary_Source_of_Ingredient>> GetAllPSOICategory()

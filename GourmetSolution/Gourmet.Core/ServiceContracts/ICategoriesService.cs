@@ -22,6 +22,7 @@ namespace Gourmet.Core.ServiceContracts
         Task<FTResponse> CreateFTCategory(AddCategoryRequest request);
         Task<NResponse> CreateNCategory(AddCategoryRequest request);
         Task<MTResponse> CreateMTCategory(AddCategoryRequest request);
+        Task<DLResponse> CreateDLCategory(AddCategoryRequest request);
 
     }
 }
