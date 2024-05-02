@@ -34,6 +34,7 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<Email_Pass> Email_Passwords { get; set; }
         public DbSet<Temp_Password> Temproary_Passwords { get; set; }
         public DbSet<Secret> Secrets { get; set; }
+        public DbSet<Special_Category> Special_Categories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             base.OnModelCreating(modelbuilder);

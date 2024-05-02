@@ -19,5 +19,10 @@ namespace Gourmet.Core.Domain.Entities
         [Required]
         [ValidateNever]
         public string ImgeUrl { get; set; }
+        public int Timetocook { get; set; }
+        public bool Special_Occasion { get; set; }
+        public bool Is_Main { get; set; }
+        public bool Is_breakfast { get; set; }
+
     }
 }
