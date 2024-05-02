@@ -24,21 +24,21 @@ namespace Gourmet.Core.Domain.Entities
         [Required(ErrorMessage = "Description is required")]
         [MaxLength(15000)]
         public string Description { get; set; }
-        [Required]
-        [ValidateNever]
-        public string ImgeUrl1 { get; set; }
         //[Required]
         [ValidateNever]
-        public string ImgeUrl2 { get; set; }
+        public string? ImgeUrl1 { get; set; }
         //[Required]
         [ValidateNever]
-        public string ImgeUrl3 { get; set; }
+        public string? ImgeUrl2 { get; set; }
         //[Required]
         [ValidateNever]
-        public string ImgeUrl4 { get; set; }
+        public string? ImgeUrl3 { get; set; }
         //[Required]
         [ValidateNever]
-        public string ImgeUrl5 { get; set; }
+        public string? ImgeUrl4 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string? ImgeUrl5 { get; set; }
         [Required]
         public string IngredientsString { get; set; }
         public string StepsString { get; set; }

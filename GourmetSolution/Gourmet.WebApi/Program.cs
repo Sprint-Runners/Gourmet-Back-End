@@ -50,9 +50,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Ali");
+void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
 builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
@@ -126,12 +126,18 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => {
-	    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-	    c.RoutePrefix = "docs";
-}
-	);
+    //    app.UseSwagger();
+    //    app.UseSwaggerUI(c => {
+    //	    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    //	    c.RoutePrefix = "docs";
+    //}
+    //	);
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+    }
 
 
 }

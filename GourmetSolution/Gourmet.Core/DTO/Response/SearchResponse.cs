@@ -13,4 +13,9 @@ namespace Gourmet.Core.DTO.Response
         public int PartialRatioScore {  get; set; }
         public int RatioScore { get; set; }
     }
+    public class SearchRecipeResponse
+    {
+        public bool Success { get; set; }
+        public string Message {  get; set; }
+    }
 }

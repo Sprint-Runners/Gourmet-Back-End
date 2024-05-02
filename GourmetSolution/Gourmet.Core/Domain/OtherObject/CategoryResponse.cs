@@ -42,4 +42,11 @@ namespace Gourmet.Core.Domain.OtherObject
         public Meal_Type MT {  get; set; }
 
     }
+    public class DLResponse
+    {
+        public bool IsSucceed { get; set; }
+        public string Message { get; set; }
+        public Difficulty_Level DL { get; set; }
+
+    }
 }

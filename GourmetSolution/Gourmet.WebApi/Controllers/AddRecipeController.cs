@@ -120,11 +120,45 @@ namespace Gourmet.WebApi.Controllers
 
 
         }
+        [HttpGet("Validate_Recipe_Name")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
+        public async Task<IActionResult> ValidateRecipeName(SearchRequest request)
+        {
+            string searchTerm = request.SearchTerm.ToLower().Trim();
+            if (searchTerm.Length < 5)
+            {
+                return Ok(new SearchRecipeResponse
+                {
+                    Success = false,
+                    Message = "This name is very short"
+                });
+            }
+            var allRecipes = await _db.Recipes.ToListAsync();
+            var Recipe=_db.Recipes.Where(r => r.Name.ToLower() == searchTerm.ToLower()).FirstOrDefault();
+            if (Recipe == null)
+            {
+                return Ok(new SearchRecipeResponse
+                {
+                    Success = true,
+                    Message="this name is available"
+                });
+                
+            }
+            else
+            {
+                return Ok(new SearchRecipeResponse
+                {
+                    Success = false,
+                    Message = "This name is used"
+                });
+                
+            }
+        }
         [HttpGet("Search_Ingredient")]
         [Authorize(Roles =StaticUserRoles.CHEF)]
-        public async Task<IActionResult> Search_Ingredient(string searchTerm)
+        public async Task<IActionResult> Search_Ingredient(SearchRequest request)
         {
-            searchTerm = searchTerm.ToLower().Trim();
+            string searchTerm = request.SearchTerm.ToLower().Trim();
             var allIngredients = await _db.Ingredients.ToListAsync();
 
             var searchResults = allIngredients.Select(obj => new SearchResponse
@@ -157,9 +191,9 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpGet("Search_Food")]
         [Authorize(Roles = StaticUserRoles.CHEF)]
-        public async Task<IActionResult> Search_Food(string searchTerm)
+        public async Task<IActionResult> Search_Food(SearchRequest request)
         {
-            searchTerm = searchTerm.ToLower().Trim();
+            string searchTerm = request.SearchTerm.ToLower().Trim();
             var allFoods = await _db.Foods.ToListAsync();
 
             var searchResults = allFoods.Select(obj => new SearchResponse
@@ -204,7 +238,11 @@ namespace Gourmet.WebApi.Controllers
                 var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
                 if (isExistsUser != null)
                     return Problem(detail: "UserName not Exists", statusCode: 400);
-
+                request.NumberOfPicture = Request.Form.Files.Count;
+                if(request.NumberOfPicture > 5) 
+                {
+                    return Problem(detail: "The number of photos is more than the limit", statusCode: 400);
+                }
                 if (request.NotExistFoodName != null || request.List_Ingriedents.Where(ING=>ING.Item4==false).ToList().Count != 0)
                 {
                     var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, finduser.UserName);

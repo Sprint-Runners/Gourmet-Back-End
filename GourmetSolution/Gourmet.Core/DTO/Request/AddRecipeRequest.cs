@@ -44,6 +44,6 @@ namespace Gourmet.Core.DTO.Request
         public List<Tuple<int, string>> Steps { get; set; }
         public int Time { get; set; }
         public string difficulty_level { get; set; }
-        public int NumberOfPicture { get; set; }
+        public int? NumberOfPicture { get; set; }
     }
 }

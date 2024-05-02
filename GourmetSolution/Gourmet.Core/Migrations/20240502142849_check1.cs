@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Gourmet.Core.Migrations
 {
-    public partial class Initial : Migration
+    public partial class check1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,6 +32,7 @@ namespace Gourmet.Core.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Aboutme = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Score = table.Column<double>(type: "float", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -59,7 +60,7 @@ namespace Gourmet.Core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,7 +97,11 @@ namespace Gourmet.Core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ImgeUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImgeUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timetocook = table.Column<int>(type: "int", nullable: false),
+                    Special_Occasion = table.Column<bool>(type: "bit", nullable: false),
+                    Is_Main = table.Column<bool>(type: "bit", nullable: false),
+                    Is_breakfast = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -147,7 +152,7 @@ namespace Gourmet.Core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,6 +182,18 @@ namespace Gourmet.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Secrets", x => x.Email);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Special_Categories",
+                columns: table => new
+                {
+                    Title = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Special_Categories", x => x.Title);
                 });
 
             migrationBuilder.CreateTable(
@@ -306,11 +323,11 @@ namespace Gourmet.Core.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ChefId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", maxLength: 15000, nullable: false),
-                    ImgeUrl1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl3 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl4 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl5 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl5 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IngredientsString = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StepsString = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NotExistIngredients = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -382,11 +399,11 @@ namespace Gourmet.Core.Migrations
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Score = table.Column<double>(type: "float", nullable: false),
                     Number_Scorer = table.Column<int>(type: "int", nullable: false),
-                    ImgeUrl1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl3 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl4 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgeUrl5 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgeUrl1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgeUrl5 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     List_Ingriedents = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Primary_Source_of_IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cooking_MethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -746,6 +763,9 @@ namespace Gourmet.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "Secrets");
+
+            migrationBuilder.DropTable(
+                name: "Special_Categories");
 
             migrationBuilder.DropTable(
                 name: "Temproary_Passwords");

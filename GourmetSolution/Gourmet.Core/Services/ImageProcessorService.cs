@@ -348,11 +348,11 @@ namespace Gourmet.Core.Services
             string Imagepath = Filepath + "/image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
-                ImageUrl = HostUrl + "/uploads/User/common/noimage.png";
+                ImageUrl = HostUrl + "/Uploads/User/common/noimage.png";
             }
             else
             {
-                ImageUrl = HostUrl + "/uploads/User/" + username + "/image.png";
+                ImageUrl = HostUrl + "/Uploads/User/" + username + "/image.png";
             }
             return ImageUrl;
 
@@ -365,11 +365,11 @@ namespace Gourmet.Core.Services
             string Imagepath = Filepath + "/image"+number+".png";
             if (!System.IO.File.Exists(Imagepath))
             {
-                ImageUrl = HostUrl + "/uploads/common/noimage.png";
+                ImageUrl = HostUrl + "/Uploads/common/noimage.png";
             }
             else
             {
-                ImageUrl = HostUrl + "/uploads/Food/"  + FoodName + "/" + username + "/" + Name + "/image"+number+".png";
+                ImageUrl = HostUrl + "/Uploads/Food/"  + FoodName + "/" + username + "/" + Name + "/image"+number+".png";
             }
             return ImageUrl;
 
@@ -382,11 +382,11 @@ namespace Gourmet.Core.Services
             string Imagepath = Filepath + "/image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
-                ImageUrl = HostUrl + "/uploads/common/noimage.png";
+                ImageUrl = HostUrl + "/Uploads/common/noimage.png";
             }
             else
             {
-                ImageUrl = HostUrl + "/uploads/Food/" + Name + "/image.png";
+                ImageUrl = HostUrl + "/Uploads/Food/" + Name + "/image.png";
             }
             return ImageUrl;
 
@@ -399,11 +399,11 @@ namespace Gourmet.Core.Services
             string Imagepath = Filepath + "/image.png";
             if (!System.IO.File.Exists(Imagepath))
             {
-                ImageUrl = HostUrl + "/uploads/common/noimage.png";
+                ImageUrl = HostUrl + "/Uploads/common/noimage.png";
             }
             else
             {
-                ImageUrl = HostUrl + "/uploads/Category/" + CategoryName + "/" + Name + "/image.png";
+                ImageUrl = HostUrl + "/Uploads/Category/" + CategoryName + "/" + Name + "/image.png";
             }
             return ImageUrl;
 
