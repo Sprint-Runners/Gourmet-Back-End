@@ -47,7 +47,8 @@ namespace Gourmet.WebApi.Controllers
                     UserName = readuser.UserName,
                     Email = readuser.Email,
                     PhoneNumber = readuser.PhoneNumber,
-                    Aboutme = readuser.Aboutme
+                    Aboutme = readuser.Aboutme,
+                    Gen=readuser.Gender
                 };
                 return Ok(response);
             }
@@ -63,11 +64,11 @@ namespace Gourmet.WebApi.Controllers
             {
                 EditUserRequest request = new EditUserRequest
                 {
-                    PhoneNumber = "09225067228",
+                    PhoneNumber = Request.Form["phoneNumber"],
                     Email = Request.Form["email"],
                     Aboutme = Request.Form["aboutYou"],
                     FullName = Request.Form["fullName"],
-                    Gen = "zan"
+                    Gen = Request.Form["gender"]
                 };
                 //string token = HttpContext.Request.Headers["Authorization"];
                 //string username = _jwtService.DecodeToken(token);
@@ -90,7 +91,8 @@ namespace Gourmet.WebApi.Controllers
                             UserName = user.UserName,
                             Email = user.Email,
                             PhoneNumber = user.PhoneNumber,
-                            Aboutme = user.Aboutme
+                            Aboutme = user.Aboutme,
+                            Gen = user.Gender
                         };
                         //Result.ImagePath = user.ImageURL;
                         return Ok(new GeneralResponse { Message = EditResult.Message });

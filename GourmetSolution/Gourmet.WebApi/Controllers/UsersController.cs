@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Gourmet.Core.Domain.Other_Object;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -68,17 +69,31 @@ namespace Gourmet.WebApi.Controllers
             {
                 var claims = _userManager.GetClaimsAsync(loginResult.user).Result.ToList();
                 var roles = _userManager.GetRolesAsync(loginResult.user).Result.ToList();
-                foreach (var role in roles)
+                string Role = "";
+                if (roles.Contains("ADMIN"))
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
+                    Role = "ADMIN";
                 }
+                else if (roles.Contains("CHEF"))
+                {
+                    Role = "CHEF";
+                }
+                else
+                {
+                    Role = "USER";
+                }
+                claims.Add(new Claim(ClaimTypes.Role, Role));
+                
                 var token = _jwtservice.CreateJwtToken(loginResult.user,claims);
+                
+                
                 AuthenticationResponse login_response = new AuthenticationResponse
                 {
-                    //Email = new_User.UserName,
+                    Email = loginResult.user.UserName,
                     JWT_Token = token,
                     //    Expiration = Expiration,
-                    Period = _configuration["JWT:Expiration_Time"]
+                    Period = _configuration["JWT:Expiration_Time"],
+                    Role=Role
                 };
                 return Ok(login_response);
             }

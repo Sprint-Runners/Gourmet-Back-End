@@ -150,12 +150,14 @@ namespace Gourmet.Core.Services
             string ingredients = "";
             string NotExistingredients = "";
             string Steps = "";
-            foreach (var item in request.List_Ingriedents)
+            var ExistIngredients = request.List_Ingriedents.Where(ing => ing.Item4 == true).ToList();
+            foreach (var item in ExistIngredients)
             {
                 string ingredient = item.Item1 + "," + item.Item2+","+item.Item3;
                 ingredients = ingredients+ingredient+".";
             }
-            foreach (var item in request.Not_Exist_List_Ingriedents)
+            var NotExistIngredients = request.List_Ingriedents.Where(ing => ing.Item4 == false).ToList();
+            foreach (var item in NotExistIngredients)
             {
                 string ingredient = item.Item1 + "," + item.Item2+","+item.Item3;
                 NotExistingredients = NotExistingredients + ingredient + ".";

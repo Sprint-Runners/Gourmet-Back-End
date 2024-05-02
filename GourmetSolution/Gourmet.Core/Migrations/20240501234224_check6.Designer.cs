@@ -4,6 +4,7 @@ using Gourmet.Core.DataBase.GourmetDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gourmet.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240501234224_check6")]
+    partial class check6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,22 +82,10 @@ namespace Gourmet.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Is_Main")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Is_breakfast")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<bool>("Special_Occasion")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Timetocook")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -412,20 +402,6 @@ namespace Gourmet.Core.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("Secrets");
-                });
-
-            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Special_Category", b =>
-                {
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Title");
-
-                    b.ToTable("Special_Categories");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Temp_Password", b =>
