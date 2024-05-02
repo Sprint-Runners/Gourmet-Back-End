@@ -122,29 +122,43 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpGet("Validate_Recipe_Name")]
         [Authorize(Roles = StaticUserRoles.CHEF)]
-        public async Task<IActionResult> ValidateRecipeName(string searchTerm)
+        public async Task<IActionResult> ValidateRecipeName(SearchRequest request)
         {
-            searchTerm = searchTerm.ToLower().Trim();
+            string searchTerm = request.SearchTerm.ToLower().Trim();
             if (searchTerm.Length < 5)
             {
-                return Problem(detail: "This name is very short", statusCode: 400);
+                return Ok(new SearchRecipeResponse
+                {
+                    Success = false,
+                    Message = "This name is very short"
+                });
             }
             var allRecipes = await _db.Recipes.ToListAsync();
             var Recipe=_db.Recipes.Where(r => r.Name.ToLower() == searchTerm.ToLower()).FirstOrDefault();
             if (Recipe == null)
             {
-                return Ok();
+                return Ok(new SearchRecipeResponse
+                {
+                    Success = true,
+                    Message="this name is available"
+                });
+                
             }
             else
             {
-                return Problem(detail: "This name is used", statusCode: 400);
+                return Ok(new SearchRecipeResponse
+                {
+                    Success = false,
+                    Message = "This name is used"
+                });
+                
             }
         }
         [HttpGet("Search_Ingredient")]
         [Authorize(Roles =StaticUserRoles.CHEF)]
-        public async Task<IActionResult> Search_Ingredient(string searchTerm)
+        public async Task<IActionResult> Search_Ingredient(SearchRequest request)
         {
-            searchTerm = searchTerm.ToLower().Trim();
+            string searchTerm = request.SearchTerm.ToLower().Trim();
             var allIngredients = await _db.Ingredients.ToListAsync();
 
             var searchResults = allIngredients.Select(obj => new SearchResponse
@@ -177,9 +191,9 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpGet("Search_Food")]
         [Authorize(Roles = StaticUserRoles.CHEF)]
-        public async Task<IActionResult> Search_Food(string searchTerm)
+        public async Task<IActionResult> Search_Food(SearchRequest request)
         {
-            searchTerm = searchTerm.ToLower().Trim();
+            string searchTerm = request.SearchTerm.ToLower().Trim();
             var allFoods = await _db.Foods.ToListAsync();
 
             var searchResults = allFoods.Select(obj => new SearchResponse
