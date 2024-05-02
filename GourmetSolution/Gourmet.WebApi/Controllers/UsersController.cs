@@ -69,11 +69,6 @@ namespace Gourmet.WebApi.Controllers
             {
                 var claims = _userManager.GetClaimsAsync(loginResult.user).Result.ToList();
                 var roles = _userManager.GetRolesAsync(loginResult.user).Result.ToList();
-                foreach (var role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
-                }
-                var token = _jwtservice.CreateJwtToken(loginResult.user,claims);
                 string Role = "";
                 if (roles.Contains("ADMIN"))
                 {
@@ -87,6 +82,11 @@ namespace Gourmet.WebApi.Controllers
                 {
                     Role = "USER";
                 }
+                claims.Add(new Claim(ClaimTypes.Role, Role));
+                
+                var token = _jwtservice.CreateJwtToken(loginResult.user,claims);
+                
+                
                 AuthenticationResponse login_response = new AuthenticationResponse
                 {
                     Email = loginResult.user.UserName,

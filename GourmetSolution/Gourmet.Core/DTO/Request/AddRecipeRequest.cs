@@ -17,8 +17,8 @@ namespace Gourmet.Core.DTO.Request
         public string NotExistFoodName { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<Tuple<string, double,string>> List_Ingriedents { get; set; }
-        public List<Tuple<string, double,string>> Not_Exist_List_Ingriedents { get; set; }
+        public List<Tuple<string, double,string,bool>> List_Ingriedents { get; set; }
+        //public List<Tuple<string, double,string>> Not_Exist_List_Ingriedents { get; set; }
         public string primary_source_of_ingredient { get; set; }
         public string cooking_method { get; set; }
         public string food_type { get; set; }

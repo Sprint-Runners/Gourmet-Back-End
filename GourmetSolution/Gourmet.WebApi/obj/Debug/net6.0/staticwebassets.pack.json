@@ -29,6 +29,22 @@
       "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Dinner\\image.png"
     },
     {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Lunch\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Lunch\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Herbal\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Herbal\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Meaty\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Meaty\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Mixture\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Mixture\\image.png"
+    },
+    {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegeterian\\image.png",
       "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Vegeterian\\image.png"
     },

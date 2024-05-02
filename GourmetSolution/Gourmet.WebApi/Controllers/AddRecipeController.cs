@@ -24,7 +24,7 @@ namespace Gourmet.WebApi.Controllers
         private readonly IJwt _jwtService;
         private readonly IImageProcessorService _imageProcessorService;
         private readonly ICategoriesService _categoriesService;
-        public AddRecipeController(AppDbContext db, RecipeService recipeService, UserManager<Chef> userManager, IJwt jwt, IImageProcessorService imageProcessorService, ICategoriesService categoriesService)
+        public AddRecipeController(AppDbContext db, IRecipeService recipeService, UserManager<Chef> userManager, IJwt jwt, IImageProcessorService imageProcessorService, ICategoriesService categoriesService)
         {
             _db = db;
             _recipeService = recipeService;
@@ -121,24 +121,34 @@ namespace Gourmet.WebApi.Controllers
 
         }
         [HttpGet("Search_Ingredient")]
-        [Authorize(Roles = StaticUserRoles.CHEF)]
+        [Authorize(Roles =StaticUserRoles.CHEF)]
         public async Task<IActionResult> Search_Ingredient(string searchTerm)
         {
             searchTerm = searchTerm.ToLower().Trim();
             var allIngredients = await _db.Ingredients.ToListAsync();
 
-            var searchResults = allIngredients.Select(obj => new
+            var searchResults = allIngredients.Select(obj => new SearchResponse
             {
-                Ingredient_Name = obj.Name,
+                SearchName = obj.Name,
                 PartialRatioScore = Fuzz.PartialRatio(obj.Name.ToLower().Trim(), searchTerm),
                 RatioScore = Fuzz.Ratio(obj.Name.ToLower().Trim(), searchTerm)
-            }).Where(result => result.PartialRatioScore >= 50 || result.RatioScore >= 50)
+            }).Where(result => result.PartialRatioScore >= 50 || result.RatioScore >= 70)
             .OrderByDescending(result => Math.Max(result.PartialRatioScore, result.RatioScore))
             .ToList();
-
+            var Ingredient = allIngredients.Where(ing => ing.Name.ToLower() == searchTerm.ToLower()).FirstOrDefault();
+            bool BoolResult;
+            if (Ingredient == null)
+            {
+                BoolResult = false;
+            }
+            else
+            {
+                BoolResult = true;
+            }
             if (searchResults.Any())
             {
-                return Ok(searchResults);
+                Tuple<bool, List<SearchResponse>> Results = new (BoolResult, searchResults);
+                return Ok(Results);
             }
             else
             {
@@ -152,18 +162,28 @@ namespace Gourmet.WebApi.Controllers
             searchTerm = searchTerm.ToLower().Trim();
             var allFoods = await _db.Foods.ToListAsync();
 
-            var searchResults = allFoods.Select(obj => new
+            var searchResults = allFoods.Select(obj => new SearchResponse
             {
-                Ingredient_Name = obj.Name,
+                SearchName = obj.Name,
                 PartialRatioScore = Fuzz.PartialRatio(obj.Name.ToLower().Trim(), searchTerm),
                 RatioScore = Fuzz.Ratio(obj.Name.ToLower().Trim(), searchTerm)
             }).Where(result => result.PartialRatioScore >= 50 || result.RatioScore >= 50)
             .OrderByDescending(result => Math.Max(result.PartialRatioScore, result.RatioScore))
             .ToList();
-
+            var Food = allFoods.Where(fo => fo.Name.ToLower() == searchTerm.ToLower()).FirstOrDefault();
+            bool BoolResult;
+            if (Food == null)
+            {
+                BoolResult = false;
+            }
+            else
+            {
+                BoolResult = true;
+            }
             if (searchResults.Any())
             {
-                return Ok(searchResults);
+                Tuple<bool, List<SearchResponse>> Results = new(BoolResult, searchResults);
+                return Ok(Results);
             }
             else
             {
@@ -185,7 +205,7 @@ namespace Gourmet.WebApi.Controllers
                 if (isExistsUser != null)
                     return Problem(detail: "UserName not Exists", statusCode: 400);
 
-                if (request.NotExistFoodName != null || request.Not_Exist_List_Ingriedents != null)
+                if (request.NotExistFoodName != null || request.List_Ingriedents.Where(ING=>ING.Item4==false).ToList().Count != 0)
                 {
                     var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, finduser.UserName);
                     if (result.IsSucceed)

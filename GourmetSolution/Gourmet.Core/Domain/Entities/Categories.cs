@@ -23,7 +23,7 @@ namespace Gourmet.Core.Domain.Entities
         [Required(ErrorMessage = "name is required")]
         [MaxLength(150)]
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
     }
     public class Food_type
     {
@@ -41,7 +41,7 @@ namespace Gourmet.Core.Domain.Entities
         [Required(ErrorMessage = "name is required")]
         [MaxLength(150)]
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
     }
     public class Meal_Type
     {
