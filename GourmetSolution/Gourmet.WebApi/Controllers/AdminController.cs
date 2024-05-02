@@ -72,7 +72,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_PSOI_Category")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_PSOI_Category(AddCategoryRequest request)
         {
             try
@@ -136,7 +136,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_FT_Category")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_FT_Category(AddCategoryRequest request)
         {
             try
@@ -167,7 +167,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_N_Category")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_N_Category(AddCategoryRequest request)
         {
             try
@@ -198,7 +198,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_MT_Category")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_MT_Category(AddCategoryRequest request)
         {
             try
@@ -229,7 +229,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_DL_Category")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_DL_Category(AddCategoryRequest request)
         {
             try
@@ -248,7 +248,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Accept_recipe")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Accept_recipe(AcceptedRecipeRequest request)
         {
             try
