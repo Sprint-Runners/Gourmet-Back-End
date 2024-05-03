@@ -120,7 +120,7 @@ namespace Gourmet.WebApi.Controllers
 
 
         }
-        [HttpGet("Validate_Recipe_Name")]
+        [HttpPut("Validate_Recipe_Name")]
         [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> ValidateRecipeName(SearchRequest request)
         {
@@ -154,7 +154,7 @@ namespace Gourmet.WebApi.Controllers
                 
             }
         }
-        [HttpGet("Search_Ingredient")]
+        [HttpPut("Search_Ingredient")]
         [Authorize(Roles =StaticUserRoles.CHEF)]
         public async Task<IActionResult> Search_Ingredient(SearchRequest request)
         {
@@ -189,7 +189,7 @@ namespace Gourmet.WebApi.Controllers
                 return Problem(detail: "Not Found", statusCode: 400);
             }
         }
-        [HttpGet("Search_Food")]
+        [HttpPut("Search_Food")]
         [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Search_Food(SearchRequest request)
         {

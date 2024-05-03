@@ -82,8 +82,9 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPut("AllRecipesUser")]
         [Authorize]
-        public async Task<IActionResult> AllRecipesUser(string FoodName)
+        public async Task<IActionResult> AllRecipesUser(ShowFoodpageRequest request)
         {
+            string FoodName = request.FoodName;
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var user = await _userManager.GetUserAsync(currentUser);
             var response = await _foodService.GetAllRecipe(FoodName);
@@ -142,8 +143,9 @@ namespace Gourmet.WebApi.Controllers
             return Problem(detail: response.Message, statusCode: 400);
         }
         [HttpGet("AllRecipes")]
-        public async Task<IActionResult> AllRecipes(string FoodName)
+        public async Task<IActionResult> AllRecipes(ShowFoodpageRequest request)
         {
+            string FoodName = request.FoodName;
             var response = await _foodService.GetAllRecipe(FoodName);
             List<RecipeInformationResponse> results = new List<RecipeInformationResponse>();
             if (response.IsSucceed)
