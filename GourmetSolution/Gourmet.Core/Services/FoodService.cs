@@ -76,80 +76,80 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<List<Special_Foods>> Get_Special()
-        {
-            List<Special_Foods> specials = new List<Special_Foods>();
-            //Quick Cook
-            var isExistFood_Quick = _db.Foods.Where(r => r.Timetocook!=null && r.Timetocook<30);
-            Special_Foods Special_Quick;
-            if (isExistFood_Quick == null)
-                Special_Quick = new Special_Foods { Success = false };
-            else
-            {
-                var Category=_db.Special_Categories.Where(c => c.Title == "Quick").FirstOrDefault();
-                Special_Quick = new Special_Foods
-                {
-                    Success = true,
-                    Title = Category.Title,
-                    Description = Category.Description,
-                    Foods = isExistFood_Quick.ToList()
-                };
-            }
-            specials.Add(Special_Quick);
+        //public async Task<List<Special_Foods>> Get_Special()
+        //{
+        //    List<Special_Foods> specials = new List<Special_Foods>();
+        //    //Quick Cook
+        //    var isExistFood_Quick = _db.Foods.Where(r => r.Timetocook!=null && r.Timetocook<30);
+        //    Special_Foods Special_Quick;
+        //    if (isExistFood_Quick == null)
+        //        Special_Quick = new Special_Foods { Success = false };
+        //    else
+        //    {
+        //        var Category=_db.Special_Categories.Where(c => c.Title == "Quick").FirstOrDefault();
+        //        Special_Quick = new Special_Foods
+        //        {
+        //            Success = true,
+        //            Title = Category.Title,
+        //            Description = Category.Description,
+        //            Foods = isExistFood_Quick.ToList()
+        //        };
+        //    }
+        //    specials.Add(Special_Quick);
 
 
-            var isExistFood_Occasion = _db.Foods.Where(r => r.Special_Occasion != null && r.Special_Occasion == true);
-            Special_Foods Special_Occasion;
-            if (isExistFood_Occasion == null)
-                Special_Occasion = new Special_Foods { Success = false };
-            else
-            {
-                var Category = _db.Special_Categories.Where(c => c.Title == "Special").FirstOrDefault();
-                Special_Occasion = new Special_Foods
-                {
-                    Success = true,
-                    Title = Category.Title,
-                    Description = Category.Description,
-                    Foods = isExistFood_Occasion.ToList()
-                };
-            }
-            specials.Add(Special_Occasion);
+        //    var isExistFood_Occasion = _db.Foods.Where(r => r.Special_Occasion != null && r.Special_Occasion == true);
+        //    Special_Foods Special_Occasion;
+        //    if (isExistFood_Occasion == null)
+        //        Special_Occasion = new Special_Foods { Success = false };
+        //    else
+        //    {
+        //        var Category = _db.Special_Categories.Where(c => c.Title == "Special").FirstOrDefault();
+        //        Special_Occasion = new Special_Foods
+        //        {
+        //            Success = true,
+        //            Title = Category.Title,
+        //            Description = Category.Description,
+        //            Foods = isExistFood_Occasion.ToList()
+        //        };
+        //    }
+        //    specials.Add(Special_Occasion);
 
-            var isExistFood_Breakfast = _db.Foods.Where(r => r.Is_breakfast != null && r.Is_breakfast == true);
-            Special_Foods Special_Breakfast;
-            if (isExistFood_Breakfast == null)
-                Special_Breakfast = new Special_Foods { Success = false };
-            else
-            {
-                var Category = _db.Special_Categories.Where(c => c.Title == "Breakfast").FirstOrDefault();
-                Special_Breakfast = new Special_Foods
-                {
-                    Success = true,
-                    Title = Category.Title,
-                    Description = Category.Description,
-                    Foods = isExistFood_Breakfast.ToList()
-                };
-            }
-            specials.Add(Special_Breakfast);
+        //    var isExistFood_Breakfast = _db.Foods.Where(r => r.Is_breakfast != null && r.Is_breakfast == true);
+        //    Special_Foods Special_Breakfast;
+        //    if (isExistFood_Breakfast == null)
+        //        Special_Breakfast = new Special_Foods { Success = false };
+        //    else
+        //    {
+        //        var Category = _db.Special_Categories.Where(c => c.Title == "Breakfast").FirstOrDefault();
+        //        Special_Breakfast = new Special_Foods
+        //        {
+        //            Success = true,
+        //            Title = Category.Title,
+        //            Description = Category.Description,
+        //            Foods = isExistFood_Breakfast.ToList()
+        //        };
+        //    }
+        //    specials.Add(Special_Breakfast);
 
-            var isExistFood_Main = _db.Foods.Where(r => r.Is_Main != null && r.Is_Main == true);
-            Special_Foods Special_Main;
-            if (isExistFood_Main == null)
-                Special_Main = new Special_Foods { Success = false };
-            else
-            {
-                var Category = _db.Special_Categories.Where(c => c.Title == "Main").FirstOrDefault();
-                Special_Main = new Special_Foods
-                {
-                    Success = true,
-                    Title = Category.Title,
-                    Description = Category.Description,
-                    Foods = isExistFood_Main.ToList()
-                };
-            }
-            specials.Add(Special_Main);
-            return specials;
-        }
+        //    var isExistFood_Main = _db.Foods.Where(r => r.Is_Main != null && r.Is_Main == true);
+        //    Special_Foods Special_Main;
+        //    if (isExistFood_Main == null)
+        //        Special_Main = new Special_Foods { Success = false };
+        //    else
+        //    {
+        //        var Category = _db.Special_Categories.Where(c => c.Title == "Main").FirstOrDefault();
+        //        Special_Main = new Special_Foods
+        //        {
+        //            Success = true,
+        //            Title = Category.Title,
+        //            Description = Category.Description,
+        //            Foods = isExistFood_Main.ToList()
+        //        };
+        //    }
+        //    specials.Add(Special_Main);
+        //    return specials;
+        //}
         //public async Task<IEnumerable<Food>> GetAllFoodWithOnePSOI(Guid category)
         //{
         //    var foods = await _db.Foods.Where(f => f.Primary_Source_of_IngredientId == category).ToListAsync();

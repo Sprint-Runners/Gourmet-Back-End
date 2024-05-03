@@ -181,12 +181,13 @@ namespace Gourmet.WebApi.Controllers
             }
             if (searchResults.Any())
             {
-                Tuple<bool, List<SearchResponse>> Results = new (BoolResult, searchResults);
+                Tuple<bool, List<SearchResponse>, string> Results = new (BoolResult, searchResults,"succes");
                 return Ok(Results);
             }
             else
             {
-                return Problem(detail: "Not Found", statusCode: 400);
+                Tuple<bool, List<SearchResponse>, string> Results = new(BoolResult, searchResults, "Not Found");
+                return Ok(Results);
             }
         }
         [HttpPut("Search_Food")]
@@ -216,12 +217,13 @@ namespace Gourmet.WebApi.Controllers
             }
             if (searchResults.Any())
             {
-                Tuple<bool, List<SearchResponse>> Results = new(BoolResult, searchResults);
+                Tuple<bool, List<SearchResponse>,string> Results = new(BoolResult, searchResults,"Succes");
                 return Ok(Results);
             }
             else
             {
-                return Problem(detail: "Not Found", statusCode: 400);
+                Tuple<bool, List<SearchResponse>, string> Results = new(BoolResult, searchResults, "Not Found");
+                return Ok(Results);
             }
         }
         [HttpPost]
