@@ -316,7 +316,7 @@ namespace Gourmet.WebApi.Controllers
                 for (int i = 0; i < NumberOfPicture; i++)
                 {
                     var file = Request.Form.Files[i];
-                    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, request.FoodName, request.ChefName, request.RecipeName, i);
+                    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, request.FoodName, request.ChefName, request.RecipeName, i+1);
                     if (!ResultImage.IsSucceed)
                     {
                         return Problem(detail: ResultImage.Message, statusCode: 400);
