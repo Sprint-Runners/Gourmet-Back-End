@@ -25,7 +25,7 @@ namespace Gourmet.WebApi.Controllers
             _imageProcessorService = imageProcessorService;
             _userManager = userManager;
         }
-        [HttpGet("InformaionOfChef")]
+        [HttpPut("InformaionOfChef")]
         public async Task<IActionResult> InformaionOfChef(GetInformationChefRequest request)
         {
             try
@@ -42,35 +42,40 @@ namespace Gourmet.WebApi.Controllers
                 LastChefRecipe = LastChefRecipe.OrderByDescending(r => r.CreatTime).ToList();
                 List<SummaryRecipeInfoResponse> TopChefRecipeResult = new List<SummaryRecipeInfoResponse>();
                 List<SummaryRecipeInfoResponse> LastChefRecipeResult = new List<SummaryRecipeInfoResponse>();
+
                 foreach (Recipe r in TopChefRecipes)
                 {
-                    r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName, r.Name,1);
+                    var isExitsFood = _db.Foods.Where(x => x.Id==r.FoodId).FirstOrDefault();
+                    var isExistDL = _db.DLs.Where(x => x.Id==r.Difficulty_LevelId).FirstOrDefault();
+                    r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsChef.UserName, r.Name,1);
                     TopChefRecipeResult.Add(new SummaryRecipeInfoResponse
                     {
-                        FoodName = r.food.Name,
+                        FoodName = isExitsFood.Name,
                         Name = r.Name,
-                        ChefName = r.chef.FullName,
-                        ChefUserName = r.chef.UserName,
-                        ImagePath = r.ImgeUrl1,
+                        ChefName = isExistsChef.FullName,
+                        ChefUserName = isExistsChef.UserName,
+                        ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsChef.UserName, r.Name, 1),
                         Score = r.Score,
                         Description = r.Description,
-                        DifficultyLevel = r.difficulty_Level.Name,
+                        DifficultyLevel =isExistDL.Name,
                         Time = r.Time
                     });
                 }
                 foreach (Recipe r in LastChefRecipe)
                 {
-                    r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(r.food.Name, r.chef.UserName, r.Name,1);
+                    var isExitsFood = _db.Foods.Where(x => x.Id == r.FoodId).FirstOrDefault();
+                    var isExistDL = _db.DLs.Where(x => x.Id == r.Difficulty_LevelId).FirstOrDefault();
+                    r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsChef.UserName, r.Name,1);
                     LastChefRecipeResult.Add(new SummaryRecipeInfoResponse
                     {
-                        FoodName = r.food.Name,
+                        FoodName = isExitsFood.Name,
                         Name = r.Name,
-                        ChefName = r.chef.FullName,
-                        ChefUserName = r.chef.UserName,
-                        ImagePath = r.ImgeUrl1,
+                        ChefName = isExistsChef.FullName,
+                        ChefUserName = isExistsChef.UserName,
+                        ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name,isExistsChef.UserName,r.Name,1),
                         Score = r.Score,
                         Description = r.Description,
-                        DifficultyLevel = r.difficulty_Level.Name,
+                        DifficultyLevel = isExistDL.Name,
                         Time = r.Time
                     });
                 }

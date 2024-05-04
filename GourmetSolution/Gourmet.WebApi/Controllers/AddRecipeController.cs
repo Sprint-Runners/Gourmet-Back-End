@@ -5,7 +5,6 @@ using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
-using Gourmet.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +42,7 @@ namespace Gourmet.WebApi.Controllers
             var NS = await _categoriesService.GetAllNCategory();
             var DLS = await _categoriesService.GetAllDLCategory();
             var CMS = await _categoriesService.GetAllCMCategory();
-            Dictionary<string,List<CategoriesResponse>> Categories =new Dictionary<string, List<CategoriesResponse>>();
+            Dictionary<string, List<CategoriesResponse>> Categories = new Dictionary<string, List<CategoriesResponse>>();
             List<CategoriesResponse> PSOIsResopnse = new List<CategoriesResponse>();
             foreach (var category in PSOIS)
             {
@@ -134,15 +133,15 @@ namespace Gourmet.WebApi.Controllers
                 });
             }
             var allRecipes = await _db.Recipes.ToListAsync();
-            var Recipe=_db.Recipes.Where(r => r.Name.ToLower() == searchTerm.ToLower()).FirstOrDefault();
+            var Recipe = _db.Recipes.Where(r => r.Name.ToLower() == searchTerm.ToLower()).FirstOrDefault();
             if (Recipe == null)
             {
                 return Ok(new SearchRecipeResponse
                 {
                     Success = true,
-                    Message="this name is available"
+                    Message = "this name is available"
                 });
-                
+
             }
             else
             {
@@ -151,11 +150,11 @@ namespace Gourmet.WebApi.Controllers
                     Success = false,
                     Message = "This name is used"
                 });
-                
+
             }
         }
         [HttpPut("Search_Ingredient")]
-        [Authorize(Roles =StaticUserRoles.CHEF)]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Search_Ingredient(SearchRequest request)
         {
             string searchTerm = request.SearchTerm.ToLower().Trim();
@@ -181,7 +180,7 @@ namespace Gourmet.WebApi.Controllers
             }
             if (searchResults.Any())
             {
-                Tuple<bool, List<SearchResponse>, string> Results = new (BoolResult, searchResults,"succes");
+                Tuple<bool, List<SearchResponse>, string> Results = new(BoolResult, searchResults, "succes");
                 return Ok(Results);
             }
             else
@@ -217,7 +216,7 @@ namespace Gourmet.WebApi.Controllers
             }
             if (searchResults.Any())
             {
-                Tuple<bool, List<SearchResponse>,string> Results = new(BoolResult, searchResults,"Succes");
+                Tuple<bool, List<SearchResponse>, string> Results = new(BoolResult, searchResults, "Succes");
                 return Ok(Results);
             }
             else
@@ -231,6 +230,69 @@ namespace Gourmet.WebApi.Controllers
         [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Add_Recipe(AddRecipeRequest request)
         {
+
+            //string token = HttpContext.Request.Headers["Authorization"];
+            //string username = _jwtService.DecodeToken(token);
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            if (isExistsUser == null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            //request.NumberOfPicture = Request.Form.Files.Count;
+            //if(request.NumberOfPicture > 5) 
+            //{
+            //    return Problem(detail: "The number of photos is more than the limit", statusCode: 400);
+            //}
+            if (request.NotExistFoodName != "" || request.List_Ingriedents.Where(ING => ING.Item4 == false).ToList().Count != 0)
+            {
+                Console.WriteLine("im in incomplete recipe8**************");
+                var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, finduser.UserName);
+                if (result.IsSucceed)
+                {
+                    //for (int i = 0; i < request.NumberOfPicture; i++)
+                    //{
+                    //    var file = Request.Form.Files[i];
+                    //    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                    //    if (!ResultImage.IsSucceed)
+                    //    {
+                    //        //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                    //        //return Ok(result.recipe);
+
+                    //        return Problem(detail: ResultImage.Message, statusCode: 400);
+                    //    }
+                    //}
+                    return Ok(result.Message);
+                }
+                return Problem(detail: result.Message, statusCode: 400);
+            }
+            Console.WriteLine("im in ***********8recipe8**************");
+            var result1 = await _recipeService.CreateRecipeByChef(request, isExistsUser.Id, finduser.UserName);
+            if (result1.IsSucceed)
+            {
+                //for (int i = 0; i < request.NumberOfPicture; i++)
+                //{
+                //    var file = Request.Form.Files[i];
+                //    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result1.recipe.food.Name, result1.recipe.chef.UserName, result1.recipe.Name, i);
+                //    if (!ResultImage.IsSucceed)
+                //    {
+                //        //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
+                //        //return Ok(result.recipe);
+
+                //        return Problem(detail: ResultImage.Message, statusCode: 400);
+                //    }
+                //}
+                return Ok(result1.Message);
+
+            }
+            return Problem(detail: result1.Message, statusCode: 400);
+
+
+        }
+        [HttpPost]
+        [Route("Add_Image_Recipe")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
+        public async Task<IActionResult> Add_Image_Recipe()
+        {
             try
             {
                 //string token = HttpContext.Request.Headers["Authorization"];
@@ -238,53 +300,29 @@ namespace Gourmet.WebApi.Controllers
                 System.Security.Claims.ClaimsPrincipal currentUser = this.User;
                 var finduser = await _userManager.GetUserAsync(currentUser);
                 var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
-                if (isExistsUser != null)
+                if (isExistsUser == null)
                     return Problem(detail: "UserName not Exists", statusCode: 400);
-                request.NumberOfPicture = Request.Form.Files.Count;
-                if(request.NumberOfPicture > 5) 
+                ImageRecipeRequest request = new ImageRecipeRequest
+                {
+                    RecipeName = Request.Form["RecipeName"],
+                    ChefName = finduser.UserName,
+                    FoodName = Request.Form["FoodName"]
+                };
+                int NumberOfPicture = Request.Form.Files.Count;
+                if (NumberOfPicture > 5)
                 {
                     return Problem(detail: "The number of photos is more than the limit", statusCode: 400);
                 }
-                if (request.NotExistFoodName != null || request.List_Ingriedents.Where(ING=>ING.Item4==false).ToList().Count != 0)
+                for (int i = 0; i < NumberOfPicture; i++)
                 {
-                    var result = await _recipeService.CreateInCompleteRecipe(request, isExistsUser.Id, finduser.UserName);
-                    if (result.IsSucceed)
+                    var file = Request.Form.Files[i];
+                    var ResultImage = await _imageProcessorService.UploadRecipeImage(file, request.FoodName, request.ChefName, request.RecipeName, i+1);
+                    if (!ResultImage.IsSucceed)
                     {
-                        for (int i = 0; i < request.NumberOfPicture; i++)
-                        {
-                            var file = Request.Form.Files[i];
-                            var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
-                            if (!ResultImage.IsSucceed)
-                            {
-                                //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
-                                //return Ok(result.recipe);
-
-                                return Problem(detail: ResultImage.Message, statusCode: 400);
-                            }
-                        }
-                        return Ok(result.Message);
+                        return Problem(detail: ResultImage.Message, statusCode: 400);
                     }
-                    return Problem(detail: result.Message, statusCode: 400);
                 }
-                var result1 = await _recipeService.CreateRecipeByChef(request, isExistsUser.Id, finduser.UserName);
-                if (result1.IsSucceed)
-                {
-                    for (int i = 0; i < request.NumberOfPicture; i++)
-                    {
-                        var file = Request.Form.Files[i];
-                        var ResultImage = await _imageProcessorService.UploadRecipeImage(file, result1.recipe.food.Name, result1.recipe.chef.UserName, result1.recipe.Name, i);
-                        if (!ResultImage.IsSucceed)
-                        {
-                            //result.recipe. = await _imageProcessorService.GetImagebyRecipe(result.recipe.FoodString, result.recipe.chef.UserName, result.recipe.Name,i);
-                            //return Ok(result.recipe);
-
-                            return Problem(detail: ResultImage.Message, statusCode: 400);
-                        }
-                    }
-                    return Ok(result1.Message);
-
-                }
-                return Problem(detail: result1.Message, statusCode: 400);
+                return Ok(new GeneralResponse { Message = "upload image succes" });
             }
             catch (Exception ex)
             {

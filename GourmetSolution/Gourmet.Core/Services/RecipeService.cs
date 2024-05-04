@@ -28,15 +28,17 @@ namespace Gourmet.Core.Services
         }
         public async Task<RecipeResponse> CreateRecipeByChef(AddRecipeRequest request, string userId, string username)
         {
+            var allPSOI = _db.PSOIs.ToList();
             var isExitsFood = _db.Foods.Where(x => x.Name == request.FoodName).FirstOrDefault();
             var isExistsRecipe = _db.Recipes.Where(x => x.FoodId == isExitsFood.Id).Where(x => x.ChefId == userId).FirstOrDefault();
             var isExitsUser = await _userManager.FindByNameAsync(username);
-            var isExitsPSOI = _db.PSOIs.Where(x => x.Name == request.primary_source_of_ingredient).FirstOrDefault();
+            var isExitsPSOI = allPSOI.Where(x => x.Name == request.primary_source_of_ingredient).FirstOrDefault();
             var isExitsCM = _db.CMs.Where(x => x.Name == request.cooking_method).FirstOrDefault();
             var isExitsFT = _db.FTs.Where(x => x.Name == request.food_type).FirstOrDefault();
             var isExitsN = _db.Ns.Where(x => x.Name == request.nationality).FirstOrDefault();
             var isExitsMT = _db.MTs.Where(x => x.Name == request.meal_type).FirstOrDefault();
             var isExistDL = _db.DLs.Where(x => x.Name == request.difficulty_level).FirstOrDefault();
+            Console.WriteLine("kdfuihfiuhfiuhuih*******************");
             if (isExistsRecipe != null)
                 return new RecipeResponse()
                 {
@@ -67,10 +69,8 @@ namespace Gourmet.Core.Services
             {
                 Id = new Guid(),
                 FoodId = isExitsFood.Id,
-                food = isExitsFood,
                 Name=request.Name,
                 ChefId = userId,
-                chef = isExitsUser,
                 Description = request.Description,
                 Score = 0,
                 ImgeUrl1 =await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName,request.Name,1),
@@ -80,18 +80,12 @@ namespace Gourmet.Core.Services
                 ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitsUser.UserName, request.Name, 5),
                 List_Ingriedents = ingredients,
                 Primary_Source_of_IngredientId = isExitsPSOI.Id,
-                primary_source_of_ingredient = isExitsPSOI,
                 Cooking_MethodId = isExitsCM.Id,
-                cooking_method = isExitsCM,
                 Food_typeId = isExitsFT.Id,
-                food_type = isExitsFT,
                 NationalityId = isExitsN.Id,
-                nationality = isExitsN,
                 Meal_TypeId = isExitsMT.Id,
-                meal_type = isExitsMT,
-                difficulty_Level = isExistDL,
                 Difficulty_LevelId = isExistDL.Id,
-                Time = request.Time,
+                Time = int.Parse(request.Time),
                 IsAccepted=false
                 
             };
@@ -102,10 +96,8 @@ namespace Gourmet.Core.Services
                 RecipeIngredients row = new RecipeIngredients
                 {
                     RecipeId =new_recipe.Id,
-                    recipe =new_recipe,
                     IngredientId =isExitsIngredient.Id,
-                    ingredient =isExitsIngredient,
-                    Quantity =item.Item2,
+                    Quantity =double.Parse(item.Item2),
                     Unit=item.Item3
                 };
                 _db.RecipeIngredients.Add(row);
@@ -115,9 +107,8 @@ namespace Gourmet.Core.Services
                 RecipeStep row = new RecipeStep
                 {
                     RecipeId = new_recipe.Id,
-                    recipe = new_recipe,
                     explenation=item.Item2,
-                    Number=item.Item1
+                    Number= int.Parse(item.Item1)
                 };
                 _db.RecipeSteps.Add(row);
             }
@@ -172,7 +163,6 @@ namespace Gourmet.Core.Services
                 Id = new Guid(),
                 FoodString=request.FoodName,
                 ChefId = userId,
-                chef = isExitsUser,
                 Name=request.Name,
                 Description = request.Description,
                 ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, request.Name, 1),
@@ -184,18 +174,12 @@ namespace Gourmet.Core.Services
                 NotExistIngredients=NotExistingredients,
                 StepsString=Steps,
                 Primary_Source_of_IngredientId = isExitsPSOI.Id,
-                primary_source_of_ingredient = isExitsPSOI,
                 Cooking_MethodId = isExitsCM.Id,
-                cooking_method = isExitsCM,
                 Food_typeId = isExitsFT.Id,
-                food_type = isExitsFT,
                 NationalityId = isExitsN.Id,
-                nationality = isExitsN,
                 Meal_TypeId = isExitsMT.Id,
-                meal_type = isExitsMT,
-                difficulty_Level=isExistDL,
                 Difficulty_LevelId=isExistDL.Id,
-                Time=request.Time
+                Time = int.Parse(request.Time)
             };
             _db.InCompleteRecipes.Add(new_recipe);
             _db.SaveChanges();
@@ -221,6 +205,8 @@ namespace Gourmet.Core.Services
             }
             isExistsRecipe.CreatTime = DateTime.Now;
             isExistsRecipe.IsAccepted = true;
+            _db.Recipes.Update(isExistsRecipe);
+            _db.SaveChanges();
             return new InterGeneralResponse
             {
                 IsSucceed = true,

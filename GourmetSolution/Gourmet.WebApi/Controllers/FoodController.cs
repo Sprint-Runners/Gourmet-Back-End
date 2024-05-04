@@ -25,6 +25,7 @@ namespace Gourmet.WebApi.Controllers
             _foodService = foodService;
             _recipeService = recipeService;
             _userManager = userManager;
+            _userService = userService;
             _db = db;
             _imageProcessorService = imageProcessorService;
         }
@@ -47,7 +48,7 @@ namespace Gourmet.WebApi.Controllers
         {
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var user = await _userManager.GetUserAsync(currentUser);
-            InterGeneralResponse response = await _userService.AddScoreRecipeForUser(user, request.FoodName, request.ChefName, request.RecipeName,request.rate);
+            InterGeneralResponse response = await _userService.AddScoreRecipeForUser(user, request.FoodName, request.ChefName, request.RecipeName, request.rate);
             if (response.IsSucceed)
             {
                 return Ok(new GeneralResponse { Message = response.Message });
@@ -97,9 +98,9 @@ namespace Gourmet.WebApi.Controllers
                 {
                     foreach (var item in response.Recipes)
                     {
-                        
-                        var ingredients = await _recipeService.Get_All_Ingredients(FoodName, item.chef.UserName, item.Name);
-                        var steps = await _recipeService.Get_All_steps(FoodName, item.chef.UserName, item.Name);
+                        var isExitsUser = await _userManager.FindByIdAsync(item.ChefId);
+                        var ingredients = await _recipeService.Get_All_Ingredients(FoodName, isExitsUser.UserName, item.Name);
+                        var steps = await _recipeService.Get_All_steps(FoodName, isExitsUser.UserName, item.Name);
                         var IsRateforthisRecipe = _db.ScoreRecipeUsers.Where(r => r.userId == user.Id && r.RecipeId == item.Id).FirstOrDefault();
                         var IsLikethisRecipe = _db.FavouritRecipeUsers.Where(r => r.userId == user.Id && r.RecipeId == item.Id).FirstOrDefault();
                         int rate = 0;
@@ -107,33 +108,40 @@ namespace Gourmet.WebApi.Controllers
                         {
                             rate = IsRateforthisRecipe.Rate;
                         }
+                        var allPSOI = _db.PSOIs.ToList();
+                        var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                        var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                        var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                        var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                        var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                        var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
                         results.Add(new RecipeInformationForUserResponse
                         {
                             Name = item.Name,
-                            FoodName = item.food.Name,
-                            ChefName = item.chef.FullName,
-                            ChefUserName = item.chef.UserName,
-                            ChefImageUrl = item.chef.ImageURL,
+                            FoodName = FoodName,
+                            ChefName = isExitsUser.FullName,
+                            ChefUserName = isExitsUser.UserName,
+                            ChefImageUrl = await _imageProcessorService.GetImagebyUser(isExitsUser.UserName),
                             Description = item.Description,
                             Score = item.Score,
-                            ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(item.food.Name,item.chef.UserName,item.Name,1),
-                            ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 2),
-                            ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 3),
-                            ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 4),
-                            ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 5),
+                            ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 1),
+                            ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 2),
+                            ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 3),
+                            ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 4),
+                            ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 5),
                             List_Ingriedents = ingredients.ToList(),
-                            PSOIName = item.primary_source_of_ingredient.Name,
-                            CMName = item.cooking_method.Name,
-                            FTName = item.food_type.Name,
-                            NName = item.nationality.Name,
-                            MTName = item.meal_type.Name,
-                            DLName = item.difficulty_Level.Name,
+                            PSOIName = isExitsPSOI.Name,
+                            CMName = isExitsCM.Name,
+                            FTName = isExitsFT.Name,
+                            NName = isExitsN.Name,
+                            MTName = isExitsMT.Name,
+                            DLName = isExistDL.Name,
                             time = item.Time,
                             Steps = steps.OrderBy(r => r.Number).ToList(),
                             Rate = rate,
-                            isFavourit=IsLikethisRecipe!=null,
-                            isRate=IsRateforthisRecipe!=null
-                        }) ;
+                            isFavourit = IsLikethisRecipe != null,
+                            isRate = IsRateforthisRecipe != null
+                        });
                     }
 
                     return Ok(results);
@@ -142,7 +150,7 @@ namespace Gourmet.WebApi.Controllers
             }
             return Problem(detail: response.Message, statusCode: 400);
         }
-        [HttpGet("AllRecipes")]
+        [HttpPut("AllRecipes")]
         public async Task<IActionResult> AllRecipes(ShowFoodpageRequest request)
         {
             string FoodName = request.FoodName;
@@ -152,28 +160,40 @@ namespace Gourmet.WebApi.Controllers
             {
                 foreach (var item in response.Recipes.OrderByDescending(r => r.Score))
                 {
-                    var ingredients = await _recipeService.Get_All_Ingredients(FoodName, item.chef.UserName, item.Name);
-                    var steps = await _recipeService.Get_All_steps(FoodName, item.chef.UserName, item.Name);
+
+                    var isExitsUser = await _userManager.FindByIdAsync(item.ChefId);
+                    var ingredients = await _recipeService.Get_All_Ingredients(FoodName, isExitsUser.UserName, item.Name);
+                    var steps = await _recipeService.Get_All_steps(FoodName, isExitsUser.UserName, item.Name);
+                    Console.WriteLine("djffefuy*************");
+                    Console.WriteLine(results);
+                    var allPSOI = _db.PSOIs.ToList();
+                    var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                    var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                    var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                    var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                    var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                    var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
                     results.Add(new RecipeInformationResponse
                     {
                         Name = item.Name,
-                        FoodName = item.food.Name,
-                        ChefName = item.chef.FullName,
-                        ChefImageUrl = item.chef.ImageURL,
+                        FoodName = FoodName,
+                        ChefName = isExitsUser.FullName,
+                        ChefUserName = isExitsUser.UserName,
+                        ChefImageUrl = await _imageProcessorService.GetImagebyUser(isExitsUser.UserName),
                         Description = item.Description,
                         Score = item.Score,
-                        ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 1),
-                        ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 2),
-                        ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 3),
-                        ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 4),
-                        ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(item.food.Name, item.chef.UserName, item.Name, 5),
+                        ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 1),
+                        ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 2),
+                        ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 3),
+                        ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 4),
+                        ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(FoodName, isExitsUser.UserName, item.Name, 5),
                         List_Ingriedents = ingredients.ToList(),
-                        PSOIName = item.primary_source_of_ingredient.Name,
-                        CMName = item.cooking_method.Name,
-                        FTName = item.food_type.Name,
-                        NName = item.nationality.Name,
-                        MTName = item.meal_type.Name,
-                        DLName = item.difficulty_Level.Name,
+                        PSOIName = isExitsPSOI.Name,
+                        CMName = isExitsCM.Name,
+                        FTName = isExitsFT.Name,
+                        NName = isExitsN.Name,
+                        MTName = isExitsMT.Name,
+                        DLName = isExistDL.Name,
                         time = item.Time,
                         Steps = steps.OrderBy(r => r.Number).ToList(),
                     });
