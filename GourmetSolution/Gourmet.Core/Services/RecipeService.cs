@@ -227,13 +227,22 @@ namespace Gourmet.Core.Services
         {
             recipe.Score = (recipe.Score * recipe.Number_Scorer + rate) / (recipe.Number_Scorer + 1);
             recipe.Number_Scorer += 1;
+            _db.Recipes.Update(recipe);
             _db.SaveChanges();
             return new InterGeneralResponse() { Message = "Rating Succesfully", IsSucceed = true };
         }
         public async Task<InterGeneralResponse> DeleteRateRecipe(Recipe recipe, int rate)
         {
-            recipe.Score = (recipe.Score * recipe.Number_Scorer - rate) / (recipe.Number_Scorer - 1);
+            if (recipe.Score > 1)
+            {
+                recipe.Score = (recipe.Score * recipe.Number_Scorer - rate) / (recipe.Number_Scorer - 1);
+            }
+            else
+            {
+                recipe.Score = 0;
+            }
             recipe.Number_Scorer -= 1;
+            _db.Recipes.Update(recipe);
             _db.SaveChanges();
             return new InterGeneralResponse() { Message = "Delete Rate Succesfully", IsSucceed = true };
         }

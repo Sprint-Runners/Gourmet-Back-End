@@ -21,7 +21,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<PSOIResponse> CreatePSOICategory(AddCategoryRequest request)
         {
-            var isExistPSOI = _db.PSOIs.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            var isExistPSOI = _db.PSOIs.Where(r => r.Name.ToLower().Replace(" ", "") == request.Name.ToLower().Replace(" ", "")).FirstOrDefault();
             if (isExistPSOI != null)
             {
                 return new PSOIResponse
@@ -48,7 +48,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<CMResponse> CreateCMCategory(AddCategoryRequest request)
         {
-            var isExistCM = _db.CMs.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            var isExistCM = _db.CMs.Where(r => r.Name.ToLower().Replace(" ", "") == request.Name.ToLower().Replace(" ", "")).FirstOrDefault();
             if (isExistCM != null)
             {
                 return new CMResponse
@@ -75,7 +75,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<FTResponse> CreateFTCategory(AddCategoryRequest request)
         {
-            var isExistFT = _db.FTs.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            var isExistFT = _db.FTs.Where(r => r.Name.ToLower().Replace(" ", "") == request.Name.ToLower().Replace(" ", "")).FirstOrDefault();
             if (isExistFT != null)
             {
                 return new FTResponse
@@ -101,7 +101,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<NResponse> CreateNCategory(AddCategoryRequest request)
         {
-            var isExistN = _db.Ns.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            var isExistN = _db.Ns.Where(r => r.Name.ToLower().Replace(" ", "") == request.Name.ToLower().Replace(" ", "")).FirstOrDefault();
             if (isExistN != null)
             {
                 return new NResponse
@@ -128,7 +128,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<MTResponse> CreateMTCategory(AddCategoryRequest request)
         {
-            var isExistMT = _db.MTs.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            var isExistMT = _db.MTs.Where(r => r.Name.ToLower().Replace(" ", "") == request.Name.ToLower().Replace(" ", "")).FirstOrDefault();
             if (isExistMT != null)
             {
                 return new MTResponse
@@ -155,7 +155,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<DLResponse> CreateDLCategory(AddCategoryRequest request)
         {
-            var isExistMT = _db.DLs.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            var isExistMT = _db.DLs.Where(r => r.Name.ToLower().Replace(" ", "") == request.Name.ToLower().Replace(" ", "")).FirstOrDefault();
             if (isExistMT != null)
             {
                 return new DLResponse

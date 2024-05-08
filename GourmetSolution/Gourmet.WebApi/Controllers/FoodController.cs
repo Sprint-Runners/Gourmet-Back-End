@@ -93,7 +93,8 @@ namespace Gourmet.WebApi.Controllers
             response.Recipes = response.Recipes.OrderByDescending(r => r.Score).ToList();
             if (response.IsSucceed)
             {
-                InterGeneralResponse AddRecentRecipe = await _userService.AddRecentRecipeForUser(user, FoodName, response.Recipes.First().chef.UserName, response.Recipes.First().Name);
+                var isExitsUserFirst = await _userManager.FindByIdAsync(response.Recipes.First().ChefId);
+                InterGeneralResponse AddRecentRecipe = await _userService.AddRecentRecipeForUser(user, FoodName, isExitsUserFirst.UserName, response.Recipes.First().Name);
                 if (AddRecentRecipe.IsSucceed)
                 {
                     foreach (var item in response.Recipes)

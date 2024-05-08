@@ -16,11 +16,11 @@ namespace Gourmet.Core.Domain.OtherObject
         Quick,
         Breakfast
     }*/
-    public class Special_Foods
-    {
-        public bool Success { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public List<Food> Foods { get; set; }
-    }
+    //public class Special_Foods
+    //{
+    //    public bool Success { get; set; }
+    //    public string Title { get; set; }
+    //    public string Description { get; set; }
+    //    public List<Food> Foods { get; set; }
+    //}
 }

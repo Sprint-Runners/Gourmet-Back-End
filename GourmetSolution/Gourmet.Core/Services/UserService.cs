@@ -105,11 +105,9 @@ namespace Gourmet.Core.Services
                 {
                     _db.FavouritRecipeUsers.Add(new FavouritRecipeUser
                     {
-                        recipe = Recipe,
                         RecipeId = Recipe.Id,
                         TimeToLike = DateTime.Now,
                         userId = user.Id,
-                        user = user
                     });
                     _db.SaveChanges();
                     return new InterGeneralResponse
@@ -149,11 +147,9 @@ namespace Gourmet.Core.Services
                 {
                     _db.RecentRecipeUsers.Add(new RecentRecipeUser
                     {
-                        recipe = Recipe,
                         RecipeId = Recipe.Id,
                         VisitTime = DateTime.Now,
                         userId = user.Id,
-                        user = user
                     });
                     _db.SaveChanges();
                     return new InterGeneralResponse
@@ -193,11 +189,9 @@ namespace Gourmet.Core.Services
                 {
                     _db.ScoreRecipeUsers.Add(new ScoreRecipeUser
                     {
-                        recipe = Recipe,
                         RecipeId = Recipe.Id,
                         Rate = rate,
-                        userId = user.Id,
-                        user = user
+                        userId = user.Id
                     });
                     InterGeneralResponse response=await _recipeService.RateRecipe(Recipe, rate);
                     _db.SaveChanges();
@@ -233,7 +227,7 @@ namespace Gourmet.Core.Services
             try
             {
                 var Recipe = await _recipeService.Search_Recipe(FoodName, ChefName, RecipeName);
-                var IsExistScoreRecipeUser = _db.ScoreRecipeUsers.Where(r => r.userId == user.Id && r.recipe.food.Name.ToLower() == FoodName.ToLower() && r.recipe.chef.UserName.ToLower() == ChefName.ToLower() && r.recipe.Name.ToLower() == RecipeName.ToLower()).FirstOrDefault();
+                var IsExistScoreRecipeUser = _db.ScoreRecipeUsers.Where(r => r.userId == user.Id && r.RecipeId==Recipe.Id).FirstOrDefault();
                 if (IsExistScoreRecipeUser == null)
                 {
                     return new InterGeneralResponse
@@ -244,8 +238,12 @@ namespace Gourmet.Core.Services
                 }
                 else
                 {
+                    Console.WriteLine("im here******************************************"); 
                     _db.ScoreRecipeUsers.Remove(IsExistScoreRecipeUser);
+                    Console.WriteLine("im now &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                    _db.SaveChanges();
                     InterGeneralResponse response = await _recipeService.DeleteRateRecipe(Recipe, rate);
+                    Console.WriteLine("im now2222222222222222222 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
                     _db.SaveChanges();
                     return new InterGeneralResponse
                     {
