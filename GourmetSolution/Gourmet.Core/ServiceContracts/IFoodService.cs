@@ -19,6 +19,7 @@ namespace Gourmet.Core.ServiceContracts
         //Task<IEnumerable<Food>> GetAllFoodWithOnePSOI(Guid category);
         Task<FoodResponse> Create(AddFoodRequest request);
         Task<SearchRecipesFood> GetAllRecipe(string request);
+        Task<List<Food>> Get_All();
         //Task<List<Special_Foods>> Get_Special();
     }
 }

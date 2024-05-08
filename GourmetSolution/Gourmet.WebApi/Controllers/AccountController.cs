@@ -1,4 +1,5 @@
-﻿using Gourmet.Core.Domain.Entities;
+﻿using Gourmet.Core.DataBase.GourmetDbcontext;
+using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
@@ -19,13 +20,17 @@ namespace Gourmet.WebApi.Controllers
         private readonly UserManager<Chef> _userManager;
         private readonly IChefService _chefService;
         private readonly IJwt _jwtService;
-        public AccountController(IUserService userService, IImageProcessorService imageProcessorServic, UserManager<Chef> userManager, IChefService chefService, IJwt jwtService)
+        private readonly AppDbContext _db;
+
+        public AccountController(IUserService userService, IImageProcessorService imageProcessorServic, UserManager<Chef> userManager, IChefService chefService, IJwt jwtService,AppDbContext db)
         {
+
             _userService = userService;
             _imageProcessorService = imageProcessorServic;
             _userManager = userManager;
             _chefService = chefService;
             _jwtService = jwtService;
+            _db = db;
         }
         [HttpGet]
         [Route("Read_User")]
@@ -119,26 +124,29 @@ namespace Gourmet.WebApi.Controllers
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var finduser = await _userManager.GetUserAsync(currentUser);
             var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
-            if (isExistsUser != null)
+            if (isExistsUser == null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
             var result = await _userService.RecentRecipeByUser(isExistsUser.Id);
             List<SummaryRecipeInfoForUserResponse> recentRecipe = new List<SummaryRecipeInfoForUserResponse>();
             foreach (var item in result)
             {
-
+                var isExitsRecipe = _db.Recipes.Where(x => x.Id == item.RecipeId).FirstOrDefault();
+                item.recipe = isExitsRecipe;
+                var isExitschef = await _userManager.FindByIdAsync(item.recipe.ChefId);
+                var isExitsFood = _db.Foods.Where(x => x.Id == item.recipe.FoodId).FirstOrDefault();
                 recentRecipe.Add(new SummaryRecipeInfoForUserResponse
                 {
                     Score = item.recipe.Score,
-                    ChefName = item.recipe.chef.FullName,
-                    ChefUserName = item.recipe.chef.UserName,
+                    ChefName = isExitschef.FullName,
+                    ChefUserName = isExitschef.UserName,
                     VisitTime = item.VisitTime,
-                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName,item.recipe.Name, 1),
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
                     Name = item.recipe.Name
                 });
 
             }
 
-            return Ok(result);
+            return Ok(recentRecipe);
         }
         [HttpGet]
         [Route("Favourite_Recipes_User")]
@@ -150,26 +158,29 @@ namespace Gourmet.WebApi.Controllers
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var finduser = await _userManager.GetUserAsync(currentUser);
             var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
-            if (isExistsUser != null)
+            if (isExistsUser == null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
             var result = await _userService.FavouritRecipeByUser(isExistsUser.Id);
             List<SummaryRecipeInfoForUserResponse> favouriteRecipe = new List<SummaryRecipeInfoForUserResponse>();
             foreach (var item in result)
             {
-
+                var isExitsRecipe = _db.Recipes.Where(x => x.Id == item.RecipeId).FirstOrDefault();
+                item.recipe = isExitsRecipe;
+                var isExitsFood = _db.Foods.Where(x => x.Id == item.recipe.FoodId).FirstOrDefault();
+                var isExitschef = await _userManager.FindByIdAsync(item.recipe.ChefId);
                 favouriteRecipe.Add(new SummaryRecipeInfoForUserResponse
                 {
                     Score = item.recipe.Score,
-                    ChefName = item.recipe.chef.FullName,
-                    ChefUserName = item.recipe.chef.UserName,
+                    ChefName = isExitschef.FullName,
+                    ChefUserName = isExitschef.UserName,
                     IsFavorite=true,
-                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name, 1),
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
                     Name = item.recipe.Name
                 });
 
             }
 
-            return Ok(result);
+            return Ok(favouriteRecipe);
         }
         [HttpGet]
         [Route("Favourite_Recipes_User_OrderBy_Score")]
@@ -181,25 +192,28 @@ namespace Gourmet.WebApi.Controllers
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var finduser = await _userManager.GetUserAsync(currentUser);
             var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
-            if (isExistsUser != null)
+            if (isExistsUser == null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
             var result = await _userService.FavouritRecipeByUserOrderByScore(isExistsUser.Id);
             List<SummaryRecipeInfoForUserResponse> favouriteRecipe = new List<SummaryRecipeInfoForUserResponse>();
             foreach (var item in result)
             {
-
+                var isExitsRecipe = _db.Recipes.Where(x => x.Id == item.RecipeId).FirstOrDefault();
+                item.recipe = isExitsRecipe;
+                var isExitschef = await _userManager.FindByIdAsync(item.recipe.ChefId);
+                var isExitsFood = _db.Foods.Where(x => x.Id == item.recipe.FoodId).FirstOrDefault();
                 favouriteRecipe.Add(new SummaryRecipeInfoForUserResponse
                 {
                     Score = item.recipe.Score,
-                    ChefName = item.recipe.chef.FullName,
-                    ChefUserName = item.recipe.chef.UserName,
+                    ChefName = isExitschef.FullName,
+                    ChefUserName = isExitschef.UserName,
                     IsFavorite = true,
-                    ImagePath = await _imageProcessorService.GetImagebyRecipe(item.recipe.food.Name, finduser.UserName, item.recipe.Name, 1),
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
                     Name = item.recipe.Name
                 });
 
             }
-            return Ok(result);
+            return Ok(favouriteRecipe);
         }
         [HttpGet]
         [Route("Recipe_Chef")]
@@ -213,17 +227,19 @@ namespace Gourmet.WebApi.Controllers
                 System.Security.Claims.ClaimsPrincipal currentUser = this.User;
                 var finduser = await _userManager.GetUserAsync(currentUser);
                 var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
-                if (isExistsUser != null)
+                if (isExistsUser == null)
                     return Problem(detail: "UserName not Exists", statusCode: 400);
                 var AllRecipe = await _chefService.GetRecipesByChefId(isExistsUser.Id);
                 List<SummaryRecipeInfoAddedByChefResponse> result = new List<SummaryRecipeInfoAddedByChefResponse>();
                 foreach (var item in AllRecipe)
                 {
-                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(item.food.Name, isExistsUser.UserName, item.Name, 1);
+                    var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
+                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsUser.UserName, item.Name, 1);
+                    
                     result.Add(new SummaryRecipeInfoAddedByChefResponse
                     {
-                        ChefName=item.chef.FullName,
-                        ChefUserName=item.chef.UserName,
+                        ChefName=isExistsUser.FullName,
+                        ChefUserName=isExistsUser.UserName,
                         ImagePath=ImageUrlRecipe,
                         IsAccepted=item.IsAccepted,
                         Name=item.Name,

@@ -27,7 +27,7 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPost]
         [Route("Add_Ingredient")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Add_Ingredient(AddIngredientRequest request)
         {
             try

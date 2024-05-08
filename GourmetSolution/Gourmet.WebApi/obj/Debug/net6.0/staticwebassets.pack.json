@@ -13,8 +13,20 @@
       "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\FastFood\\image.png"
     },
     {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\HomemadeFare\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\HomemadeFare\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Pasta\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\Pasta\\image.png"
+    },
+    {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Salad\\image.png",
       "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\Salad\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Soup\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\FT\\Soup\\image.png"
     },
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Breakfast\\image.png",
@@ -43,6 +55,18 @@
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Mixture\\image.png",
       "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Mixture\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Paleo\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Paleo\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Pescetatian\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Pescetatian\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegan\\images.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\PSOI\\Vegan\\images.png"
     },
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegeterian\\image.png",
@@ -147,6 +171,14 @@
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Seed_Buns\\image.png",
       "PackagePath": "staticwebassets\\Uploads\\Food\\Seed_Buns\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Shrimp_Scampi_with_Pasta\\b1ce92beaf@emailbbox.pro\\Besttt_Egg_Rolls\\image0.png",
+      "PackagePath": "staticwebassets\\Uploads\\Food\\Shrimp_Scampi_with_Pasta\\b1ce92beaf@emailbbox.pro\\Besttt_Egg_Rolls\\image0.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Shrimp_Scampi_with_Pasta\\b1ce92beaf@emailbbox.pro\\Besttt_Egg_Rolls\\image1.png",
+      "PackagePath": "staticwebassets\\Uploads\\Food\\Shrimp_Scampi_with_Pasta\\b1ce92beaf@emailbbox.pro\\Besttt_Egg_Rolls\\image1.png"
     },
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Shrimp_Scampi_with_Pasta\\image.png",
