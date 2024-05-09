@@ -48,6 +48,12 @@ namespace Gourmet.WebApi.Controllers
                     var isExitsFood = _db.Foods.Where(x => x.Id==r.FoodId).FirstOrDefault();
                     var isExistDL = _db.DLs.Where(x => x.Id==r.Difficulty_LevelId).FirstOrDefault();
                     r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsChef.UserName, r.Name,1);
+                    var allPSOI = _db.PSOIs.ToList();
+                    var isExitsPSOI = allPSOI.Where(x => x.Id == r.Primary_Source_of_IngredientId).FirstOrDefault();
+                    var isExitsCM = _db.CMs.Where(x => x.Id == r.Cooking_MethodId).FirstOrDefault();
+                    var isExitsFT = _db.FTs.Where(x => x.Id == r.Food_typeId).FirstOrDefault();
+                    var isExitsN = _db.Ns.Where(x => x.Id == r.NationalityId).FirstOrDefault();
+                    var isExitsMT = _db.MTs.Where(x => x.Id == r.Meal_TypeId).FirstOrDefault();
                     TopChefRecipeResult.Add(new SummaryRecipeInfoResponse
                     {
                         FoodName = isExitsFood.Name,
@@ -57,8 +63,13 @@ namespace Gourmet.WebApi.Controllers
                         ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsChef.UserName, r.Name, 1),
                         Score = r.Score,
                         Description = r.Description,
-                        DifficultyLevel =isExistDL.Name,
-                        Time = r.Time
+                        Time = r.Time,
+                        CMName = isExitsCM.Name,
+                        DLName = isExistDL.Name,
+                        FTName = isExitsFT.Name,
+                        MTName = isExitsMT.Name,
+                        NName = isExitsN.Name,
+                        PSOIName = isExitsPSOI.Name
                     });
                 }
                 foreach (Recipe r in LastChefRecipe)
@@ -66,6 +77,12 @@ namespace Gourmet.WebApi.Controllers
                     var isExitsFood = _db.Foods.Where(x => x.Id == r.FoodId).FirstOrDefault();
                     var isExistDL = _db.DLs.Where(x => x.Id == r.Difficulty_LevelId).FirstOrDefault();
                     r.ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsChef.UserName, r.Name,1);
+                    var allPSOI = _db.PSOIs.ToList();
+                    var isExitsPSOI = allPSOI.Where(x => x.Id == r.Primary_Source_of_IngredientId).FirstOrDefault();
+                    var isExitsCM = _db.CMs.Where(x => x.Id == r.Cooking_MethodId).FirstOrDefault();
+                    var isExitsFT = _db.FTs.Where(x => x.Id == r.Food_typeId).FirstOrDefault();
+                    var isExitsN = _db.Ns.Where(x => x.Id == r.NationalityId).FirstOrDefault();
+                    var isExitsMT = _db.MTs.Where(x => x.Id == r.Meal_TypeId).FirstOrDefault();
                     LastChefRecipeResult.Add(new SummaryRecipeInfoResponse
                     {
                         FoodName = isExitsFood.Name,
@@ -75,8 +92,13 @@ namespace Gourmet.WebApi.Controllers
                         ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name,isExistsChef.UserName,r.Name,1),
                         Score = r.Score,
                         Description = r.Description,
-                        DifficultyLevel = isExistDL.Name,
-                        Time = r.Time
+                        Time = r.Time,
+                        CMName = isExitsCM.Name,
+                        DLName = isExistDL.Name,
+                        FTName = isExitsFT.Name,
+                        MTName = isExitsMT.Name,
+                        NName = isExitsN.Name,
+                        PSOIName = isExitsPSOI.Name
                     });
                 }
                 return Ok(new ShowChefInformationResponse

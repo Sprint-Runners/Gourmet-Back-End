@@ -14,4 +14,10 @@ namespace Gourmet.Core.Domain.OtherObject
         public string Message {  get; set; }
         public List<Recipe> Recipes { get; set; }
     }
+    public class SearchRecipe
+    {
+        public Recipe Recipe { get; set; }
+        public int PartialRatioScore { get; set; }
+        public int RatioScore { get; set; }
+    }
 }

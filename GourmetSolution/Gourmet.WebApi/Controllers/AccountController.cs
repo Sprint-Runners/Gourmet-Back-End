@@ -134,6 +134,13 @@ namespace Gourmet.WebApi.Controllers
                 item.recipe = isExitsRecipe;
                 var isExitschef = await _userManager.FindByIdAsync(item.recipe.ChefId);
                 var isExitsFood = _db.Foods.Where(x => x.Id == item.recipe.FoodId).FirstOrDefault();
+                var allPSOI = _db.PSOIs.ToList();
+                var isExitsPSOI = allPSOI.Where(x => x.Id == item.recipe.Primary_Source_of_IngredientId).FirstOrDefault();
+                var isExitsCM = _db.CMs.Where(x => x.Id == item.recipe.Cooking_MethodId).FirstOrDefault();
+                var isExitsFT = _db.FTs.Where(x => x.Id == item.recipe.Food_typeId).FirstOrDefault();
+                var isExitsN = _db.Ns.Where(x => x.Id == item.recipe.NationalityId).FirstOrDefault();
+                var isExitsMT = _db.MTs.Where(x => x.Id == item.recipe.Meal_TypeId).FirstOrDefault();
+                var isExistDL = _db.DLs.Where(x => x.Id == item.recipe.Difficulty_LevelId).FirstOrDefault();
                 recentRecipe.Add(new SummaryRecipeInfoForUserResponse
                 {
                     Score = item.recipe.Score,
@@ -141,7 +148,16 @@ namespace Gourmet.WebApi.Controllers
                     ChefUserName = isExitschef.UserName,
                     VisitTime = item.VisitTime,
                     ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
-                    Name = item.recipe.Name
+                    Name = item.recipe.Name,
+                    FoodName=isExitsFood.Name,
+                    CMName=isExitsCM.Name,
+                    DLName=isExistDL.Name,
+                    Description=item.recipe.Description,
+                    FTName=isExitsFT.Name,
+                    MTName=isExitsMT.Name,
+                    NName=isExitsN.Name,
+                    Time=item.recipe.Time,
+                    PSOIName=isExitsPSOI.Name
                 });
 
             }
@@ -168,6 +184,13 @@ namespace Gourmet.WebApi.Controllers
                 item.recipe = isExitsRecipe;
                 var isExitsFood = _db.Foods.Where(x => x.Id == item.recipe.FoodId).FirstOrDefault();
                 var isExitschef = await _userManager.FindByIdAsync(item.recipe.ChefId);
+                var allPSOI = _db.PSOIs.ToList();
+                var isExitsPSOI = allPSOI.Where(x => x.Id == item.recipe.Primary_Source_of_IngredientId).FirstOrDefault();
+                var isExitsCM = _db.CMs.Where(x => x.Id == item.recipe.Cooking_MethodId).FirstOrDefault();
+                var isExitsFT = _db.FTs.Where(x => x.Id == item.recipe.Food_typeId).FirstOrDefault();
+                var isExitsN = _db.Ns.Where(x => x.Id == item.recipe.NationalityId).FirstOrDefault();
+                var isExitsMT = _db.MTs.Where(x => x.Id == item.recipe.Meal_TypeId).FirstOrDefault();
+                var isExistDL = _db.DLs.Where(x => x.Id == item.recipe.Difficulty_LevelId).FirstOrDefault();
                 favouriteRecipe.Add(new SummaryRecipeInfoForUserResponse
                 {
                     Score = item.recipe.Score,
@@ -175,7 +198,16 @@ namespace Gourmet.WebApi.Controllers
                     ChefUserName = isExitschef.UserName,
                     IsFavorite=true,
                     ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
-                    Name = item.recipe.Name
+                    Name = item.recipe.Name,
+                    FoodName = isExitsFood.Name,
+                    CMName = isExitsCM.Name,
+                    DLName = isExistDL.Name,
+                    Description = item.recipe.Description,
+                    FTName = isExitsFT.Name,
+                    MTName = isExitsMT.Name,
+                    NName = isExitsN.Name,
+                    Time = item.recipe.Time,
+                    PSOIName = isExitsPSOI.Name
                 });
 
             }
@@ -202,6 +234,13 @@ namespace Gourmet.WebApi.Controllers
                 item.recipe = isExitsRecipe;
                 var isExitschef = await _userManager.FindByIdAsync(item.recipe.ChefId);
                 var isExitsFood = _db.Foods.Where(x => x.Id == item.recipe.FoodId).FirstOrDefault();
+                var allPSOI = _db.PSOIs.ToList();
+                var isExitsPSOI = allPSOI.Where(x => x.Id == item.recipe.Primary_Source_of_IngredientId).FirstOrDefault();
+                var isExitsCM = _db.CMs.Where(x => x.Id == item.recipe.Cooking_MethodId).FirstOrDefault();
+                var isExitsFT = _db.FTs.Where(x => x.Id == item.recipe.Food_typeId).FirstOrDefault();
+                var isExitsN = _db.Ns.Where(x => x.Id == item.recipe.NationalityId).FirstOrDefault();
+                var isExitsMT = _db.MTs.Where(x => x.Id == item.recipe.Meal_TypeId).FirstOrDefault();
+                var isExistDL = _db.DLs.Where(x => x.Id == item.recipe.Difficulty_LevelId).FirstOrDefault();
                 favouriteRecipe.Add(new SummaryRecipeInfoForUserResponse
                 {
                     Score = item.recipe.Score,
@@ -209,7 +248,16 @@ namespace Gourmet.WebApi.Controllers
                     ChefUserName = isExitschef.UserName,
                     IsFavorite = true,
                     ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
-                    Name = item.recipe.Name
+                    Name = item.recipe.Name,
+                    FoodName = isExitsFood.Name,
+                    CMName = isExitsCM.Name,
+                    DLName = isExistDL.Name,
+                    Description = item.recipe.Description,
+                    FTName = isExitsFT.Name,
+                    MTName = isExitsMT.Name,
+                    NName = isExitsN.Name,
+                    Time = item.recipe.Time,
+                    PSOIName = isExitsPSOI.Name
                 });
 
             }
@@ -235,7 +283,13 @@ namespace Gourmet.WebApi.Controllers
                 {
                     var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
                     var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsUser.UserName, item.Name, 1);
-                    
+                    var allPSOI = _db.PSOIs.ToList();
+                    var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                    var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                    var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                    var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                    var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                    var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
                     result.Add(new SummaryRecipeInfoAddedByChefResponse
                     {
                         ChefName=isExistsUser.FullName,
@@ -243,7 +297,16 @@ namespace Gourmet.WebApi.Controllers
                         ImagePath=ImageUrlRecipe,
                         IsAccepted=item.IsAccepted,
                         Name=item.Name,
-                        Score=item.Score
+                        Score=item.Score,
+                        FoodName = isExitsFood.Name,
+                        CMName = isExitsCM.Name,
+                        DLName = isExistDL.Name,
+                        Description = item.Description,
+                        FTName = isExitsFT.Name,
+                        MTName = isExitsMT.Name,
+                        NName = isExitsN.Name,
+                        Time = item.Time,
+                        PSOIName = isExitsPSOI.Name
                     });
                 }
                 return Ok(result);

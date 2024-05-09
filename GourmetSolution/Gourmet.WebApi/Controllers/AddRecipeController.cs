@@ -293,6 +293,7 @@ namespace Gourmet.WebApi.Controllers
         [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Add_Image_Recipe()
         {
+            var isExistRecipe=new Recipe();
             try
             {
                 //string token = HttpContext.Request.Headers["Authorization"];
@@ -308,9 +309,12 @@ namespace Gourmet.WebApi.Controllers
                     ChefName = finduser.UserName,
                     FoodName = Request.Form["FoodName"]
                 };
+                isExistRecipe = await _recipeService.Search_Recipe(request.FoodName, request.ChefName, request.RecipeName);
                 int NumberOfPicture = Request.Form.Files.Count;
                 if (NumberOfPicture > 5)
                 {
+                    _db.Recipes.Remove(isExistRecipe);
+                    _db.SaveChanges();
                     return Problem(detail: "The number of photos is more than the limit", statusCode: 400);
                 }
                 for (int i = 0; i < NumberOfPicture; i++)
@@ -319,6 +323,8 @@ namespace Gourmet.WebApi.Controllers
                     var ResultImage = await _imageProcessorService.UploadRecipeImage(file, request.FoodName, request.ChefName, request.RecipeName, i+1);
                     if (!ResultImage.IsSucceed)
                     {
+                        _db.Recipes.Remove(isExistRecipe);
+                        _db.SaveChanges();
                         return Problem(detail: ResultImage.Message, statusCode: 400);
                     }
                 }
@@ -326,6 +332,8 @@ namespace Gourmet.WebApi.Controllers
             }
             catch (Exception ex)
             {
+                _db.Recipes.Remove(isExistRecipe);
+                _db.SaveChanges();
                 return Problem(detail: ex.Message, statusCode: 400);
             }
         }
