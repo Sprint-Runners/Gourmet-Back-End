@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CIXwa/1DHaqp+REZ4z6ZgWt73dR70k5/M2w4kwZrnUY=",
+  "Hash": "NtT0GTjhZpQha3b8L4Vx7QNBjgvrAOHlUv0L/KCbToM=",
   "Source": "Gourmet.WebApi",
   "BasePath": "_content/Gourmet.WebApi",
   "Mode": "Default",
@@ -321,12 +321,12 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Pescetatian\\image.png"
     },
     {
-      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegan\\images.png",
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegan\\image.png",
       "SourceId": "Gourmet.WebApi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
       "BasePath": "_content/Gourmet.WebApi",
-      "RelativePath": "Uploads/Category/PSOI/Vegan/images.png",
+      "RelativePath": "Uploads/Category/PSOI/Vegan/image.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -337,7 +337,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Vegan\\images.png"
+      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Vegan\\image.png"
     },
     {
       "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegeterian\\image.png",

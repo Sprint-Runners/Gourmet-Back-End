@@ -10,4 +10,9 @@ namespace Gourmet.Core.DTO.Response
     {
         public string Message { get; set; }
     }
+    public class GenerallResponse
+    {
+        public string Message { get; set; }
+        public bool Success { get; set; }
+    }
 }

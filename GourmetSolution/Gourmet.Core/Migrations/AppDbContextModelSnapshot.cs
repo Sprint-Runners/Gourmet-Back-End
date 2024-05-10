@@ -410,6 +410,24 @@ namespace Gourmet.Core.Migrations
                     b.ToTable("Temproary_Passwords");
                 });
 
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ChefRequest", b =>
+                {
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("userId");
+
+                    b.ToTable("ChefRequests");
+                });
+
             modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritRecipeUser", b =>
                 {
                     b.Property<string>("userId")
@@ -863,6 +881,17 @@ namespace Gourmet.Core.Migrations
                     b.Navigation("nationality");
 
                     b.Navigation("primary_source_of_ingredient");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ChefRequest", b =>
+                {
+                    b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritRecipeUser", b =>

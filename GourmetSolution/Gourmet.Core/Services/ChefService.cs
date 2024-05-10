@@ -32,6 +32,11 @@ namespace Gourmet.Core.Services
             var Recipes = _db.Recipes.Where(r => r.ChefId == chefId && r.IsAccepted==true).ToList();
             return Recipes;
         }
+        public async Task<IEnumerable<Recipe>> GetNotAcceptedRecipesByChefId(string chefId)
+        {
+            var Recipes = _db.Recipes.Where(r => r.ChefId == chefId && r.IsAccepted == false).ToList();
+            return Recipes;
+        }
         public async Task<double> GetChefScore(string chefId)
         {
             var foods = await GetRecipesByChefId(chefId);

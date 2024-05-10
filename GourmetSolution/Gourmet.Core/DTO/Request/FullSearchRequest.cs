@@ -9,6 +9,7 @@ namespace Gourmet.Core.DTO.Request
     public class FullSearchRequest
     {
         public string Text {  get; set; }
+        public string FoodName { get; set; }
         public int Time {  get; set; }
         public string StartDate {  get; set; }
         public string EndDate { get; set; }

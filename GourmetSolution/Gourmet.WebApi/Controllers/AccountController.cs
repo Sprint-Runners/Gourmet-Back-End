@@ -263,61 +263,9 @@ namespace Gourmet.WebApi.Controllers
             }
             return Ok(favouriteRecipe);
         }
-        [HttpGet]
-        [Route("Recipe_Chef")]
-        [Authorize(Roles = StaticUserRoles.CHEF)]
-        public async Task<IActionResult> Recipe_Chef()
-        {
-            try
-            {
-                //string token = HttpContext.Request.Headers["Authorization"];
-                //string username = _jwtService.DecodeToken(token);
-                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-                var finduser = await _userManager.GetUserAsync(currentUser);
-                var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
-                if (isExistsUser == null)
-                    return Problem(detail: "UserName not Exists", statusCode: 400);
-                var AllRecipe = await _chefService.GetRecipesByChefId(isExistsUser.Id);
-                List<SummaryRecipeInfoAddedByChefResponse> result = new List<SummaryRecipeInfoAddedByChefResponse>();
-                foreach (var item in AllRecipe)
-                {
-                    var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
-                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsUser.UserName, item.Name, 1);
-                    var allPSOI = _db.PSOIs.ToList();
-                    var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
-                    var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
-                    var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
-                    var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
-                    var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
-                    var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
-                    result.Add(new SummaryRecipeInfoAddedByChefResponse
-                    {
-                        ChefName=isExistsUser.FullName,
-                        ChefUserName=isExistsUser.UserName,
-                        ImagePath=ImageUrlRecipe,
-                        IsAccepted=item.IsAccepted,
-                        Name=item.Name,
-                        Score=item.Score,
-                        FoodName = isExitsFood.Name,
-                        CMName = isExitsCM.Name,
-                        DLName = isExistDL.Name,
-                        Description = item.Description,
-                        FTName = isExitsFT.Name,
-                        MTName = isExitsMT.Name,
-                        NName = isExitsN.Name,
-                        Time = item.Time,
-                        PSOIName = isExitsPSOI.Name
-                    });
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Problem(detail: ex.Message, statusCode: 400);
-            }
-        }
+        
         [HttpPut("Change_Password")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Change_Password(ChangePasswordRequest request)
 
         {
