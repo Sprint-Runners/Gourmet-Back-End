@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Gourmet.Core.Domain.Other_Object;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Diagnostics.Eventing.Reader;
+using Gourmet.Core.DataBase.GourmetDbcontext;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -24,14 +25,16 @@ namespace Gourmet.WebApi.Controllers
         private readonly IChefService _chefService;
         private readonly UserManager<Chef> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly AppDbContext _db;
 
-        public UsersController(IJwt jwtservice, IUsersService usersService, IChefService chefService, UserManager<Chef> userManager, IConfiguration configuration)
+        public UsersController(IJwt jwtservice, IUsersService usersService, IChefService chefService, UserManager<Chef> userManager, IConfiguration configuration, AppDbContext db)
         {
             _jwtservice = jwtservice;
             _usersService = usersService;
             _chefService = chefService;
             _userManager = userManager;
             _configuration = configuration;
+            _db = db;
         }
         [HttpPost]
         [Route("seed-roles")]
@@ -126,6 +129,11 @@ namespace Gourmet.WebApi.Controllers
         [Route("make-chef")]
         public async Task<IActionResult> MakeChef([FromBody] UpdatePermissionRequest updatePermission)
         {
+            var IsExistRequest = _db.ChefRequests.Where(x => x.UserName == updatePermission.UserName).FirstOrDefault();
+            if (IsExistRequest != null)
+            {
+                _db.ChefRequests.Remove(IsExistRequest);
+            }
             var operationResult = await _chefService.MakeChefAsync(updatePermission);
 
             if (operationResult.IsSucceed)

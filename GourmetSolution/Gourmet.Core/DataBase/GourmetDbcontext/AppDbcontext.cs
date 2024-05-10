@@ -54,5 +54,6 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<FavouritRecipeUser> FavouritRecipeUsers { get; set; }
         public DbSet<ScoreRecipeUser> ScoreRecipeUsers { get; set; }
         public DbSet<RecipeStep> RecipeSteps { get; set; }
+        public DbSet<ChefRequest>ChefRequests { get; set; }
     }
 }
