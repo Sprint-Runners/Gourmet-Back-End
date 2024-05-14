@@ -35,6 +35,28 @@ namespace Gourmet.WebApi.Controllers
             _recipeService= recipeService;
             _db = db;
         }
+        [HttpGet]
+        [Route("Chef_Check")]
+        [Authorize(Roles = StaticUserRoles.USER)]
+        public async Task<IActionResult> Chef_Check()
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            if (isExistsUser == null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            var roles = _userManager.GetRolesAsync(isExistsUser).Result.ToList();
+            if (roles.Contains("CHEF"))
+            {
+                return Ok(new GenerallResponse { Success = false, Message = "Your request has been approved, Please Login again." });
+            }
+            var IsExistRequest = _db.ChefRequests.Where(x => x.userId == isExistsUser.Id).FirstOrDefault();
+            if (IsExistRequest != null)
+            {
+                return Ok(new GenerallResponse { Success = false, Message = "Your request has been registered, wait for the admin's confirmation." });
+            }
+            return Ok(new GenerallResponse { Success = true, Message = "" });
+        }
         [HttpPost]
         [Route("Chef_Request")]
         [Authorize(Roles = StaticUserRoles.USER)]
@@ -54,6 +76,14 @@ namespace Gourmet.WebApi.Controllers
             if (IsExistRequest != null)
             {
                 return Ok(new GenerallResponse { Success = false, Message = "Your request has been registered, wait for the admin's confirmation." });
+            }
+            if(isExistsUser.FullName=="" || isExistsUser.FullName ==null)
+            {
+                return Ok(new GenerallResponse { Success = false, Message = "Please fill your fullname field befor creating a request." });
+            }
+            if (isExistsUser.Aboutme == "" || isExistsUser.Aboutme == null)
+            {
+                return Ok(new GenerallResponse { Success = false, Message = "Please fill your aboutme field befor creating a request." });
             }
             ChefRequest chefRequest = new ChefRequest() { Description = request.Description, userId = isExistsUser.Id,UserName=isExistsUser.UserName };
             _db.ChefRequests.Add(chefRequest);
@@ -76,8 +106,10 @@ namespace Gourmet.WebApi.Controllers
                     return Problem(detail: "UserName not Exists", statusCode: 400);
                 var AllAcceptRecipe = await _chefService.GetAcceptedRecipesByChefId(isExistsUser.Id);
                 var NotAcceptRecipe = await _chefService.GetNotAcceptedRecipesByChefId(isExistsUser.Id);
+                var AllRejecteRecipe = await _chefService.GetNotRejectedRecipesByChefId(isExistsUser.Id);
                 List<SummaryRecipeInfoAddedByChefResponse> result1 = new List<SummaryRecipeInfoAddedByChefResponse>();
                 List<SummaryRecipeInfoAddedByChefResponse> result2 = new List<SummaryRecipeInfoAddedByChefResponse>();
+                List<SummaryRecipeInfoAddedByChefResponse> result3 = new List<SummaryRecipeInfoAddedByChefResponse>();
                 foreach (var item in AllAcceptRecipe)
                 {
                     var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
@@ -95,6 +127,7 @@ namespace Gourmet.WebApi.Controllers
                         ChefUserName = isExistsUser.UserName,
                         ImagePath = ImageUrlRecipe,
                         IsAccepted = item.IsAccepted,
+                        IsRejectedted = item.IsReject,
                         Name = item.Name,
                         Score = item.Score,
                         FoodName = isExitsFood.Name,
@@ -125,6 +158,7 @@ namespace Gourmet.WebApi.Controllers
                         ChefUserName = isExistsUser.UserName,
                         ImagePath = ImageUrlRecipe,
                         IsAccepted = item.IsAccepted,
+                        IsRejectedted=item.IsReject,
                         Name = item.Name,
                         Score = item.Score,
                         FoodName = isExitsFood.Name,
@@ -138,7 +172,41 @@ namespace Gourmet.WebApi.Controllers
                         PSOIName = isExitsPSOI.Name
                     });
                 }
-                Tuple<List<SummaryRecipeInfoAddedByChefResponse>, List<SummaryRecipeInfoAddedByChefResponse>> result = new Tuple<List<SummaryRecipeInfoAddedByChefResponse>, List<SummaryRecipeInfoAddedByChefResponse>>(result1, result2);
+                foreach (var item in AllRejecteRecipe)
+                {
+                    var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
+                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsUser.UserName, item.Name, 1);
+                    var allPSOI = _db.PSOIs.ToList();
+                    var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                    var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                    var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                    var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                    var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                    var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
+                    result3.Add(new SummaryRecipeInfoAddedByChefResponse
+                    {
+                        ChefName = isExistsUser.FullName,
+                        ChefUserName = isExistsUser.UserName,
+                        ImagePath = ImageUrlRecipe,
+                        IsAccepted = item.IsAccepted,
+                        IsRejectedted = item.IsReject,
+                        Name = item.Name,
+                        Score = item.Score,
+                        FoodName = isExitsFood.Name,
+                        CMName = isExitsCM.Name,
+                        DLName = isExistDL.Name,
+                        Description = item.Description,
+                        FTName = isExitsFT.Name,
+                        MTName = isExitsMT.Name,
+                        NName = isExitsN.Name,
+                        Time = item.Time,
+                        PSOIName = isExitsPSOI.Name
+                    });
+                }
+                List<Tuple<string,List<SummaryRecipeInfoAddedByChefResponse>>> result = new List<Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>>();
+                result.Add(new Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>("Accepted",result1));
+                result.Add(new Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>("Not accepted", result2));
+                result.Add(new Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>("Rejected", result3));
                 return Ok(result);
             }
             catch (Exception ex)

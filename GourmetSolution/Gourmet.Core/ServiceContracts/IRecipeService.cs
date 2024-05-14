@@ -22,5 +22,6 @@ namespace Gourmet.Core.ServiceContracts
         Task<Recipe> Search_Recipe(string FoodName, string ChefName, string RecipeName);
         Task<InterGeneralResponse> RateRecipe(Recipe recipe, int rate);
         Task<InterGeneralResponse> DeleteRateRecipe(Recipe recipe, int rate);
+        Task<InterGeneralResponse> RejectedRecipe(string FoodName, string UserName, string Name);
     }
 }

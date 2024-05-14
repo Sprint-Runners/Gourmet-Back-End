@@ -83,5 +83,7 @@ namespace Gourmet.Core.Domain.Entities
         [Required]
         public int NumberOfPicture {  get; set; }
 
+        [Required]
+        public bool IsReject { get; set; }
     }
 }

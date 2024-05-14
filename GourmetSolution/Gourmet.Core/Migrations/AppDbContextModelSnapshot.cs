@@ -319,6 +319,9 @@ namespace Gourmet.Core.Migrations
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReject")
+                        .HasColumnType("bit");
+
                     b.Property<string>("List_Ingriedents")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

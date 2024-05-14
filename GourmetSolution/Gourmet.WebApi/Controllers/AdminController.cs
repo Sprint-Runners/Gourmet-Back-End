@@ -268,6 +268,28 @@ namespace Gourmet.WebApi.Controllers
                 return Problem(detail: ex.Message, statusCode: 400);
             }
         }
+        [HttpPost]
+        [Route("Reject_recipe")]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> Reject_recipe(AcceptedRecipeRequest request)
+        {
+            try
+            {
+                var result = await _recipeService.RejectedRecipe(request.FoodName, request.username, request.Name);
+                if (result.IsSucceed)
+                {
+                    return Ok(new GeneralResponse
+                    {
+                        Message = "Recipe Rejected"
+                    });
+                }
+                return Problem(detail: result.Message, statusCode: 400);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
+        }
         //ino vase recipe haee ke kamel naboode bayad benevisi va kamel koni
         //[HttpPost]
         //[Route("Add_Ingredient")]

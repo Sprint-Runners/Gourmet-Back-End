@@ -15,6 +15,7 @@ namespace Gourmet.Core.ServiceContracts
         Task<IEnumerable<Recipe>> GetRecipesByChefId(string chefId);
         Task<IEnumerable<Recipe>> GetAcceptedRecipesByChefId(string chefId);
         Task<IEnumerable<Recipe>> GetNotAcceptedRecipesByChefId(string chefId);
+        Task<IEnumerable<Recipe>> GetNotRejectedRecipesByChefId(string chefId);
         Task<UserResponse> MakeChefAsync(UpdatePermissionRequest updatePermission);
     }
 }
