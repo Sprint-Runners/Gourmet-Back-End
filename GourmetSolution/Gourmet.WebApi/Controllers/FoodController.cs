@@ -7,6 +7,7 @@ using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -202,6 +203,94 @@ namespace Gourmet.WebApi.Controllers
                 return Ok(results);
             }
             return Problem(detail: response.Message, statusCode: 400);
+        }
+        [HttpPut("SpecificRecipe")]
+        public async Task<IActionResult> SpecificRecipes(ShowRecipepageRequest request)
+        {
+            var recipe = await _recipeService.Search_Recipe(request.FoodName, request.ChefName, request.RecipeName);
+            RecipeInformationResponse result = new RecipeInformationResponse();
+
+            var isExitsUser = await _userManager.FindByIdAsync(recipe.ChefId);
+            var ingredients = await _recipeService.Get_All_Ingredients(request.FoodName, isExitsUser.UserName, recipe.Name);
+            var steps = await _recipeService.Get_All_steps(request.FoodName, isExitsUser.UserName, recipe.Name);
+            var allPSOI = _db.PSOIs.ToList();
+            var isExitsPSOI = allPSOI.Where(x => x.Id == recipe.Primary_Source_of_IngredientId).FirstOrDefault();
+            var isExitsCM = _db.CMs.Where(x => x.Id == recipe.Cooking_MethodId).FirstOrDefault();
+            var isExitsFT = _db.FTs.Where(x => x.Id == recipe.Food_typeId).FirstOrDefault();
+            var isExitsN = _db.Ns.Where(x => x.Id == recipe.NationalityId).FirstOrDefault();
+            var isExitsMT = _db.MTs.Where(x => x.Id == recipe.Meal_TypeId).FirstOrDefault();
+            var isExistDL = _db.DLs.Where(x => x.Id == recipe.Difficulty_LevelId).FirstOrDefault();
+            result = new RecipeInformationResponse
+            {
+                Name = recipe.Name,
+                FoodName = request.FoodName,
+                ChefName = isExitsUser.FullName,
+                ChefUserName = isExitsUser.UserName,
+                ChefImageUrl = await _imageProcessorService.GetImagebyUser(isExitsUser.UserName),
+                Description = recipe.Description,
+                Score = recipe.Score,
+                ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 1),
+                ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 2),
+                ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 3),
+                ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 4),
+                ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 5),
+                List_Ingriedents = ingredients.ToList(),
+                PSOIName = isExitsPSOI.Name,
+                CMName = isExitsCM.Name,
+                FTName = isExitsFT.Name,
+                NName = isExitsN.Name,
+                MTName = isExitsMT.Name,
+                DLName = isExistDL.Name,
+                time = recipe.Time,
+                Steps = steps.OrderBy(r => r.Number).ToList(),
+            };
+            return Ok(result);
+        }
+        [HttpPut("SpecificRecipeUser")]
+        [Authorize]
+        public async Task<IActionResult> SpecificRecipesUser(ShowRecipepageRequest request)
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var user = await _userManager.GetUserAsync(currentUser);
+            var recipe = await _recipeService.Search_Recipe(request.FoodName, request.ChefName, request.RecipeName);
+            RecipeInformationResponse result = new RecipeInformationResponse();
+
+            var isExitsUser = await _userManager.FindByIdAsync(recipe.ChefId);
+            var ingredients = await _recipeService.Get_All_Ingredients(request.FoodName, isExitsUser.UserName, recipe.Name);
+            InterGeneralResponse AddRecentRecipe = await _userService.AddRecentRecipeForUser(user, request.FoodName, isExitsUser.UserName, recipe.Name);
+            var steps = await _recipeService.Get_All_steps(request.FoodName, isExitsUser.UserName, recipe.Name);
+            var allPSOI = _db.PSOIs.ToList();
+            var isExitsPSOI = allPSOI.Where(x => x.Id == recipe.Primary_Source_of_IngredientId).FirstOrDefault();
+            var isExitsCM = _db.CMs.Where(x => x.Id == recipe.Cooking_MethodId).FirstOrDefault();
+            var isExitsFT = _db.FTs.Where(x => x.Id == recipe.Food_typeId).FirstOrDefault();
+            var isExitsN = _db.Ns.Where(x => x.Id == recipe.NationalityId).FirstOrDefault();
+            var isExitsMT = _db.MTs.Where(x => x.Id == recipe.Meal_TypeId).FirstOrDefault();
+            var isExistDL = _db.DLs.Where(x => x.Id == recipe.Difficulty_LevelId).FirstOrDefault();
+            result = new RecipeInformationResponse
+            {
+                Name = recipe.Name,
+                FoodName = request.FoodName,
+                ChefName = isExitsUser.FullName,
+                ChefUserName = isExitsUser.UserName,
+                ChefImageUrl = await _imageProcessorService.GetImagebyUser(isExitsUser.UserName),
+                Description = recipe.Description,
+                Score = recipe.Score,
+                ImgeUrl1 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 1),
+                ImgeUrl2 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 2),
+                ImgeUrl3 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 3),
+                ImgeUrl4 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 4),
+                ImgeUrl5 = await _imageProcessorService.GetImagebyRecipe(request.FoodName, isExitsUser.UserName, recipe.Name, 5),
+                List_Ingriedents = ingredients.ToList(),
+                PSOIName = isExitsPSOI.Name,
+                CMName = isExitsCM.Name,
+                FTName = isExitsFT.Name,
+                NName = isExitsN.Name,
+                MTName = isExitsMT.Name,
+                DLName = isExistDL.Name,
+                time = recipe.Time,
+                Steps = steps.OrderBy(r => r.Number).ToList(),
+            };
+            return Ok(result);
         }
         //[HttpGet("Special")]
         //public async Task<IActionResult> Get_Special_Foods()
