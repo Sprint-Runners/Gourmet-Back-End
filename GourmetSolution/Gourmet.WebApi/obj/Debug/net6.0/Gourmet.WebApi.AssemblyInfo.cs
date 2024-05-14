@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gourmet.WebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a24b07ff37e95b334116cda556ef49a5ffbccb5e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8de2bd624c91043c525092e0be3546db5b6c82e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gourmet.WebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gourmet.WebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

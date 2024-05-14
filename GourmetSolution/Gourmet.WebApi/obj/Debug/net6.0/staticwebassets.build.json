@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "NtT0GTjhZpQha3b8L4Vx7QNBjgvrAOHlUv0L/KCbToM=",
+  "Hash": "blIC1/zx7yCTSCzXOjOrp/DhMg4pCZ3uOdkdfkbvBp4=",
   "Source": "Gourmet.WebApi",
   "BasePath": "_content/Gourmet.WebApi",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\Category\\FT\\HomemadeFare\\image.png"
+    },
+    {
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Pasta\\@Learningvideos99_جمع_بندی_سیستم_ادراری_و_تناسلی.pdf",
+      "SourceId": "Gourmet.WebApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
+      "BasePath": "_content/Gourmet.WebApi",
+      "RelativePath": "Uploads/Category/FT/Pasta/@Learningvideos99_جمع_بندی_سیستم_ادراری_و_تناسلی.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\FT\\Pasta\\@Learningvideos99_جمع_بندی_سیستم_ادراری_و_تناسلی.pdf"
     },
     {
       "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\FT\\Pasta\\image.png",

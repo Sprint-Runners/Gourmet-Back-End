@@ -86,7 +86,8 @@ namespace Gourmet.Core.Services
                 Meal_TypeId = isExitsMT.Id,
                 Difficulty_LevelId = isExistDL.Id,
                 Time = int.Parse(request.Time),
-                IsAccepted=false
+                IsAccepted=false,
+                IsReject=false
                 
             };
             _db.Recipes.Add(new_recipe);
@@ -205,12 +206,35 @@ namespace Gourmet.Core.Services
             }
             isExistsRecipe.CreatTime = DateTime.Now;
             isExistsRecipe.IsAccepted = true;
+            isExistsRecipe.IsReject = false;
             _db.Recipes.Update(isExistsRecipe);
             _db.SaveChanges();
             return new InterGeneralResponse
             {
                 IsSucceed = true,
                 Message = "Recipe accepted"
+            };
+        }
+        public async Task<InterGeneralResponse> RejectedRecipe(string FoodName, string UserName, string Name)
+        {
+            var isExistsRecipe = _db.Recipes.Where(x => x.food.Name == FoodName && x.chef.UserName == UserName && x.Name == Name).FirstOrDefault();
+            if (isExistsRecipe == null)
+            {
+                return new InterGeneralResponse
+                {
+                    IsSucceed = false,
+                    Message = "Recipe Not Exist"
+                };
+            }
+            isExistsRecipe.CreatTime = DateTime.Now;
+            isExistsRecipe.IsAccepted = false;
+            isExistsRecipe.IsReject = true;
+            _db.Recipes.Update(isExistsRecipe);
+            _db.SaveChanges();
+            return new InterGeneralResponse
+            {
+                IsSucceed = true,
+                Message = "Recipe rejected"
             };
         }
         public async Task<IEnumerable<Recipe>> Get_All_Recipe()
