@@ -46,12 +46,12 @@ namespace Gourmet.WebApi.Controllers
                     }); ;
                 }
                 var chefs =  _db.Chefs.ToList();
-                //var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
-                //                    .Take(3)
-                //                    .ToList();
-                var topChefs = chefs.OrderByDescending(x=>x.Score)
+                var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
                                     .Take(3)
                                     .ToList();
+                //var topChefs = chefs.OrderByDescending(x=>x.Score)
+                //                    .Take(3)
+                //                    .ToList();
                 List<TopChefResponse> TopChefs = new List<TopChefResponse>();
                 foreach (Chef row in topChefs)
                 {

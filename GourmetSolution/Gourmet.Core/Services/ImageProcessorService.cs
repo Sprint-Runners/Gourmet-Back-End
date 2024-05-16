@@ -351,7 +351,7 @@ namespace Gourmet.Core.Services
         {
             username = username.Replace(" ", "");
             string ImageUrl = string.Empty;
-            string HostUrl = "http://http://185.129.119.228:4100";
+            string HostUrl = "http://185.129.119.228:4100";
             string Filepath = GetFilePathUser(username);
             string Imagepath = Filepath + "/image.png";
             if (!System.IO.File.Exists(Imagepath))
