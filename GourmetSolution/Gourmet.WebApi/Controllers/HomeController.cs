@@ -51,8 +51,9 @@ namespace Gourmet.WebApi.Controllers
                 var chefs =  _db.Chefs.ToList();
                 foreach(var item in chefs)
                 {
-                    _chefservice.GetChefScore(item.Id);
+                    item.Score=await _chefservice.GetChefScore(item.Id);
                 }
+                _db.SaveChanges();
                 var topChefs = chefs.OrderByDescending(c => c.Score)
                                     .Take(5)
                                     .ToList();
