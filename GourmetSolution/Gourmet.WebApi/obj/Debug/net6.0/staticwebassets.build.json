@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pS97yaYRiGpUrK+oxms+RuGY6i+Sq3jGMzqsoK3Bgm8=",
+  "Hash": "GuI6TUMw7jQPcLWU4NOuR6leSiZUBeVrQn8RMkhGpuA=",
   "Source": "Gourmet.WebApi",
   "BasePath": "_content/Gourmet.WebApi",
   "Mode": "Default",
@@ -188,12 +188,12 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Category\\MT\\Breakfast\\image.png"
     },
     {
-      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Desert\\image.png",
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Dessert\\image.png",
       "SourceId": "Gourmet.WebApi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
       "BasePath": "_content/Gourmet.WebApi",
-      "RelativePath": "Uploads/Category/MT/Desert/image.png",
+      "RelativePath": "Uploads/Category/MT/Dessert/image.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -204,7 +204,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\MT\\Desert\\image.png"
+      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\MT\\Dessert\\image.png"
     },
     {
       "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Dinner\\image.png",
@@ -946,6 +946,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\Food\\Waffles\\image.png"
+    },
+    {
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\5670d58b21@emailbbox.pro\\image.png",
+      "SourceId": "Gourmet.WebApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
+      "BasePath": "_content/Gourmet.WebApi",
+      "RelativePath": "Uploads/User/5670d58b21@emailbbox.pro/image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\User\\5670d58b21@emailbbox.pro\\image.png"
+    },
+    {
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\77b7441522@emailbbox.pro\\image.png",
+      "SourceId": "Gourmet.WebApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
+      "BasePath": "_content/Gourmet.WebApi",
+      "RelativePath": "Uploads/User/77b7441522@emailbbox.pro/image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\User\\77b7441522@emailbbox.pro\\image.png"
     },
     {
       "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\Alain_Ducasse\\image.png",

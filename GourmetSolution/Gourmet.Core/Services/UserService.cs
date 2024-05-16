@@ -15,11 +15,13 @@ namespace Gourmet.Core.Services
         private readonly UserManager<Chef> _userManager;
         private readonly AppDbContext _db;
         private readonly IRecipeService _recipeService;
-        public UserService(UserManager<Chef> userManager, AppDbContext db, IRecipeService recipeService)
+        private readonly IChefService _chefservice;
+        public UserService(UserManager<Chef> userManager, AppDbContext db, IRecipeService recipeService,IChefService chefService)
         {
             _userManager = userManager;
             _db = db;
             _recipeService = recipeService;
+            _chefservice = chefService;
         }
         public async Task<UserResponse> Edit(EditUserRequest request, string username)
         {
@@ -194,6 +196,8 @@ namespace Gourmet.Core.Services
                         userId = user.Id
                     });
                     InterGeneralResponse response=await _recipeService.RateRecipe(Recipe, rate);
+                    var isExitsUser = await _userManager.FindByIdAsync(Recipe.ChefId);
+                    isExitsUser.Score = await _chefservice.GetChefScore(isExitsUser.Id);
                     _db.SaveChanges();
                     return new InterGeneralResponse
                     {
@@ -242,7 +246,10 @@ namespace Gourmet.Core.Services
                     _db.ScoreRecipeUsers.Remove(IsExistScoreRecipeUser);
                     Console.WriteLine("im now &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
                     _db.SaveChanges();
+                    var isExitsUser = await _userManager.FindByIdAsync(Recipe.ChefId);
+                   
                     InterGeneralResponse response = await _recipeService.DeleteRateRecipe(Recipe, rate);
+                    isExitsUser.Score =await  _chefservice.GetChefScore(isExitsUser.Id);
                     Console.WriteLine("im now2222222222222222222 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
                     _db.SaveChanges();
                     return new InterGeneralResponse

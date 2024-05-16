@@ -2,6 +2,7 @@
 using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
 
@@ -17,13 +18,15 @@ namespace Gourmet.WebApi.Controllers
         private readonly IRecipeService _recipeservice;
         private readonly IImageProcessorService _imageProcessorService;
         private readonly ICategoriesService _categoriesService;
-        public HomeController(AppDbContext db, IChefService chefService, IImageProcessorService imageProcessorService, ICategoriesService categoriesService, IRecipeService recipeservice)
+        private readonly UserManager<Chef> _userManager;
+        public HomeController(AppDbContext db, IChefService chefService, IImageProcessorService imageProcessorService, ICategoriesService categoriesService, IRecipeService recipeservice,UserManager<Chef>userManager)
         {
             _db = db;
             _chefservice = chefService;
             _imageProcessorService = imageProcessorService;
             _categoriesService = categoriesService;
             _recipeservice = recipeservice;
+            _userManager = userManager;
         }
         [HttpGet("Home")]
         public async Task<IActionResult>  HomeAsync()
@@ -46,8 +49,12 @@ namespace Gourmet.WebApi.Controllers
                     }); ;
                 }
                 var chefs =  _db.Chefs.ToList();
-                var topChefs = chefs.OrderByDescending(async c => await _chefservice.GetChefScore(c.Id))
-                                    .Take(3)
+                foreach(var item in chefs)
+                {
+                    _chefservice.GetChefScore(item.Id);
+                }
+                var topChefs = chefs.OrderByDescending(c => c.Score)
+                                    .Take(5)
                                     .ToList();
                 //var topChefs = chefs.OrderByDescending(x=>x.Score)
                 //                    .Take(3)
