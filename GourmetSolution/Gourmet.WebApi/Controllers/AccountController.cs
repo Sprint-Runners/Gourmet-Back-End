@@ -157,7 +157,8 @@ namespace Gourmet.WebApi.Controllers
                     MTName=isExitsMT.Name,
                     NName=isExitsN.Name,
                     Time=item.recipe.Time,
-                    PSOIName=isExitsPSOI.Name
+                    PSOIName=isExitsPSOI.Name,
+                    CountRate=item.recipe.Number_Scorer
                 });
 
             }
@@ -207,7 +208,8 @@ namespace Gourmet.WebApi.Controllers
                     MTName = isExitsMT.Name,
                     NName = isExitsN.Name,
                     Time = item.recipe.Time,
-                    PSOIName = isExitsPSOI.Name
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.recipe.Number_Scorer
                 });
 
             }
@@ -257,7 +259,8 @@ namespace Gourmet.WebApi.Controllers
                     MTName = isExitsMT.Name,
                     NName = isExitsN.Name,
                     Time = item.recipe.Time,
-                    PSOIName = isExitsPSOI.Name
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.recipe.Number_Scorer
                 });
 
             }

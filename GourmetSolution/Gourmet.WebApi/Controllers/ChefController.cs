@@ -69,7 +69,8 @@ namespace Gourmet.WebApi.Controllers
                         FTName = isExitsFT.Name,
                         MTName = isExitsMT.Name,
                         NName = isExitsN.Name,
-                        PSOIName = isExitsPSOI.Name
+                        PSOIName = isExitsPSOI.Name,
+                        CountRate = r.Number_Scorer
                     });
                 }
                 foreach (Recipe r in LastChefRecipe)
@@ -98,7 +99,8 @@ namespace Gourmet.WebApi.Controllers
                         FTName = isExitsFT.Name,
                         MTName = isExitsMT.Name,
                         NName = isExitsN.Name,
-                        PSOIName = isExitsPSOI.Name
+                        PSOIName = isExitsPSOI.Name,
+                        CountRate = r.Number_Scorer
                     });
                 }
                 return Ok(new ShowChefInformationResponse

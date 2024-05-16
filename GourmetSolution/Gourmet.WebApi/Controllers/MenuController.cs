@@ -39,18 +39,21 @@ namespace Gourmet.WebApi.Controllers
                     ImagePath = row.ImgeUrl,
                 }); ;
             }
-            var quicks = _db.Recipes.Where(r => r.Time <= 30).ToList();
+            var AllRecipes = _db.Recipes.ToList();
+            AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false).ToList();
+            var quicks = AllRecipes.Where(r => r.Time <= 30).ToList();
+
             Meal_Type breakfast = _db.MTs.Where(r => r.Name == "Breakfast").FirstOrDefault();
             Console.WriteLine("im here$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*****"+breakfast);
-            var breakfasts = _db.Recipes.Where(r => r.Meal_TypeId == breakfast.Id).ToList();
+            var breakfasts = AllRecipes.Where(r => r.Meal_TypeId == breakfast.Id).ToList();
             Console.WriteLine("im here**********************************************");
             Primary_Source_of_Ingredient vegan = _db.PSOIs.Where(r => r.Name == "Vegan").FirstOrDefault();
-            var vegans = _db.Recipes.Where(r => r.Primary_Source_of_IngredientId == vegan.Id).ToList();
+            var vegans = AllRecipes.Where(r => r.Primary_Source_of_IngredientId == vegan.Id).ToList();
             Meal_Type dinner = _db.MTs.Where(r => r.Name == "Dinner").FirstOrDefault();
             Meal_Type lunch = _db.MTs.Where(r => r.Name == "Lunch").FirstOrDefault();
-            var mains = _db.Recipes.Where(r => r.Meal_TypeId == dinner.Id || r.Meal_TypeId == lunch.Id).ToList();
+            var mains = AllRecipes.Where(r => r.Meal_TypeId == dinner.Id || r.Meal_TypeId == lunch.Id).ToList();
             Console.WriteLine("im here***********************************111111111111111111***********");
-            var bestfoods = _db.Recipes.Where(r => r.Score >= 4.0).ToList();
+            var bestfoods = AllRecipes.Where(r => r.Score >= 4.0).ToList();
             Console.WriteLine("im here**************************************2222222222222222222222222222********");
             Dictionary<string, List<SummaryRecipeInfoResponse>> reciperesult = new Dictionary<string, List<SummaryRecipeInfoResponse>>();
 
@@ -86,6 +89,7 @@ namespace Gourmet.WebApi.Controllers
                     NName = isExitsN.Name,
                     Time = item.Time,
                     PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer,
                 });
 
             }
@@ -116,7 +120,8 @@ namespace Gourmet.WebApi.Controllers
                     MTName = isExitsMT.Name,
                     NName = isExitsN.Name,
                     Time = item.Time,
-                    PSOIName = isExitsPSOI.Name
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer
                 }) ;
 
             }
@@ -147,7 +152,8 @@ namespace Gourmet.WebApi.Controllers
                     MTName = isExitsMT.Name,
                     NName = isExitsN.Name,
                     Time = item.Time,
-                    PSOIName = isExitsPSOI.Name
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer,
                 });
 
             }
@@ -178,7 +184,8 @@ namespace Gourmet.WebApi.Controllers
                     MTName = isExitsMT.Name,
                     NName = isExitsN.Name,
                     Time = item.Time,
-                    PSOIName = isExitsPSOI.Name
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer,
                 });
 
             }
@@ -209,7 +216,8 @@ namespace Gourmet.WebApi.Controllers
                     MTName = isExitsMT.Name,
                     NName = isExitsN.Name,
                     Time = item.Time,
-                    PSOIName = isExitsPSOI.Name
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer,
                 });
 
             }

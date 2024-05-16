@@ -142,7 +142,8 @@ namespace Gourmet.WebApi.Controllers
                             Steps = steps.OrderBy(r => r.Number).ToList(),
                             Rate = rate,
                             isFavourit = IsLikethisRecipe != null,
-                            isRate = IsRateforthisRecipe != null
+                            isRate = IsRateforthisRecipe != null,
+                            CountRate = item.Number_Scorer,
                         });
                     }
 
@@ -198,6 +199,7 @@ namespace Gourmet.WebApi.Controllers
                         DLName = isExistDL.Name,
                         time = item.Time,
                         Steps = steps.OrderBy(r => r.Number).ToList(),
+                        CountRate = item.Number_Scorer,
                     });
                 }
                 return Ok(results);
@@ -243,6 +245,7 @@ namespace Gourmet.WebApi.Controllers
                 DLName = isExistDL.Name,
                 time = recipe.Time,
                 Steps = steps.OrderBy(r => r.Number).ToList(),
+                CountRate = recipe.Number_Scorer,
             };
             return Ok(result);
         }
@@ -253,12 +256,19 @@ namespace Gourmet.WebApi.Controllers
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var user = await _userManager.GetUserAsync(currentUser);
             var recipe = await _recipeService.Search_Recipe(request.FoodName, request.ChefName, request.RecipeName);
-            RecipeInformationResponse result = new RecipeInformationResponse();
+            RecipeInformationForUserResponse result = new RecipeInformationForUserResponse();
 
             var isExitsUser = await _userManager.FindByIdAsync(recipe.ChefId);
             var ingredients = await _recipeService.Get_All_Ingredients(request.FoodName, isExitsUser.UserName, recipe.Name);
             InterGeneralResponse AddRecentRecipe = await _userService.AddRecentRecipeForUser(user, request.FoodName, isExitsUser.UserName, recipe.Name);
             var steps = await _recipeService.Get_All_steps(request.FoodName, isExitsUser.UserName, recipe.Name);
+            var IsRateforthisRecipe = _db.ScoreRecipeUsers.Where(r => r.userId == user.Id && r.RecipeId == recipe.Id).FirstOrDefault();
+            var IsLikethisRecipe = _db.FavouritRecipeUsers.Where(r => r.userId == user.Id && r.RecipeId == recipe.Id).FirstOrDefault();
+            int rate = 0;
+            if (IsRateforthisRecipe != null)
+            {
+                rate = IsRateforthisRecipe.Rate;
+            }
             var allPSOI = _db.PSOIs.ToList();
             var isExitsPSOI = allPSOI.Where(x => x.Id == recipe.Primary_Source_of_IngredientId).FirstOrDefault();
             var isExitsCM = _db.CMs.Where(x => x.Id == recipe.Cooking_MethodId).FirstOrDefault();
@@ -266,7 +276,7 @@ namespace Gourmet.WebApi.Controllers
             var isExitsN = _db.Ns.Where(x => x.Id == recipe.NationalityId).FirstOrDefault();
             var isExitsMT = _db.MTs.Where(x => x.Id == recipe.Meal_TypeId).FirstOrDefault();
             var isExistDL = _db.DLs.Where(x => x.Id == recipe.Difficulty_LevelId).FirstOrDefault();
-            result = new RecipeInformationResponse
+            result = new RecipeInformationForUserResponse
             {
                 Name = recipe.Name,
                 FoodName = request.FoodName,
@@ -289,6 +299,10 @@ namespace Gourmet.WebApi.Controllers
                 DLName = isExistDL.Name,
                 time = recipe.Time,
                 Steps = steps.OrderBy(r => r.Number).ToList(),
+                Rate = rate,
+                isFavourit = IsLikethisRecipe != null,
+                isRate = IsRateforthisRecipe != null,
+                CountRate = recipe.Number_Scorer,
             };
             return Ok(result);
         }

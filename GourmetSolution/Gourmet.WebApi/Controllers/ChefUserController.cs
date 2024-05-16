@@ -138,7 +138,8 @@ namespace Gourmet.WebApi.Controllers
                         MTName = isExitsMT.Name,
                         NName = isExitsN.Name,
                         Time = item.Time,
-                        PSOIName = isExitsPSOI.Name
+                        PSOIName = isExitsPSOI.Name,
+                        CountRate = item.Number_Scorer
                     });
                 }
                 foreach (var item in NotAcceptRecipe)
@@ -169,7 +170,8 @@ namespace Gourmet.WebApi.Controllers
                         MTName = isExitsMT.Name,
                         NName = isExitsN.Name,
                         Time = item.Time,
-                        PSOIName = isExitsPSOI.Name
+                        PSOIName = isExitsPSOI.Name,
+                        CountRate = item.Number_Scorer
                     });
                 }
                 foreach (var item in AllRejecteRecipe)
@@ -200,7 +202,8 @@ namespace Gourmet.WebApi.Controllers
                         MTName = isExitsMT.Name,
                         NName = isExitsN.Name,
                         Time = item.Time,
-                        PSOIName = isExitsPSOI.Name
+                        PSOIName = isExitsPSOI.Name,
+                        CountRate = item.Number_Scorer
                     });
                 }
                 List<Tuple<string,List<SummaryRecipeInfoAddedByChefResponse>>> result = new List<Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>>();

@@ -15,6 +15,7 @@ namespace Gourmet.Core.DTO.Response
         public string FoodName { get; set; }
         public int Time { get; set; }
         public double Score {  get; set; }
+        public int CountRate { get; set; }
         public string ImagePath { get; set; }
         public bool IsAccepted {  get; set; }
         public bool IsRejectedted { get; set; }
