@@ -37,8 +37,8 @@
       "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Breakfast\\image.png"
     },
     {
-      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Desert\\image.png",
-      "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Desert\\image.png"
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Dessert\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\Category\\MT\\Dessert\\image.png"
     },
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\MT\\Dinner\\image.png",
@@ -195,6 +195,14 @@
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Waffles\\image.png",
       "PackagePath": "staticwebassets\\Uploads\\Food\\Waffles\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\5670d58b21@emailbbox.pro\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\User\\5670d58b21@emailbbox.pro\\image.png"
+    },
+    {
+      "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\77b7441522@emailbbox.pro\\image.png",
+      "PackagePath": "staticwebassets\\Uploads\\User\\77b7441522@emailbbox.pro\\image.png"
     },
     {
       "Id": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\User\\Alain_Ducasse\\image.png",
