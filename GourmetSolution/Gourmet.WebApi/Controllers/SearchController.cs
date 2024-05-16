@@ -198,6 +198,7 @@ namespace Gourmet.WebApi.Controllers
             {
                 request.Text = request.Text.ToLower().Trim();
                 var AllRecipes = _db.Recipes.ToList();
+                AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false).ToList();
                 searchResults = AllRecipes.Select(obj => new SearchRecipe
                 {
                     Recipe = obj,
@@ -210,6 +211,7 @@ namespace Gourmet.WebApi.Controllers
             else
             {
                 var AllRecipes = _db.Recipes.ToList();
+                AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false).ToList();
                 searchResults = AllRecipes.Select(obj => new SearchRecipe
                 {
                     Recipe = obj,

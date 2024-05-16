@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "blIC1/zx7yCTSCzXOjOrp/DhMg4pCZ3uOdkdfkbvBp4=",
+  "Hash": "pS97yaYRiGpUrK+oxms+RuGY6i+Sq3jGMzqsoK3Bgm8=",
   "Source": "Gourmet.WebApi",
   "BasePath": "_content/Gourmet.WebApi",
   "Mode": "Default",
@@ -321,12 +321,12 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Paleo\\image.png"
     },
     {
-      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Pescetatian\\image.png",
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Pescatarian\\image.png",
       "SourceId": "Gourmet.WebApi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
       "BasePath": "_content/Gourmet.WebApi",
-      "RelativePath": "Uploads/Category/PSOI/Pescetatian/image.png",
+      "RelativePath": "Uploads/Category/PSOI/Pescatarian/image.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -337,7 +337,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Pescetatian\\image.png"
+      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Pescatarian\\image.png"
     },
     {
       "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegan\\image.png",
@@ -359,12 +359,12 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Vegan\\image.png"
     },
     {
-      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegeterian\\image.png",
+      "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Category\\PSOI\\Vegetarian\\image.png",
       "SourceId": "Gourmet.WebApi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\",
       "BasePath": "_content/Gourmet.WebApi",
-      "RelativePath": "Uploads/Category/PSOI/Vegeterian/image.png",
+      "RelativePath": "Uploads/Category/PSOI/Vegetarian/image.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -375,7 +375,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Vegeterian\\image.png"
+      "OriginalItemSpec": "wwwroot\\Uploads\\Category\\PSOI\\Vegetarian\\image.png"
     },
     {
       "Identity": "C:\\Users\\win_10\\Desktop\\SystemAnalysis\\Gourmet\\Gourmet-Back-End\\GourmetSolution\\Gourmet.WebApi\\wwwroot\\Uploads\\Food\\Air_Fryer_Chicken_Legs\\image.png",
