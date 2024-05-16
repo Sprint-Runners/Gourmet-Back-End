@@ -45,13 +45,19 @@ namespace Gourmet.Core.Services
         public async Task<double> GetChefScore(string chefId)
         {
             var foods = await GetAcceptedRecipesByChefId(chefId);
-            double score = foods.Count()>0 ? foods.Average(f => f.Score):0;
-            Console.WriteLine("nnfjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj%%%%%%%%%%%%%"+score);
+            double score = 0;
+            if (foods.Count()> 0)
+            {
+                score = foods.Sum(r => r.Score);
+                score=score/foods.Count();
+            }
+           
             var chef= await _userManager.FindByIdAsync(chefId);
             Console.WriteLine(chef.Id + "))))))000000000000000000000000000((((((" + chefId);
             chef.Score = score;
+            _db.Users.Update(chef);
             _db.SaveChanges();
-            Console.WriteLine("nnfjjjjjjjjjjjj0000000000000000000000000000000000jjjjj%%%%%%%%%%%%%" + score);
+            Console.WriteLine("nnfjjjjjjjjjjjj0000000000000000000000000000000000jjjjj%%%%%%%%%%%%%" + chef.Score);
             return score;
         }
         public async Task<UserResponse> MakeChefAsync(UpdatePermissionRequest updatePermission)

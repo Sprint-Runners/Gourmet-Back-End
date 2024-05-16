@@ -198,6 +198,7 @@ namespace Gourmet.Core.Services
                     InterGeneralResponse response=await _recipeService.RateRecipe(Recipe, rate);
                     var isExitsUser = await _userManager.FindByIdAsync(Recipe.ChefId);
                     isExitsUser.Score = await _chefservice.GetChefScore(isExitsUser.Id);
+                    _db.Users.Update(isExitsUser);
                     _db.SaveChanges();
                     return new InterGeneralResponse
                     {
@@ -242,6 +243,7 @@ namespace Gourmet.Core.Services
                 }
                 else
                 {
+                    rate = IsExistScoreRecipeUser.Rate;
                     Console.WriteLine("im here******************************************"); 
                     _db.ScoreRecipeUsers.Remove(IsExistScoreRecipeUser);
                     Console.WriteLine("im now &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
@@ -250,6 +252,7 @@ namespace Gourmet.Core.Services
                    
                     InterGeneralResponse response = await _recipeService.DeleteRateRecipe(Recipe, rate);
                     isExitsUser.Score =await  _chefservice.GetChefScore(isExitsUser.Id);
+                    _db.Users.Update(isExitsUser);
                     Console.WriteLine("im now2222222222222222222 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
                     _db.SaveChanges();
                     return new InterGeneralResponse
