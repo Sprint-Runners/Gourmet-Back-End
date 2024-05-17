@@ -30,7 +30,7 @@ namespace Gourmet.Core.Services
         {
             var allPSOI = _db.PSOIs.ToList();
             var isExitsFood = _db.Foods.Where(x => x.Name == request.FoodName).FirstOrDefault();
-            var isExistsRecipe = _db.Recipes.Where(x => x.FoodId == isExitsFood.Id).Where(x => x.ChefId == userId).FirstOrDefault();
+            var isExistsRecipe = _db.Recipes.Where(x => x.FoodId == isExitsFood.Id).Where(x => x.ChefId == userId).Where(x => x.Name == request.Name).FirstOrDefault();
             var isExitsUser = await _userManager.FindByNameAsync(username);
             var isExitsPSOI = allPSOI.Where(x => x.Name == request.primary_source_of_ingredient).FirstOrDefault();
             var isExitsCM = _db.CMs.Where(x => x.Name == request.cooking_method).FirstOrDefault();
