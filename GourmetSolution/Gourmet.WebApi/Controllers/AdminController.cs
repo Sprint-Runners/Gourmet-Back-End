@@ -6,12 +6,8 @@ using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Data.Entity;
-using System.Linq;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -26,11 +22,10 @@ namespace Gourmet.WebApi.Controllers
         private readonly IRecipeService _recipeService;
 
         private readonly IUsersService _usersService;
-        public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService,IRecipeService recipeService,IUsersService usersService)
         private readonly IChefService _chefService;
         private readonly AppDbContext _db;
         private readonly UserManager<Chef> _userManager;
-        public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService,IRecipeService recipeService,IChefService chefService, AppDbContext db, UserManager<Chef> userManager)
+        public AdminController(IImageProcessorService imageProcessorService, IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService, IRecipeService recipeService, IChefService chefService, AppDbContext db, UserManager<Chef> userManager, IUsersService usersService)
         {
             _imageProcessorService = imageProcessorService;
             _ingredientService = ingredientService;
@@ -76,7 +71,7 @@ namespace Gourmet.WebApi.Controllers
                 if (result.IsSucceed)
                 {
                     var file = Request.Form.Files[0];
-                    var ResultImage = await _imageProcessorService.UploadFoodImage(file,result.food.Name);
+                    var ResultImage = await _imageProcessorService.UploadFoodImage(file, result.food.Name);
                     if (ResultImage.IsSucceed)
                     {
                         result.food.ImgeUrl = await _imageProcessorService.GetImagebyFood(result.food.Name);
@@ -96,9 +91,9 @@ namespace Gourmet.WebApi.Controllers
         [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Show_All_Users()
         {
-            var users =  _db.Users.ToList();
+            var users = _db.Users.ToList();
             var ShowUsers = new List<UserInfoResponse>();
-            foreach( var item in users)
+            foreach (var item in users)
             {
                 ShowUsers.Add(new UserInfoResponse
                 {
@@ -110,17 +105,17 @@ namespace Gourmet.WebApi.Controllers
                     UserName = item.UserName,
                     ImageURL = await _imageProcessorService.GetImagebyUser(item.UserName),
                     isPremium = item.premium > DateTime.Now ? true : false,
-                    premium=item.premium,
+                    premium = item.premium,
                     isChef = _userManager.GetRolesAsync((Chef)item).Result.ToList().Contains("CHEF"),
-                    requestChef= _db.ChefRequests.Where(x => x.UserName == item.UserName).FirstOrDefault()!=null
-            }) ;
+                    requestChef = _db.ChefRequests.Where(x => x.UserName == item.UserName).FirstOrDefault() != null
+                });
             }
             return Ok(ShowUsers);
         }
         [HttpPut]
         [Route("Show_Chef")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
-        public async Task<IActionResult> Show_Chef(GetInformationChefRequest request )
+        public async Task<IActionResult> Show_Chef(GetInformationChefRequest request)
         {
             var isExistsChef = await _userManager.FindByNameAsync(request.ChefUserName);
             if (isExistsChef == null)
@@ -153,7 +148,7 @@ namespace Gourmet.WebApi.Controllers
                     Foodname = isExitsFood.Name;
                 result1.Add(new SummaryRecipeInfoAddedByChefResponse
                 {
-                    ID=item.Id,
+                    ID = item.Id,
                     ChefName = isExistsChef.FullName,
                     ChefUserName = isExistsChef.UserName,
                     ImagePath = ImageUrlRecipe,
@@ -191,7 +186,7 @@ namespace Gourmet.WebApi.Controllers
                     Foodname = isExitsFood.Name;
                 result2.Add(new SummaryRecipeInfoAddedByChefResponse
                 {
-                    ID=item.Id,
+                    ID = item.Id,
                     ChefName = isExistsChef.FullName,
                     ChefUserName = isExistsChef.UserName,
                     ImagePath = ImageUrlRecipe,
@@ -235,7 +230,7 @@ namespace Gourmet.WebApi.Controllers
                         return Ok("Not Image Uploaded");
                     }
                     var file = Request.Form.Files[0];
-                    var ResultImage = await _imageProcessorService.UploadCategoryImage(file, "PSOI",result.PSOI.Name);
+                    var ResultImage = await _imageProcessorService.UploadCategoryImage(file, "PSOI", result.PSOI.Name);
                     if (ResultImage.IsSucceed)
                     {
                         result.PSOI.ImageUrl = await _imageProcessorService.GetImagebyCategory("PSOI", result.PSOI.Name);
@@ -411,7 +406,7 @@ namespace Gourmet.WebApi.Controllers
                         Message = "Recipe Accepted"
                     });
                 }
-                return Ok(new GenerallResponse {Success=false,Message=result.Message});
+                return Ok(new GenerallResponse { Success = false, Message = result.Message });
             }
             catch (Exception ex)
             {
@@ -444,7 +439,7 @@ namespace Gourmet.WebApi.Controllers
         [Route("BanUser")]
         public async Task<IActionResult> Ban_User_ByUsername(BanUserRequest request)
         {
-            
+
             try
             {
                 var result = await _usersService.BanUser(request);
@@ -457,7 +452,8 @@ namespace Gourmet.WebApi.Controllers
             catch (Exception ex)
             {
                 return Problem(detail: ex.Message, statusCode: 400);
-
+            }
+        }
         [HttpPost]
         [Route("Accept_Chef")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
@@ -495,9 +491,9 @@ namespace Gourmet.WebApi.Controllers
         [Route("Show_Recipe_Info")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Show_Recipe_Info(ShowRecipeForAdminOrChefRequest request)
-        {   
+        {
             var item = _db.Recipes.Where(x => x.Id == request.ID).FirstOrDefault();
-            var isExistsUser = _db.Users.Where(x=>x.Id==item.ChefId).FirstOrDefault();
+            var isExistsUser = _db.Users.Where(x => x.Id == item.ChefId).FirstOrDefault();
             var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
             var allPSOI = _db.PSOIs.ToList();
             var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
