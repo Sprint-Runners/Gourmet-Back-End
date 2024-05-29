@@ -17,13 +17,15 @@ namespace Gourmet.WebApi.Controllers
         private readonly IFoodService _foodService;
         private readonly ICategoriesService _categoriesService;
         private readonly IRecipeService _recipeService;
-        public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService,IRecipeService recipeService)
+        private readonly IUsersService _usersService;
+        public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService,IRecipeService recipeService,IUsersService usersService)
         {
             _imageProcessorService = imageProcessorService;
             _ingredientService = ingredientService;
             _foodService = foodService;
             _categoriesService = categoriesService;
             _recipeService = recipeService;
+            _usersService = usersService;
         }
         [HttpPost]
         [Route("Add_Ingredient")]
@@ -282,6 +284,25 @@ namespace Gourmet.WebApi.Controllers
                     {
                         Message = "Recipe Rejected"
                     });
+                }
+                return Problem(detail: result.Message, statusCode: 400);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
+        }
+        [HttpPut]
+        [Route("BanUser")]
+        public async Task<IActionResult> Ban_User_ByUsername(BanUserRequest request)
+        {
+            
+            try
+            {
+                var result = await _usersService.BanUser(request);
+                if (result.IsSucceed)
+                {
+                    return Ok(result);
                 }
                 return Problem(detail: result.Message, statusCode: 400);
             }

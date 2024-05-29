@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gourmet.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240514122225_check2")]
-    partial class check2
+    [Migration("20240529030131_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -19,4 +19,9 @@ namespace Gourmet.Core.Domain.Other_Object
         public bool IsSucceed { get; set; }
         public string Message { get; set; }
     }
+    public class BanUserResponse
+    {
+        public bool IsSucceed { get; set; }
+        public string Message { get; set; }
+    }
 }
