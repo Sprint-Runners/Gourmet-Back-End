@@ -24,28 +24,23 @@ namespace Gourmet.WebApi.Controllers
         private readonly IFoodService _foodService;
         private readonly ICategoriesService _categoriesService;
         private readonly IRecipeService _recipeService;
-<<<<<<< HEAD
+
         private readonly IUsersService _usersService;
         public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService,IRecipeService recipeService,IUsersService usersService)
-=======
         private readonly IChefService _chefService;
         private readonly AppDbContext _db;
         private readonly UserManager<Chef> _userManager;
         public AdminController(IImageProcessorService imageProcessorService,IIngredientService ingredientService, IFoodService foodService, ICategoriesService categoriesService,IRecipeService recipeService,IChefService chefService, AppDbContext db, UserManager<Chef> userManager)
->>>>>>> fbac77a974453fbf4bd587efef560bf5eacc927b
         {
             _imageProcessorService = imageProcessorService;
             _ingredientService = ingredientService;
             _foodService = foodService;
             _categoriesService = categoriesService;
             _recipeService = recipeService;
-<<<<<<< HEAD
             _usersService = usersService;
-=======
             _chefService = chefService;
             _db = db;
             _userManager = userManager;
->>>>>>> fbac77a974453fbf4bd587efef560bf5eacc927b
         }
         [HttpPost]
         [Route("Add_Ingredient")]
