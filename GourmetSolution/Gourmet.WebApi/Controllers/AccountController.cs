@@ -1,6 +1,5 @@
 ﻿using Gourmet.Core.DataBase.GourmetDbcontext;
 using Gourmet.Core.Domain.Entities;
-using Gourmet.Core.Domain.Other_Object;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
@@ -22,7 +21,7 @@ namespace Gourmet.WebApi.Controllers
         private readonly IJwt _jwtService;
         private readonly AppDbContext _db;
 
-        public AccountController(IUserService userService, IImageProcessorService imageProcessorServic, UserManager<Chef> userManager, IChefService chefService, IJwt jwtService,AppDbContext db)
+        public AccountController(IUserService userService, IImageProcessorService imageProcessorServic, UserManager<Chef> userManager, IChefService chefService, IJwt jwtService, AppDbContext db)
         {
 
             _userService = userService;
@@ -53,7 +52,7 @@ namespace Gourmet.WebApi.Controllers
                     Email = readuser.Email,
                     PhoneNumber = readuser.PhoneNumber,
                     Aboutme = readuser.Aboutme,
-                    Gen=readuser.Gender
+                    Gen = readuser.Gender
                 };
                 return Ok(response);
             }
@@ -82,27 +81,35 @@ namespace Gourmet.WebApi.Controllers
                 var EditResult = await _userService.Edit(request, finduser.UserName);
                 if (EditResult.IsSucceed)
                 {
-                    var file = Request.Form.Files[0];
-                    var Result = await _imageProcessorService.UploadUserImage(file, finduser.UserName);
-                    if (Result.IsSucceed)
+                    try
                     {
-                        var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
-                        ApplicationUser user = (ApplicationUser)isExistsUser;
-                        user.ImageURL = await _imageProcessorService.GetImagebyUser(finduser.UserName);
-                        ReadUserResponse response = new ReadUserResponse
+                        var file = Request.Form.Files[0];
+                        var Result = await _imageProcessorService.UploadUserImage(file, finduser.UserName);
+                        if (Result.IsSucceed)
                         {
-                            ImageUrl = await _imageProcessorService.GetImagebyUser(finduser.UserName),
-                            FullName = user.FullName,
-                            UserName = user.UserName,
-                            Email = user.Email,
-                            PhoneNumber = user.PhoneNumber,
-                            Aboutme = user.Aboutme,
-                            Gen = user.Gender
-                        };
-                        //Result.ImagePath = user.ImageURL;
-                        return Ok(new GeneralResponse { Message = EditResult.Message });
+                            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+                            ApplicationUser user = (ApplicationUser)isExistsUser;
+                            user.ImageURL = await _imageProcessorService.GetImagebyUser(finduser.UserName);
+                            ReadUserResponse response = new ReadUserResponse
+                            {
+                                ImageUrl = await _imageProcessorService.GetImagebyUser(finduser.UserName),
+                                FullName = user.FullName,
+                                UserName = user.UserName,
+                                Email = user.Email,
+                                PhoneNumber = user.PhoneNumber,
+                                Aboutme = user.Aboutme,
+                                Gen = user.Gender
+                            };
+                            //Result.ImagePath = user.ImageURL;
+                            return Ok(new GeneralResponse { Message = EditResult.Message });
 
+                        }
                     }
+                    catch (Exception exc)
+                    {
+                        return Ok(new GeneralResponse { Message = EditResult.Message });
+                    }
+
 
                     return Ok(new GeneralResponse { Message = EditResult.Message });
                 }
@@ -113,7 +120,41 @@ namespace Gourmet.WebApi.Controllers
                 return Problem(detail: ex.Message, statusCode: 400);
             }
         }
- 
+        [HttpPut]
+        [Route("Premium")]
+        [Authorize]
+
+        public async Task<IActionResult> Premium(AddPremiumRequest request)
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            if (isExistsUser == null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            var result=await _userService.Premium(isExistsUser.UserName, request.Month);
+            if (result.IsSucceed)
+            {
+                return Ok(new GenerallResponse { Message = result.Message, Success = true });
+            }
+            return Ok(new GenerallResponse { Message = result.Message, Success = false });
+        }
+        [HttpPost]
+        [Route("Delete_Image_User")]
+        [Authorize]
+        public async Task<IActionResult> Delete_Image()
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            if (isExistsUser == null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            var result = await _imageProcessorService.RemoveUserImage(isExistsUser.UserName);
+            if (result.IsSucceed)
+            {
+                return Ok(new GenerallResponse { Message = "Image deleted successfully", Success = true });
+            }
+            return Ok(new GenerallResponse { Message = result.Message, Success = false });
+        }
         [HttpGet]
         [Route("Recent_Recipes_User")]
         [Authorize]
@@ -149,16 +190,16 @@ namespace Gourmet.WebApi.Controllers
                     VisitTime = item.VisitTime,
                     ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
                     Name = item.recipe.Name,
-                    FoodName=isExitsFood.Name,
-                    CMName=isExitsCM.Name,
-                    DLName=isExistDL.Name,
-                    Description=item.recipe.Description,
-                    FTName=isExitsFT.Name,
-                    MTName=isExitsMT.Name,
-                    NName=isExitsN.Name,
-                    Time=item.recipe.Time,
-                    PSOIName=isExitsPSOI.Name,
-                    CountRate=item.recipe.Number_Scorer
+                    FoodName = isExitsFood.Name,
+                    CMName = isExitsCM.Name,
+                    DLName = isExistDL.Name,
+                    Description = item.recipe.Description,
+                    FTName = isExitsFT.Name,
+                    MTName = isExitsMT.Name,
+                    NName = isExitsN.Name,
+                    Time = item.recipe.Time,
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.recipe.Number_Scorer
                 });
 
             }
@@ -197,7 +238,7 @@ namespace Gourmet.WebApi.Controllers
                     Score = item.recipe.Score,
                     ChefName = isExitschef.FullName,
                     ChefUserName = isExitschef.UserName,
-                    IsFavorite=true,
+                    IsFavorite = true,
                     ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.recipe.Name, 1),
                     Name = item.recipe.Name,
                     FoodName = isExitsFood.Name,
@@ -266,7 +307,7 @@ namespace Gourmet.WebApi.Controllers
             }
             return Ok(favouriteRecipe);
         }
-        
+
         [HttpPut("Change_Password")]
         [Authorize]
         public async Task<IActionResult> Change_Password(ChangePasswordRequest request)

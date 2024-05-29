@@ -241,6 +241,16 @@ namespace Gourmet.Core.Services
                 {
                     System.IO.File.Delete(Imagepath);
                 }
+                else
+                {
+                    return new ImageResponse
+                    {
+                        IsSucceed = false,
+                        Message = "There are no Images to delete",
+                        ImagePath = null
+
+                    };
+                }
                 return new ImageResponse
                 {
                     IsSucceed = true,
@@ -270,6 +280,7 @@ namespace Gourmet.Core.Services
                 {
                     System.IO.File.Delete(Imagepath);
                 }
+                
                 return new ImageResponse
                 {
                     IsSucceed = true,

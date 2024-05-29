@@ -40,7 +40,7 @@ namespace Gourmet.WebApi.Controllers
                 }); ;
             }
             var AllRecipes = _db.Recipes.ToList();
-            AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false).ToList();
+            AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false && r.FoodString == "" && r.NotExistIngredients == "").ToList();
             var quicks = AllRecipes.Where(r => r.Time <= 30).ToList();
 
             Meal_Type breakfast = _db.MTs.Where(r => r.Name == "Breakfast").FirstOrDefault();

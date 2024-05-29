@@ -2,6 +2,7 @@
 using Gourmet.Core.DataBase.GourmetDbcontext;
 using Gourmet.Core.Domain.Entities;
 using Gourmet.Core.Domain.Other_Object;
+using Gourmet.Core.Domain.Relations;
 using Gourmet.Core.DTO.Request;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -285,8 +287,6 @@ namespace Gourmet.WebApi.Controllers
 
             }
             return Problem(detail: result1.Message, statusCode: 400);
-
-
         }
         [HttpPost]
         [Route("Add_Image_Recipe")]
@@ -336,6 +336,181 @@ namespace Gourmet.WebApi.Controllers
                 _db.SaveChanges();
                 return Problem(detail: ex.Message, statusCode: 400);
             }
+        }
+        [HttpPut]
+        [Route("Show_Recipe_Info")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
+        public async Task<IActionResult> Show_Recipe_Info(ShowRecipeForAdminOrChefRequest request )
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            var item = _db.Recipes.Where(x => x.Id == request.ID).FirstOrDefault();
+            var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
+            var allPSOI = _db.PSOIs.ToList();
+            var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+            var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+            var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+            var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+            var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+            var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
+            string Foodname = "";
+            if (isExitsFood == null)
+            {
+                Foodname = item.FoodString;
+
+            }
+            else
+            {
+                Foodname = isExitsFood.Name;
+                item.FoodString = "";
+                item.FoodId = isExitsFood.Id;
+                _db.Recipes.Update(item);
+                _db.SaveChanges();
+            }
+            var ImageUrlRecipe1 = await _imageProcessorService.GetImagebyRecipe(Foodname, isExistsUser.UserName, item.Name, 1);
+            var ImageUrlRecipe2 = await _imageProcessorService.GetImagebyRecipe(Foodname, isExistsUser.UserName, item.Name, 2);
+            var ImageUrlRecipe3 = await _imageProcessorService.GetImagebyRecipe(Foodname, isExistsUser.UserName, item.Name, 3);
+            var ImageUrlRecipe4 = await _imageProcessorService.GetImagebyRecipe(Foodname, isExistsUser.UserName, item.Name, 4);
+            var ImageUrlRecipe5 = await _imageProcessorService.GetImagebyRecipe(Foodname, isExistsUser.UserName, item.Name, 5);
+
+            var steps = _db.RecipeSteps.Where(x => x.RecipeId == item.Id).OrderBy(x=>x.Number).Select(x=>new Tuple<string,string>(x.Number.ToString(),x.explenation)).ToList();
+            var notExistingredient = item.NotExistIngredients.Split('.');
+            List<Tuple<string, string, string, bool>> List_Ingriedents = new List<Tuple<string, string, string, bool>>(); 
+            foreach(var ing in notExistingredient)
+            {
+                if (ing != "")
+                {
+                    var ingr = ing.Split(',');
+                    var isExitsIngredient = _db.Ingredients.Where(x => x.Name == ingr[0]).FirstOrDefault();
+                    if ( isExitsIngredient!= null)
+                    {
+                        List_Ingriedents.Add(new Tuple<string, string, string, bool>(ingr[0], ingr[1], ingr[2],true));
+                        RecipeIngredients row = new RecipeIngredients
+                        {
+                            RecipeId = item.Id,
+                            IngredientId = isExitsIngredient.Id,
+                            Quantity = double.Parse(ingr[1]),
+                            Unit = ingr[2]
+                        };
+                        _db.RecipeIngredients.Add(row);
+                        _db.SaveChanges();
+                    }
+                    else
+                    {
+                        List_Ingriedents.Add(new Tuple<string, string, string, bool>(ingr[0], ingr[1], ingr[2], false));
+                    }
+                    
+                }
+            }
+            var Recipeingredients=_db.RecipeIngredients.Where(x => x.RecipeId == item.Id).ToList();
+            foreach(var i in Recipeingredients)
+            {
+                var isExitsIngredient = _db.Ingredients.Where(x => x.Id == i.IngredientId).FirstOrDefault();
+                List_Ingriedents.Add(new Tuple<string, string, string, bool>(isExitsIngredient.Name, i.Quantity.ToString(), i.Unit, true));
+            }
+            var NotExistingredient = List_Ingriedents.Where(x => x.Item4 == false).ToList();
+            var Existingredient = List_Ingriedents.Where(x => x.Item4 == true).ToList();
+            var NotExistIngredients ="";
+            foreach (var i in NotExistingredient)
+            {
+                string ingredient = i.Item1 + "," + i.Item2 + "," + i.Item3;
+                NotExistIngredients = NotExistIngredients + ingredient + ".";
+            }
+            item.NotExistIngredients = NotExistIngredients;
+            if (item.FoodString=="" && item.NotExistIngredients.Count() != 0)
+            {
+                item.IsCompelete = true;
+            }
+            _db.Recipes.Update(item);
+            _db.SaveChanges();
+            return Ok(new ShowRecipeForAdminOrChefResponse
+            {
+                ID = item.Id,
+                ImageURL1 = ImageUrlRecipe1,
+                ImageURL2 = ImageUrlRecipe2,
+                ImageURL3 = ImageUrlRecipe3,
+                ImageURL4 = ImageUrlRecipe4,
+                ImageURL5 = ImageUrlRecipe5,
+                Name = item.Name,
+                FoodName = Foodname,
+                NotExistFoodName=item.FoodString,
+                cooking_method= isExitsCM.Name,
+                difficulty_level = isExistDL.Name,
+                Description = item.Description,
+                food_type = isExitsFT.Name,
+                meal_type = isExitsMT.Name,
+                nationality = isExitsN.Name,
+                Time = item.Time.ToString(),
+                primary_source_of_ingredient= isExitsPSOI.Name,
+                List_Ingriedents=List_Ingriedents,
+                Steps=steps,
+            });
+        }
+        [HttpPost]
+        [Route("Edit_Recipe")]
+        [Authorize(Roles = StaticUserRoles.CHEF)]
+        public async Task<IActionResult> Edit_Recipe(EditRecipeRequest request)
+        {
+
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var finduser = await _userManager.GetUserAsync(currentUser);
+            var isExistsUser = await _userManager.FindByNameAsync(finduser.UserName);
+            if (isExistsUser == null)
+                return Problem(detail: "UserName not Exists", statusCode: 400);
+            var item = _db.Recipes.Where(x => x.Id == request.ID).FirstOrDefault();
+            Console.WriteLine("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH^^^^^^^^^^^^^^^^^^^1111111111111111111111111111^^^^^^^^",request.ID);
+            var isExitsFood = _db.Foods.Where(x => item.FoodId!=null && x.Id == item.FoodId).FirstOrDefault();
+            Console.WriteLine("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            string Foodname = "";
+            if (isExitsFood == null)
+                Foodname = item.FoodString;
+            else
+            {
+                Foodname = isExitsFood.Name;
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                _imageProcessorService.RemoveRecipeImage(Foodname, isExistsUser.UserName, item.Name, i);
+            }
+            var Result = await _recipeService.DeleteRecipe(Foodname, isExistsUser.UserName, item.Name, isExistsUser.Id);
+            if (!Result.IsSucceed)
+            {
+                return Ok(new GenerallResponse { Success = false, Message = "Edit was not successful" });
+            }
+            AddRecipeRequest new_request = new AddRecipeRequest
+            {
+                Name = request.Name,
+                cooking_method = request.cooking_method,
+                food_type = request.food_type,
+                Description = request.Description,
+                FoodName = request.FoodName,
+                difficulty_level = request.difficulty_level,
+                meal_type = request.meal_type,
+                NotExistFoodName = request.NotExistFoodName,
+                List_Ingriedents = request.List_Ingriedents,
+                nationality = request.nationality,
+                NumberOfPicture = request.NumberOfPicture,
+                primary_source_of_ingredient = request.primary_source_of_ingredient,
+                Steps = request.Steps,
+                Time = request.Time
+            };
+            if (request.NotExistFoodName != "" || request.List_Ingriedents.Where(ING => ING.Item4 == false).ToList().Count != 0)
+            {
+                var result = await _recipeService.CreateInCompleteRecipe(new_request, isExistsUser.Id, finduser.UserName);
+                if (result.IsSucceed)
+                {
+                    return Ok(result.Message);
+                }
+                return Problem(detail: result.Message, statusCode: 400);
+            }
+            var result1 = await _recipeService.CreateRecipeByChef(new_request, isExistsUser.Id, finduser.UserName);
+            if (result1.IsSucceed)
+            {
+                return Ok(result1.Message);
+
+            }
+            return Problem(detail: result1.Message, statusCode: 400);
         }
     }
 }

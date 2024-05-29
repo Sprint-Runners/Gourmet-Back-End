@@ -95,8 +95,7 @@ namespace Gourmet.WebApi.Controllers
         [Authorize(Roles = StaticUserRoles.CHEF)]
         public async Task<IActionResult> Recipe_Chef()
         {
-            try
-            {
+           
                 //string token = HttpContext.Request.Headers["Authorization"];
                 //string username = _jwtService.DecodeToken(token);
                 System.Security.Claims.ClaimsPrincipal currentUser = this.User;
@@ -121,8 +120,14 @@ namespace Gourmet.WebApi.Controllers
                     var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
                     var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
                     var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
+                    string Foodname = "";
+                    if (isExitsFood == null)
+                        Foodname = item.FoodString;
+                    else
+                        Foodname = isExitsFood.Name;
                     result1.Add(new SummaryRecipeInfoAddedByChefResponse
                     {
+                        ID=item.Id,
                         ChefName = isExistsUser.FullName,
                         ChefUserName = isExistsUser.UserName,
                         ImagePath = ImageUrlRecipe,
@@ -130,7 +135,7 @@ namespace Gourmet.WebApi.Controllers
                         IsRejectedted = item.IsReject,
                         Name = item.Name,
                         Score = item.Score,
-                        FoodName = isExitsFood.Name,
+                        FoodName = Foodname,
                         CMName = isExitsCM.Name,
                         DLName = isExistDL.Name,
                         Description = item.Description,
@@ -145,16 +150,23 @@ namespace Gourmet.WebApi.Controllers
                 foreach (var item in NotAcceptRecipe)
                 {
                     var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
-                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsUser.UserName, item.Name, 1);
-                    var allPSOI = _db.PSOIs.ToList();
+                     var allPSOI = _db.PSOIs.ToList();
                     var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
                     var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
                     var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
                     var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
                     var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
                     var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
-                    result2.Add(new SummaryRecipeInfoAddedByChefResponse
+                    string Foodname = "";
+                    if (isExitsFood == null)
+                        Foodname = item.FoodString;
+                    else
+                        Foodname = isExitsFood.Name;
+                var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(Foodname, isExistsUser.UserName, item.Name, 1);
+
+                result2.Add(new SummaryRecipeInfoAddedByChefResponse
                     {
+                        ID = item.Id,
                         ChefName = isExistsUser.FullName,
                         ChefUserName = isExistsUser.UserName,
                         ImagePath = ImageUrlRecipe,
@@ -162,7 +174,7 @@ namespace Gourmet.WebApi.Controllers
                         IsRejectedted=item.IsReject,
                         Name = item.Name,
                         Score = item.Score,
-                        FoodName = isExitsFood.Name,
+                        FoodName = Foodname,
                         CMName = isExitsCM.Name,
                         DLName = isExistDL.Name,
                         Description = item.Description,
@@ -177,7 +189,6 @@ namespace Gourmet.WebApi.Controllers
                 foreach (var item in AllRejecteRecipe)
                 {
                     var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
-                    var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExistsUser.UserName, item.Name, 1);
                     var allPSOI = _db.PSOIs.ToList();
                     var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
                     var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
@@ -185,8 +196,16 @@ namespace Gourmet.WebApi.Controllers
                     var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
                     var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
                     var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
-                    result3.Add(new SummaryRecipeInfoAddedByChefResponse
+                    string Foodname = "";
+                    if (isExitsFood == null)
+                        Foodname = item.FoodString;
+                    else
+                        Foodname = isExitsFood.Name;
+                var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(Foodname, isExistsUser.UserName, item.Name, 1);
+
+                result3.Add(new SummaryRecipeInfoAddedByChefResponse
                     {
+                        ID = item.Id,
                         ChefName = isExistsUser.FullName,
                         ChefUserName = isExistsUser.UserName,
                         ImagePath = ImageUrlRecipe,
@@ -194,7 +213,7 @@ namespace Gourmet.WebApi.Controllers
                         IsRejectedted = item.IsReject,
                         Name = item.Name,
                         Score = item.Score,
-                        FoodName = isExitsFood.Name,
+                        FoodName = Foodname,
                         CMName = isExitsCM.Name,
                         DLName = isExistDL.Name,
                         Description = item.Description,
@@ -211,11 +230,7 @@ namespace Gourmet.WebApi.Controllers
                 result.Add(new Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>("Not accepted", result2));
                 result.Add(new Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>("Rejected", result3));
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Problem(detail: ex.Message, statusCode: 400);
-            }
+           
         }
         [HttpPut]
         [Route("Delete_Recipe")]
@@ -228,6 +243,8 @@ namespace Gourmet.WebApi.Controllers
             if (isExistsUser == null)
                 return Problem(detail: "UserName not Exists", statusCode: 400);
             var IsExistRecipe=await _recipeService.Search_Recipe(request.FoodName, isExistsUser.UserName, request.RecipeName);
+            if(IsExistRecipe==null)
+                IsExistRecipe = await _recipeService.Search_InComplete_Recipe(request.FoodName, isExistsUser.UserName, request.RecipeName);
             _db.Recipes.Remove(IsExistRecipe);
             _db.SaveChanges();
             return Ok(new GeneralResponse { Message = "Delete recipe succes" });

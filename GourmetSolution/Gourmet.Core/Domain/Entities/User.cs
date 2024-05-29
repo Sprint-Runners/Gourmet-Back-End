@@ -15,5 +15,6 @@ namespace Gourmet.Core.Domain.Entities
         public string ImageURL { get; set; } = string.Empty;
         public string Aboutme { get; set; }
         public string Gender { get; set; }
+        public DateTime premium { get; set; }= DateTime.Now.AddDays(1);
     }
 }
