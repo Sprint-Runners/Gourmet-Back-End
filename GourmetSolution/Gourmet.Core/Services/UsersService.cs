@@ -100,7 +100,15 @@ namespace Gourmet.Core.Services
                     Message = "Invalid Credentials",
                     user = null
                 };
-
+            if (new_user.Ban)
+            {
+                return new UserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "The User is Banned",
+                    user = null
+                };
+            }
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.password);
 
             if (!isPasswordCorrect)
