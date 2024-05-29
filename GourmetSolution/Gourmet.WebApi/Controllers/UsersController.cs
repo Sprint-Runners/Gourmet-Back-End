@@ -143,8 +143,6 @@ namespace Gourmet.WebApi.Controllers
             var EmailResult = await _usersService.Temproary_Password(request);
             if (EmailResult.IsSucceed)
                 return Ok(EmailResult);
-           
-
             return Problem(detail: EmailResult.Message, statusCode: 400);
         }
     }

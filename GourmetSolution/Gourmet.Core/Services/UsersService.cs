@@ -101,7 +101,15 @@ namespace Gourmet.Core.Services
                     Message = "Invalid Credentials",
                     user = null
                 };
-
+            if (new_user.Ban)
+            {
+                return new UserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "The User is Banned",
+                    user = null
+                };
+            }
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.password);
 
             if (!isPasswordCorrect)
@@ -253,5 +261,29 @@ namespace Gourmet.Core.Services
                 return response;
             }
         }
+
+        public async Task<BanUserResponse> BanUser(BanUserRequest request)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+            if (isExistsUser == null)
+                return new BanUserResponse() { IsSucceed = false, Message = "No user with this username exists" };
+            isExistsUser.Ban = true;
+            //EditUser.UserName
+            var result = await _userManager.UpdateAsync(isExistsUser);
+
+            if (result.Succeeded)
+                return new BanUserResponse()
+                {
+                    IsSucceed = true,
+                    Message = "User Banned successfuly"
+                };
+            else
+                return new BanUserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "Could not ban user successfuly"
+                };
+        }
+
     }
 }
