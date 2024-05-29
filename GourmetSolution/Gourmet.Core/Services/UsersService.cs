@@ -275,5 +275,6 @@ namespace Gourmet.Core.Services
                     Message = "Could not ban user successfuly"
                 };
         }
+
     }
 }
