@@ -198,7 +198,7 @@ namespace Gourmet.WebApi.Controllers
             {
                 request.Text = request.Text.ToLower().Trim();
                 var AllRecipes = _db.Recipes.ToList();
-                AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false).ToList();
+                AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false && r.FoodString=="" && r.NotExistIngredients=="").ToList();
                 searchResults = AllRecipes.Select(obj => new SearchRecipe
                 {
                     Recipe = obj,
