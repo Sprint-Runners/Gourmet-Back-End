@@ -15,6 +15,7 @@ namespace Gourmet.Core.ServiceContracts
     {
         Task<UserResponse> Edit(EditUserRequest request, string username);
         Task<UserResponse> Read(string username);
+        Task<UserResponse> Premium(string username, int month);
         Task<IEnumerable<FavouritRecipeUser>> FavouritRecipeByUser(string userId);
         Task<IEnumerable<FavouritRecipeUser>> FavouritRecipeByUserOrderByScore(string userId);
         Task<IEnumerable<RecentRecipeUser>> RecentRecipeByUser(string userId);

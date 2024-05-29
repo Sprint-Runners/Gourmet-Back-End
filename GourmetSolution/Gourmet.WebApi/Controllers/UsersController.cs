@@ -96,7 +96,9 @@ namespace Gourmet.WebApi.Controllers
                     JWT_Token = token,
                     //    Expiration = Expiration,
                     Period = _configuration["JWT:Expiration_Time"],
-                    Role=Role
+                    Role=Role,
+                    isPremium = loginResult.user.premium > DateTime.Now ? true : false,
+                    premium = loginResult.user.premium
                 };
                 return Ok(login_response);
             }
@@ -125,22 +127,7 @@ namespace Gourmet.WebApi.Controllers
         }
 
         // Route -> make user -> chef
-        [HttpPost]
-        [Route("make-chef")]
-        public async Task<IActionResult> MakeChef([FromBody] UpdatePermissionRequest updatePermission)
-        {
-            var IsExistRequest = _db.ChefRequests.Where(x => x.UserName == updatePermission.UserName).FirstOrDefault();
-            if (IsExistRequest != null)
-            {
-                _db.ChefRequests.Remove(IsExistRequest);
-            }
-            var operationResult = await _chefService.MakeChefAsync(updatePermission);
-
-            if (operationResult.IsSucceed)
-                return Ok(operationResult.Message);
-
-            return BadRequest(operationResult.Message);
-        }
+        
         [HttpPost("Authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] Authrequest request)
         {

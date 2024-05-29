@@ -51,6 +51,7 @@ namespace Gourmet.Core.Services
             {
 
                 UserName = request.Email,
+                Email=request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
             var user = _db.Email_Passwords.Find(request.Email);

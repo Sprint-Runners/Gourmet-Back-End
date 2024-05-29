@@ -17,10 +17,10 @@ namespace Gourmet.Core.Domain.Entities
         [Required]
         [MaxLength(250)]
         public string Name { get; set; }
-        [Required]
-        public Guid FoodId { get; set; }
+        public Guid? FoodId { get; set; }
         [ForeignKey("FoodId")]
-        public Food food { get; set; }
+        public Food? food { get; set; }
+        public string FoodString { get; set; }
         public string? ChefId { get; set; }
         [ForeignKey("ChefId")]
         public Chef? chef { get; set; }
@@ -50,6 +50,8 @@ namespace Gourmet.Core.Domain.Entities
 
         [Required]
         public string List_Ingriedents { get; set; }
+        public string NotExistIngredients { get; set; }
+        
         [Required]
         public Guid Primary_Source_of_IngredientId { get; set; }
         [ForeignKey("Primary_Source_of_IngredientId")]
@@ -85,5 +87,7 @@ namespace Gourmet.Core.Domain.Entities
 
         [Required]
         public bool IsReject { get; set; }
+        [Required]
+        public bool IsCompelete { get; set; }
     }
 }

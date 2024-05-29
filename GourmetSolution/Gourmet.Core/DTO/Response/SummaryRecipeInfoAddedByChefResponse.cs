@@ -8,6 +8,7 @@ namespace Gourmet.Core.DTO.Response
 {
     public class SummaryRecipeInfoAddedByChefResponse
     {
+        public Guid ID {  get; set; }
         public string Name {  get; set; }
         public string ChefName { get; set; }
         public string ChefUserName { get; set; }

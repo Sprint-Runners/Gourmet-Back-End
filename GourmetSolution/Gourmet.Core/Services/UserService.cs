@@ -35,7 +35,7 @@ namespace Gourmet.Core.Services
                 };
 
             Chef EditUser = (Chef)isExistsUser;
-            EditUser.Email = request.Email;
+            //EditUser.Email = request.Email;
             EditUser.FullName = request.FullName;
             EditUser.PhoneNumber = request.PhoneNumber;
             EditUser.Aboutme = request.Aboutme;
@@ -77,6 +77,29 @@ namespace Gourmet.Core.Services
             {
                 IsSucceed = true,
                 Message = "Read Successfully",
+                user = isExistsUser
+            };
+
+        }
+        public async Task<UserResponse> Premium(string username,int month)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(username);
+
+            if (isExistsUser == null)
+                return new UserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "UserName not Exists",
+                    user = null
+                };
+
+            isExistsUser.premium = isExistsUser.premium.AddMonths(month);
+            _db.Users.Update(isExistsUser);
+            _db.SaveChanges();
+            return new UserResponse()
+            {
+                IsSucceed = true,
+                Message = "Premium has been successfully activated",
                 user = isExistsUser
             };
 
