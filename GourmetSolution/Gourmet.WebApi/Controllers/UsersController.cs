@@ -158,5 +158,39 @@ namespace Gourmet.WebApi.Controllers
                 return Ok(EmailResult);
             return Problem(detail: EmailResult.Message, statusCode: 400);
         }
+        [HttpGet]
+        [Route("make-chef-requests")]
+        public async Task<IActionResult> MakeChefRequests()
+        {
+            try
+            {
+                var List =_db.ChefRequests.ToList();
+                return Ok(List);
+            }
+            catch( Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("reject-chef")]
+        public async Task<IActionResult> RejectChefRequest([FromBody] RejectRequest reject)
+        {
+            var IsExistRequest = _db.ChefRequests.Where(x => x.UserName == reject.UserName).FirstOrDefault();
+            if (IsExistRequest != null)
+            {
+                if (reject.Reason != null)
+                {
+                    var Emailres = _usersService.Email_User(reject.UserName, reject.Reason);
+                    _db.ChefRequests.Remove(IsExistRequest);
+                }
+                else
+                    _db.ChefRequests.Remove(IsExistRequest);
+            }
+            else
+                return BadRequest("This Chef does not exist");
+
+            return Ok(IsExistRequest);
+        }
     }
 }

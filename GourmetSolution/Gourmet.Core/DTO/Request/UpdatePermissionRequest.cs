@@ -12,5 +12,15 @@ namespace Gourmet.Core.DTO.Request
         [Required(ErrorMessage = "UserName is required")]
         public string UserName { get; set; }
 
+
+    }
+    public class RejectRequest
+    {
+        [Required(ErrorMessage = "UserName is required")]
+        public string UserName { get; set; }
+
+        public string? Reason { get; set; }
+
+
     }
 }

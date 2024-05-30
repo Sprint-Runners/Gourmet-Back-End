@@ -100,7 +100,7 @@ namespace Gourmet.Core.Services
                     Message = "Invalid Credentials",
                     user = null
                 };
-            if (new_user.Ban)
+            if (new_user.Ban!= null && new_user.Ban)
             {
                 return new UserResponse()
                 {
@@ -282,6 +282,29 @@ namespace Gourmet.Core.Services
                     IsSucceed = false,
                     Message = "Could not ban user successfuly"
                 };
+        }
+        public async Task<Email_Response> Email_User(string username,string reason)
+        {
+            MailAddress From = new MailAddress(Email_Address);
+            MailAddress To = new MailAddress(username);
+            Random random = new Random();
+            string Body_Message = reason;
+            MailMessage message = new MailMessage(From, To) { Subject = "Gourmet Chef Request Notificaion", Body = Body_Message };
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.EnableSsl = true;
+            smtpClient.Credentials = new NetworkCredential(Email_Address, Email_Password);
+            try
+            {
+                smtpClient.Send(message);
+                Email_Response response = new Email_Response() { IsSucceed = true, Message = "Email has been sent" };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Email_Response response = new Email_Response() { IsSucceed = false, Message = "Email could not be sent " + ex.Message };
+                return response;
+            }
         }
 
     }
