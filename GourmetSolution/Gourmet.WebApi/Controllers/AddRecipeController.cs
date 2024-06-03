@@ -160,7 +160,7 @@ namespace Gourmet.WebApi.Controllers
         public async Task<IActionResult> Search_Ingredient(SearchRequest request)
         {
             string searchTerm = request.SearchTerm.ToLower().Trim();
-            var allIngredients = await _db.Ingredients.ToListAsync();
+            var allIngredients = _db.Ingredients.ToList();
 
             var searchResults = allIngredients.Select(obj => new SearchResponse
             {
@@ -196,7 +196,7 @@ namespace Gourmet.WebApi.Controllers
         public async Task<IActionResult> Search_Food(SearchRequest request)
         {
             string searchTerm = request.SearchTerm.ToLower().Trim();
-            var allFoods = await _db.Foods.ToListAsync();
+            var allFoods = _db.Foods.ToList();
 
             var searchResults = allFoods.Select(obj => new SearchResponse
             {
