@@ -487,7 +487,7 @@ namespace Gourmet.WebApi.Controllers
                 _db.ChefRequests.Remove(IsExistRequest);
             }
             var operationResult = await _chefService.MakeChefAsync(updatePermission);
-
+            _db.SaveChanges();
             if (operationResult.IsSucceed)
                 return Ok(operationResult.Message);
 
@@ -502,6 +502,7 @@ namespace Gourmet.WebApi.Controllers
             if (IsExistRequest != null)
             {
                 _db.ChefRequests.Remove(IsExistRequest);
+                _db.SaveChanges();
             }
             return Ok(new GeneralResponse
             {
