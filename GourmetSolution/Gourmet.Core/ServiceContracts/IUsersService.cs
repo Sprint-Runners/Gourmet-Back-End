@@ -19,6 +19,7 @@ namespace Gourmet.Core.ServiceContracts
         Task<UserResponse> SeedRolesAsync();
         Task<Email_Response> Temproary_Password(Add_Temp_Password request);
         Task<BanUserResponse> BanUser(BanUserRequest request);
+        Task<BanUserResponse> UnBanUser(BanUserRequest request);
         Task<Email_Response> Email_User(string username, string reason);
     }
 }
