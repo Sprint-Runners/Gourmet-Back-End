@@ -134,7 +134,7 @@ namespace Gourmet.WebApi.Controllers
                     Message = "This name is very short"
                 });
             }
-            var allRecipes = await _db.Recipes.ToListAsync();
+            var allRecipes =  _db.Recipes.ToList();
             var Recipe = _db.Recipes.Where(r => r.Name.ToLower() == searchTerm.ToLower()).FirstOrDefault();
             if (Recipe == null)
             {
