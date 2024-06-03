@@ -18,6 +18,7 @@ namespace Gourmet.Core.DTO.Response
         public bool isChef {  get; set; }
         public bool isPremium {  get; set; }
         public bool requestChef {  get; set; }
+        public bool isBan {  get; set; }
         public DateTime premium {  get; set; }
     }
 }

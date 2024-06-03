@@ -284,6 +284,28 @@ namespace Gourmet.Core.Services
                     Message = "Could not ban user successfuly"
                 };
         }
+        public async Task<BanUserResponse> UnBanUser(BanUserRequest request)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+            if (isExistsUser == null)
+                return new BanUserResponse() { IsSucceed = false, Message = "No user with this username exists" };
+            isExistsUser.Ban = false;
+            //EditUser.UserName
+            var result = await _userManager.UpdateAsync(isExistsUser);
+
+            if (result.Succeeded)
+                return new BanUserResponse()
+                {
+                    IsSucceed = true,
+                    Message = "User Unbanned successfuly"
+                };
+            else
+                return new BanUserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "Could not unban user successfuly"
+                };
+        }
         public async Task<Email_Response> Email_User(string username, string reason)
         {
             MailAddress From = new MailAddress(Email_Address);

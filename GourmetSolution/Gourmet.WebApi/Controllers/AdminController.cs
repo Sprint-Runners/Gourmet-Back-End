@@ -106,6 +106,7 @@ namespace Gourmet.WebApi.Controllers
                     ImageURL = await _imageProcessorService.GetImagebyUser(item.UserName),
                     isPremium = item.premium > DateTime.Now ? true : false,
                     premium = item.premium,
+                    isBan=item.Ban,
                     isChef = _userManager.GetRolesAsync((Chef)item).Result.ToList().Contains("CHEF"),
                     requestChef = _db.ChefRequests.Where(x => x.UserName == item.UserName).FirstOrDefault() != null
                 });
@@ -437,12 +438,33 @@ namespace Gourmet.WebApi.Controllers
         }
         [HttpPut]
         [Route("BanUser")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> Ban_User_ByUsername(BanUserRequest request)
         {
 
             try
             {
                 var result = await _usersService.BanUser(request);
+                if (result.IsSucceed)
+                {
+                    return Ok(result);
+                }
+                return Problem(detail: result.Message, statusCode: 400);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 400);
+            }
+        }
+        [HttpPut]
+        [Route("UnBanUser")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> UnBan_User_ByUsername(BanUserRequest request)
+        {
+
+            try
+            {
+                var result = await _usersService.UnBanUser(request);
                 if (result.IsSucceed)
                 {
                     return Ok(result);
@@ -596,6 +618,116 @@ namespace Gourmet.WebApi.Controllers
                 List_Ingriedents = List_Ingriedents,
                 Steps = steps,
             });
+        }
+        [HttpGet]
+        [Route("Show_All_Ingredient")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> Show_All_Ingredient()
+        {
+            var AllIngredients = _db.Ingredients.ToList();
+            return Ok(AllIngredients);
+        }
+        [HttpGet]
+        [Route("Show_All_Food")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> Show_All_Food()
+        {
+            var AllFoods = _db.Foods.ToList();
+            return Ok(AllFoods);
+        }
+        [HttpGet]
+        [Route("Show_All_Recipe")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> Show_All_Recipe()
+        {
+            var AllAcceptRecipe = _db.Recipes.Where(x=>x.IsReject==false && x.IsAccepted==true).ToList();
+            var NotAcceptRecipe = _db.Recipes.Where(x => x.IsReject == false && x.IsAccepted == false).ToList();
+            List<SummaryRecipeInfoAddedByChefResponse> result1 = new List<SummaryRecipeInfoAddedByChefResponse>();
+            List<SummaryRecipeInfoAddedByChefResponse> result2 = new List<SummaryRecipeInfoAddedByChefResponse>();
+            foreach (var item in AllAcceptRecipe)
+            {
+                var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
+                var Chef = _db.Users.Where(x => x.Id == item.ChefId).FirstOrDefault();
+                var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name,Chef.UserName, item.Name, 1);
+                var allPSOI = _db.PSOIs.ToList();
+                var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
+                string Foodname = "";
+                if (isExitsFood == null)
+                    Foodname = item.FoodString;
+                else
+                    Foodname = isExitsFood.Name;
+                result1.Add(new SummaryRecipeInfoAddedByChefResponse
+                {
+                    ID = item.Id,
+                    ChefName = Chef.FullName,
+                    ChefUserName = Chef.UserName,
+                    ImagePath = ImageUrlRecipe,
+                    IsAccepted = item.IsAccepted,
+                    IsRejectedted = item.IsReject,
+                    Name = item.Name,
+                    Score = item.Score,
+                    FoodName = Foodname,
+                    CMName = isExitsCM.Name,
+                    DLName = isExistDL.Name,
+                    Description = item.Description,
+                    FTName = isExitsFT.Name,
+                    MTName = isExitsMT.Name,
+                    NName = isExitsN.Name,
+                    Time = item.Time,
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer
+                });
+            }
+            foreach (var item in NotAcceptRecipe)
+            {
+                var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
+                var Chef = _db.Users.Where(x => x.Id == item.ChefId).FirstOrDefault();
+                var allPSOI = _db.PSOIs.ToList();
+                var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
+                string Foodname = "";
+                if (isExitsFood == null)
+                    Foodname = item.FoodString;
+                else
+                    Foodname = isExitsFood.Name;
+                var ImageUrlRecipe = await _imageProcessorService.GetImagebyRecipe(Foodname, Chef.UserName, item.Name, 1);
+
+                result2.Add(new SummaryRecipeInfoAddedByChefResponse
+                {
+                    ID = item.Id,
+                    ChefName = Chef.FullName,
+                    ChefUserName = Chef.UserName,
+                    ImagePath = ImageUrlRecipe,
+                    IsAccepted = item.IsAccepted,
+                    IsRejectedted = item.IsReject,
+                    Name = item.Name,
+                    Score = item.Score,
+                    FoodName = Foodname,
+                    CMName = isExitsCM.Name,
+                    DLName = isExistDL.Name,
+                    Description = item.Description,
+                    FTName = isExitsFT.Name,
+                    MTName = isExitsMT.Name,
+                    NName = isExitsN.Name,
+                    Time = item.Time,
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer
+                });
+            }
+           
+            List<Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>> result = new List<Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>>();
+            result.Add(new Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>("Accepted", result1));
+            result.Add(new Tuple<string, List<SummaryRecipeInfoAddedByChefResponse>>("Not accepted", result2));
+            return Ok(result);
         }
         [HttpPut("Change_Password")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
