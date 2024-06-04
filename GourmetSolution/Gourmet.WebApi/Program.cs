@@ -98,6 +98,12 @@ builder.Services
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
+//sk-proj-c3TVsXBxKivphLctG1hXT3BlbkFJ5bWlfJQ9FJSqvJ6paBjf
+//sk-gormetwebsite-BMZFeovFtffBCpIvZisCT3BlbkFJwO7VZGuism14fTqQwzQ9
+//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
+builder.Services.AddSingleton(new OpenAiService("sk-gormetwebsite-BMZFeovFtffBCpIvZisCT3BlbkFJwO7VZGuism14fTqQwzQ9"));
+
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
 builder.Services.AddScoped<IChefService, ChefService>();
