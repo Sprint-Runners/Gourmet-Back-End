@@ -24,7 +24,7 @@ namespace Gourmet.Core.Services
         public async Task<RecipeResponse> CreateRecipeByChef(AddRecipeRequest request, string userId, string username)
         {
             var allPSOI = _db.PSOIs.ToList();
-            var isExitsFood = _db.Foods.Where(x => x.Name == request.FoodName).FirstOrDefault();
+            var isExitsFood = _db.Foods.Where(x => x.Name.ToLower() == request.FoodName.ToLower()).FirstOrDefault();
             var isExistsRecipe = _db.Recipes.Where(x => x.FoodId == isExitsFood.Id).Where(x => x.ChefId == userId).Where(x => x.Name == request.Name).FirstOrDefault();
             var isExitsUser = await _userManager.FindByNameAsync(username);
             var isExitsPSOI = allPSOI.Where(x => x.Name == request.primary_source_of_ingredient).FirstOrDefault();
@@ -41,15 +41,15 @@ namespace Gourmet.Core.Services
                     Message = "Chefs Recipe Already Exists",
                     recipe = null
                 };
-            isExistsRecipe = _db.Recipes.Where(x => x.FoodString == isExitsFood.Name).Where(x => x.ChefId == userId).Where(x => x.Name == request.Name).FirstOrDefault();
+            //isExistsRecipe = _db.Recipes.Where(x => x.FoodString == isExitsFood.Name).Where(x => x.ChefId == userId).Where(x => x.Name == request.Name).FirstOrDefault();
 
-            if (isExistsRecipe != null)
-                return new RecipeResponse()
-                {
-                    IsSucceed = false,
-                    Message = "Chefs Recipe Already Exists",
-                    recipe = null
-                };
+            //if (isExistsRecipe != null)
+            //    return new RecipeResponse()
+            //    {
+            //        IsSucceed = false,
+            //        Message = "Chefs Recipe Already Exists",
+            //        recipe = null
+            //    };
             if (isExitsUser == null)
                 return new RecipeResponse()
                 {
@@ -133,7 +133,7 @@ namespace Gourmet.Core.Services
         }
         public async Task<RecipeResponse> CreateInCompleteRecipe(AddRecipeRequest request, string userId, string username)
         {
-            var isExitsFood = _db.Foods.Where(x => x.Name == request.FoodName).FirstOrDefault();
+            var isExitsFood = _db.Foods.Where(x => x.Name.ToLower() == request.FoodName.ToLower()).FirstOrDefault();
             if (isExitsFood == null)
             {
                 var isExistsRecipe = _db.Recipes.Where(x => x.FoodString == request.FoodName).Where(x => x.ChefId == userId).Where(x => x.Name == request.Name).FirstOrDefault();
