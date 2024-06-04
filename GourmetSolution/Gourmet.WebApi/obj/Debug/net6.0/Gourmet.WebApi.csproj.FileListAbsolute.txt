@@ -90,3 +90,5 @@ C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\
 C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\obj\Debug\net6.0\Gourmet.WebApi.pdb
 C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\obj\Debug\net6.0\Gourmet.WebApi.genruntimeconfig.cache
 C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\obj\Debug\net6.0\ref\Gourmet.WebApi.dll
+C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.WebApi\bin\Debug\net6.0\OpenAI_API.dll

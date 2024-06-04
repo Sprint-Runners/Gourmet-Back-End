@@ -15,9 +15,11 @@ namespace Gourmet.Core.Services
     public class FoodService : IFoodService
     {
         private readonly AppDbContext _db;
-        public FoodService(AppDbContext db)
+        private readonly IImageProcessorService _imageProcessorService;
+        public FoodService(AppDbContext db,IImageProcessorService imageProcessorService)
         {
             _db = db;
+            _imageProcessorService = imageProcessorService;
         }
         public async Task<FoodResponse> Create(AddFoodRequest request)
         {
@@ -35,7 +37,7 @@ namespace Gourmet.Core.Services
             {
                 Id = new Guid(),
                 Name = request.Name.ToLower(),
-
+                ImgeUrl = await _imageProcessorService.GetImagebyFood(request.Name.ToLower())
             };
             _db.Foods.Add(food);
             _db.SaveChanges();

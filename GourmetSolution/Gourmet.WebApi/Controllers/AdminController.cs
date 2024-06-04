@@ -75,6 +75,7 @@ namespace Gourmet.WebApi.Controllers
                     if (ResultImage.IsSucceed)
                     {
                         result.food.ImgeUrl = await _imageProcessorService.GetImagebyFood(result.food.Name);
+                        _db.SaveChanges();
                         return Ok(result.food);
                     }
                     return Problem(detail: ResultImage.Message, statusCode: 400);
