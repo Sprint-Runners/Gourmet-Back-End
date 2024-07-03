@@ -25,6 +25,29 @@ namespace Gourmet.WebApi.Controllers
             _imageProcessorService = imageProcessorService;
             _userManager = userManager;
         }
+        [HttpGet("GetAllChef")]
+        public async Task<IActionResult> GetAllChef()
+        {
+            var Chefs = _db.Chefs.ToList();
+            var ShowChefs = new List<SummaryChefInformation>();
+            foreach (var item in Chefs)
+            {
+                var LastChefRecipe = await _chefservice.GetAcceptedRecipesByChefId(item.Id);
+                DateTime FirstRecipe= LastChefRecipe.OrderBy(r => r.CreatTime).ToList().First().CreatTime;
+                TimeSpan exp = DateTime.Now - FirstRecipe;
+                ShowChefs.Add(new SummaryChefInformation
+                {
+                    Name = item.FullName,
+                    AboutMe = item.Aboutme,
+                    Email = item.Email,
+                    UserName = item.UserName,
+                    ImageURL = await _imageProcessorService.GetImagebyUser(item.UserName),
+                    Score= item.Score,
+                    Experience= exp+" Days"
+                });
+            }
+            return Ok(ShowChefs);
+        }
         [HttpPut("InformaionOfChef")]
         public async Task<IActionResult> InformaionOfChef(GetInformationChefRequest request)
         {
@@ -42,7 +65,8 @@ namespace Gourmet.WebApi.Controllers
                 LastChefRecipe = LastChefRecipe.OrderByDescending(r => r.CreatTime).ToList();
                 List<SummaryRecipeInfoResponse> TopChefRecipeResult = new List<SummaryRecipeInfoResponse>();
                 List<SummaryRecipeInfoResponse> LastChefRecipeResult = new List<SummaryRecipeInfoResponse>();
-
+                DateTime FirstRecipe = LastChefRecipe.OrderBy(r => r.CreatTime).ToList().First().CreatTime;
+                TimeSpan exp = DateTime.Now - FirstRecipe;
                 foreach (Recipe r in TopChefRecipes)
                 {
                     var isExitsFood = _db.Foods.Where(x => x.Id==r.FoodId).FirstOrDefault();
@@ -113,7 +137,8 @@ namespace Gourmet.WebApi.Controllers
                     LastRecipes = LastChefRecipeResult,
                     TopRecipes = TopChefRecipeResult,
                     PhoneNumber = isExistsChef.PhoneNumber,
-                    RecipeCount=LastChefRecipeResult.Count
+                    RecipeCount=LastChefRecipeResult.Count,
+                    Experience = exp + " Days"
                 });
             
             }
