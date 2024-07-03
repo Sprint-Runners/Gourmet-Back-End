@@ -33,8 +33,16 @@ namespace Gourmet.WebApi.Controllers
             foreach (var item in Chefs)
             {
                 var LastChefRecipe = await _chefservice.GetAcceptedRecipesByChefId(item.Id);
-                DateTime FirstRecipe= LastChefRecipe.OrderBy(r => r.CreatTime).ToList().First().CreatTime;
-                TimeSpan exp = DateTime.Now - FirstRecipe;
+                TimeSpan exp;
+                if (LastChefRecipe.Count() > 0)
+                {
+                    DateTime FirstRecipe = LastChefRecipe.OrderBy(r => r.CreatTime).ToList().First().CreatTime;
+                     exp= DateTime.Now - FirstRecipe;
+                }
+                else
+                {
+                    exp = DateTime.Now-DateTime.Now;   
+                }
                 ShowChefs.Add(new SummaryChefInformation
                 {
                     Name = item.FullName,
@@ -43,7 +51,7 @@ namespace Gourmet.WebApi.Controllers
                     UserName = item.UserName,
                     ImageURL = await _imageProcessorService.GetImagebyUser(item.UserName),
                     Score= item.Score,
-                    Experience= exp+" Days"
+                    Experience= exp.ToString().Split('.')[0].Contains('-')? "0 Days" : exp.ToString().Split('.')[0] + " Days"
                 });
             }
             return Ok(ShowChefs);
@@ -65,8 +73,16 @@ namespace Gourmet.WebApi.Controllers
                 LastChefRecipe = LastChefRecipe.OrderByDescending(r => r.CreatTime).ToList();
                 List<SummaryRecipeInfoResponse> TopChefRecipeResult = new List<SummaryRecipeInfoResponse>();
                 List<SummaryRecipeInfoResponse> LastChefRecipeResult = new List<SummaryRecipeInfoResponse>();
-                DateTime FirstRecipe = LastChefRecipe.OrderBy(r => r.CreatTime).ToList().First().CreatTime;
-                TimeSpan exp = DateTime.Now - FirstRecipe;
+                TimeSpan exp;
+                if (LastChefRecipe.Count() > 0)
+                {
+                    DateTime FirstRecipe = LastChefRecipe.OrderBy(r => r.CreatTime).ToList().First().CreatTime;
+                    exp = DateTime.Now - FirstRecipe;
+                }
+                else
+                {
+                    exp = DateTime.Now - DateTime.Now;
+                }
                 foreach (Recipe r in TopChefRecipes)
                 {
                     var isExitsFood = _db.Foods.Where(x => x.Id==r.FoodId).FirstOrDefault();
@@ -138,7 +154,7 @@ namespace Gourmet.WebApi.Controllers
                     TopRecipes = TopChefRecipeResult,
                     PhoneNumber = isExistsChef.PhoneNumber,
                     RecipeCount=LastChefRecipeResult.Count,
-                    Experience = exp + " Days"
+                    Experience = exp.ToString().Split('.')[0].Contains('-') ? "0 Days" : exp.ToString().Split('.')[0] + " Days"
                 });
             
             }

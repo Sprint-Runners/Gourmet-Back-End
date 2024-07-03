@@ -50,9 +50,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Ali");
+void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
 builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
