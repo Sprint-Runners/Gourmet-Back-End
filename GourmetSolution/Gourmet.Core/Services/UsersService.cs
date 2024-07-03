@@ -111,7 +111,6 @@ namespace Gourmet.Core.Services
                 };
             }
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.password);
-
             if (!isPasswordCorrect)
             {
                 var Temp = await _db.Temproary_Passwords.FindAsync(request.username);

@@ -325,7 +325,9 @@ namespace Gourmet.WebApi.Controllers
                     GeneralResponse response = new GeneralResponse { Message = "UserName not Exists" };
                     return BadRequest(response);
                 }
-                var result = await _userManager.ChangePasswordAsync(isExistsUser, request.OldPassword, request.NewPassword);
+                isExistsUser.PasswordHash = _userManager.PasswordHasher.HashPassword(isExistsUser,request.NewPassword);
+                var result = await _userManager.UpdateAsync(isExistsUser);
+                //var result = await _userManager.ChangePasswordAsync(isExistsUser, request.OldPassword, request.NewPassword);
                 if (result.Succeeded)
                 {
                     return Ok(result);
