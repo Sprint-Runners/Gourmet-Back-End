@@ -15,6 +15,7 @@ namespace Gourmet.Core.DTO.Response
         public string PhoneNumber {  get; set; }
         public string ImageURL {  get; set; }
         public int RecipeCount {  get; set; }
+        public string Experience { get; set; }
         public List<SummaryRecipeInfoResponse>LastRecipes { get; set; }
         public List<SummaryRecipeInfoResponse> TopRecipes { get; set; }
 
