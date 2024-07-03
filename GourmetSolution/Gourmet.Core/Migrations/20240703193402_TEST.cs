@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Gourmet.Core.Migrations
 {
-    public partial class Banuser : Migration
+    public partial class TEST : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
