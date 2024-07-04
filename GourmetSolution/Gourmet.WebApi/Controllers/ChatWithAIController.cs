@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Gourmet.Core.DTO.Request;
+using Microsoft.AspNetCore.Mvc;
 using RapidApiExample.Services;
 using System.Threading.Tasks;
 
@@ -6,20 +7,26 @@ namespace RapidApiExample.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ApiController : ControllerBase
+    public class ApiGPTController : ControllerBase
     {
         private readonly RapidApiService _rapidApiService;
 
-        public ApiController(RapidApiService rapidApiService)
+        public ApiGPTController(RapidApiService rapidApiService)
         {
             _rapidApiService = rapidApiService;
         }
 
         [HttpPost("ask")]
-        public async Task<IActionResult> AskQuestion([FromBody] string question)
+        public async Task<IActionResult> AskQuestion(QuestionRequest request)
         {
-            var response = await _rapidApiService.SendQuestionAsync(question);
-            return Ok(response);
+            try
+            {
+                var response = await _rapidApiService.SendQuestionAsync(request.Question);
+                return Ok(response);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

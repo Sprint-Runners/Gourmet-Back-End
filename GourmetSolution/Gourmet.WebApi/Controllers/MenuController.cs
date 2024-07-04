@@ -44,17 +44,13 @@ namespace Gourmet.WebApi.Controllers
             var quicks = AllRecipes.Where(r => r.Time <= 30).ToList();
 
             Meal_Type breakfast = _db.MTs.Where(r => r.Name == "Breakfast").FirstOrDefault();
-            Console.WriteLine("im here$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*****"+breakfast);
             var breakfasts = AllRecipes.Where(r => r.Meal_TypeId == breakfast.Id).ToList();
-            Console.WriteLine("im here**********************************************");
             Primary_Source_of_Ingredient vegan = _db.PSOIs.Where(r => r.Name == "Vegan").FirstOrDefault();
             var vegans = AllRecipes.Where(r => r.Primary_Source_of_IngredientId == vegan.Id).ToList();
             Meal_Type dinner = _db.MTs.Where(r => r.Name == "Dinner").FirstOrDefault();
             Meal_Type lunch = _db.MTs.Where(r => r.Name == "Lunch").FirstOrDefault();
             var mains = AllRecipes.Where(r => r.Meal_TypeId == dinner.Id || r.Meal_TypeId == lunch.Id).ToList();
-            Console.WriteLine("im here***********************************111111111111111111***********");
             var bestfoods = AllRecipes.Where(r => r.Score >= 4.0).ToList();
-            Console.WriteLine("im here**************************************2222222222222222222222222222********");
             Dictionary<string, List<SummaryRecipeInfoResponse>> reciperesult = new Dictionary<string, List<SummaryRecipeInfoResponse>>();
 
             List<SummaryRecipeInfoResponse> quicksRecipe = new List<SummaryRecipeInfoResponse>();
