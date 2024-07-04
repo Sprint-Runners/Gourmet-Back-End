@@ -1,10 +1,12 @@
 ﻿using Gourmet.Core.DataBase.GourmetDbcontext;
 using Gourmet.Core.Domain.Entities;
+using Gourmet.Core.Domain.Relations;
 using Gourmet.Core.DTO.Response;
 using Gourmet.Core.ServiceContracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
+using System.Linq;
 
 
 namespace Gourmet.WebApi.Controllers
@@ -143,6 +145,61 @@ namespace Gourmet.WebApi.Controllers
                 //    });
                 //}
                 //return Ok(TopChefs);
+                //var random_category_recipe = new Random();
+                //var AllRecipes = _db.Recipes.ToList();
+                //AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false && r.FoodString == "" && r.NotExistIngredients == "").ToList();
+                //var quicks = AllRecipes.Where(r => r.Time <= 30).OrderBy(x => random_category_recipe.Next()).First();
+                //Meal_Type breakfast = _db.MTs.Where(r => r.Name == "Breakfast").FirstOrDefault();
+                //var breakfasts = AllRecipes.Where(r => r.Meal_TypeId == breakfast.Id).OrderBy(x => random_category_recipe.Next()).First(); ;
+                //Primary_Source_of_Ingredient vegan = _db.PSOIs.Where(r => r.Name == "Vegan").FirstOrDefault();
+                //var vegans = AllRecipes.Where(r => r.Primary_Source_of_IngredientId == vegan.Id).OrderBy(x => random_category_recipe.Next()).First(); ;
+                //Meal_Type dinner = _db.MTs.Where(r => r.Name == "Dinner").FirstOrDefault();
+                //Meal_Type lunch = _db.MTs.Where(r => r.Name == "Lunch").FirstOrDefault();
+                //var mains = AllRecipes.Where(r => r.Meal_TypeId == dinner.Id || r.Meal_TypeId == lunch.Id).OrderBy(x => random_category_recipe.Next()).First(); ;
+                //Food_type fast_food = _db.FTs.Where(r => r.Name == "FastFood").FirstOrDefault();
+                //var fastfoods = AllRecipes.Where(r => r.Food_typeId == fast_food.Id ).OrderBy(x => random_category_recipe.Next()).First(); ;
+                //Food_type salad = _db.FTs.Where(r => r.Name == "Salad").FirstOrDefault();
+                //var salads = AllRecipes.Where(r => r.Food_typeId == salad.Id).OrderBy(x => random_category_recipe.Next()).First(); ;
+
+                //List<SummaryCategoryRecipeResponse>categoryRecipeResponses = new List<SummaryCategoryRecipeResponse>();
+                //var Recipeingredients = _db.RecipeIngredients.Where(x => x.RecipeId == quicks.Id).ToList();
+                //string ings = "";
+                //var lasting = Recipeingredients.Last();
+                //foreach (var i in Recipeingredients)
+                //{
+                //    if (i == lasting)
+                //        break;
+                //    var isExitsIngredient = _db.Ingredients.Where(x => x.Id == i.IngredientId).FirstOrDefault();
+                //    ings+=isExitsIngredient.Name+',';
+                //}
+                //var isExitsIngredient2 = _db.Ingredients.Where(x => x.Id == lasting.IngredientId).FirstOrDefault();
+                //ings += isExitsIngredient2.Name;
+                //categoryRecipeResponses.Add(new SummaryCategoryRecipeResponse
+                //{
+                //    Ingredients = ings,
+                //    Description = quicks.Description,
+                //    Category = "Quick",
+                //    Name = quicks.Name
+                //});
+                //Recipeingredients = _db.RecipeIngredients.Where(x => x.RecipeId == quicks.Id).ToList();
+                //ings = "";
+                //lasting = Recipeingredients.Last();
+                //foreach (var i in Recipeingredients)
+                //{
+                //    if (i == lasting)
+                //        break;
+                //    var isExitsIngredient = _db.Ingredients.Where(x => x.Id == i.IngredientId).FirstOrDefault();
+                //    ings += isExitsIngredient.Name + ',';
+                //}
+                //isExitsIngredient2 = _db.Ingredients.Where(x => x.Id == lasting.IngredientId).FirstOrDefault();
+                //ings += isExitsIngredient2.Name;
+                //categoryRecipeResponses.Add(new SummaryCategoryRecipeResponse
+                //{
+                //    Ingredients = ings,
+                //    Description = quicks.Description,
+                //    Category = "Quick",
+                //    Name = quicks.Name
+                //});
                 Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>> result = new Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>>(randomFood, TopChefs, Categories);
                 return Ok(result);
             }
