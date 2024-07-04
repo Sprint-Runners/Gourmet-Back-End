@@ -129,6 +129,86 @@ namespace Gourmet.WebApi.Controllers
                 }
                 var random_category = new Random();
                 Categories = Categories.OrderBy(x => random_category.Next()).ToList();
+                var menucategory= Categories.OrderBy(x => random_category.Next()).Take(6).ToList();
+                var AllRecipes = _db.Recipes.OrderBy(r=>r.CreatTime).ToList();
+                AllRecipes = AllRecipes.Where(r => r.IsAccepted == true && r.IsReject == false && r.FoodString == "" && r.NotExistIngredients == "").ToList();
+                List<SummaryCategoryRecipeResponse> categoryRecipeResponses = new List<SummaryCategoryRecipeResponse>();
+                for (int i=0;i<6; i++)
+                {
+                    if (menucategory[i].CategoryName == "Meal Type") {
+                        var isExitsMT = _db.MTs.Where(x => x.Name == menucategory[i].Name).FirstOrDefault();
+                        var menurecipe= AllRecipes.Where(r => r.Meal_TypeId == isExitsMT.Id).Count() > 0 ? AllRecipes.Where(r => r.Meal_TypeId == isExitsMT.Id).First():AllRecipes.First();
+                        var Recipeingredients = _db.RecipeIngredients.Where(x => x.RecipeId == menurecipe.Id).ToList();
+                        string ings = "";
+                        var lasting = Recipeingredients.Last();
+                        foreach (var j in Recipeingredients)
+                        {
+                            if (j == lasting)
+                                break;
+                            var isExitsIngredient = _db.Ingredients.Where(x => x.Id == j.IngredientId).FirstOrDefault();
+                            ings += isExitsIngredient.Name + ',';
+                        }
+                        var isExitsIngredient2 = _db.Ingredients.Where(x => x.Id == lasting.IngredientId).FirstOrDefault();
+                        ings += isExitsIngredient2.Name;
+                        categoryRecipeResponses.Add(new SummaryCategoryRecipeResponse
+                        {
+                            Ingredients = ings,
+                            Description = menurecipe.Description,
+                            Category = isExitsMT.Name,
+                            Name = menurecipe.Name
+                        });
+                    }
+                    if (menucategory[i].CategoryName == "Primary source of ingredient")
+                    {
+                        var isExitsPSOI = _db.PSOIs.Where(x => x.Name == menucategory[i].Name).FirstOrDefault();
+                        var menurecipe = AllRecipes.Where(r => r.Primary_Source_of_IngredientId == isExitsPSOI.Id).Count() > 0 ? AllRecipes.Where(r => r.Primary_Source_of_IngredientId== isExitsPSOI.Id).First():AllRecipes.First();
+                        var Recipeingredients = _db.RecipeIngredients.Where(x => x.RecipeId == menurecipe.Id).ToList();
+                        string ings = "";
+                        var lasting = Recipeingredients.Last();
+                        foreach (var j in Recipeingredients)
+                        {
+                            if (j == lasting)
+                                break;
+                            var isExitsIngredient = _db.Ingredients.Where(x => x.Id == j.IngredientId).FirstOrDefault();
+                            ings += isExitsIngredient.Name + ',';
+                        }
+                        var isExitsIngredient2 = _db.Ingredients.Where(x => x.Id == lasting.IngredientId).FirstOrDefault();
+                        ings += isExitsIngredient2.Name;
+                        categoryRecipeResponses.Add(new SummaryCategoryRecipeResponse
+                        {
+                            Ingredients = ings,
+                            Description = menurecipe.Description,
+                            Category = isExitsPSOI.Name,
+                            Name = menurecipe.Name
+                        });
+
+                    }
+                    if (menucategory[i].CategoryName == "Food Type")
+                    {
+                        var isExitsFT = _db.FTs.Where(x => x.Name == menucategory[i].Name).FirstOrDefault();
+                        var menurecipe = AllRecipes.Where(r => r.Food_typeId == isExitsFT.Id).Count()>0? AllRecipes.Where(r => r.Food_typeId == isExitsFT.Id).First():AllRecipes.First();
+                        var Recipeingredients = _db.RecipeIngredients.Where(x => x.RecipeId == menurecipe.Id).ToList();
+                        string ings = "";
+                        var lasting = Recipeingredients.Last();
+                        foreach (var j in Recipeingredients)
+                        {
+                            if (j == lasting)
+                                break;
+                            var isExitsIngredient = _db.Ingredients.Where(x => x.Id == j.IngredientId).FirstOrDefault();
+                            ings += isExitsIngredient.Name + ',';
+                        }
+                        var isExitsIngredient2 = _db.Ingredients.Where(x => x.Id == lasting.IngredientId).FirstOrDefault();
+                        ings += isExitsIngredient2.Name;
+                        categoryRecipeResponses.Add(new SummaryCategoryRecipeResponse
+                        {
+                            Ingredients = ings,
+                            Description = menurecipe.Description,
+                            Category = isExitsFT.Name,
+                            Name = menurecipe.Name
+                        });
+                    }
+                }  
+                
                 //var allrecipe = await _recipeservice.Get_All_Recipe();
                 //var toprecipes = allrecipe.OrderByDescending(x => x.Score)
                 //                    .Take(5)
@@ -200,7 +280,7 @@ namespace Gourmet.WebApi.Controllers
                 //    Category = "Quick",
                 //    Name = quicks.Name
                 //});
-                Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>> result = new Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>>(randomFood, TopChefs, Categories);
+                Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>,List<SummaryCategoryRecipeResponse>> result = new Tuple<List<FoodInformationResponse>, List<TopChefResponse>, List<CategoriesResponse>,List<SummaryCategoryRecipeResponse>>(randomFood, TopChefs, Categories, categoryRecipeResponses);
                 return Ok(result);
             }
             catch (Exception ex)

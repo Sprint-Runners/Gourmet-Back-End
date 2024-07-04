@@ -19,8 +19,14 @@ namespace RapidApiExample.Controllers
         [HttpPost("ask")]
         public async Task<IActionResult> AskQuestion(QuestionRequest request)
         {
-            var response = await _rapidApiService.SendQuestionAsync(request.Question);
-            return Ok(response);
+            try
+            {
+                var response = await _rapidApiService.SendQuestionAsync(request.Question);
+                return Ok(response);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
