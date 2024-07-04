@@ -1,65 +1,47 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using OpenAI_API;
-using OpenAI_API.Completions;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
-public class OpenAiService
+namespace RapidApiExample.Services
 {
-    private readonly OpenAIAPI _openai;
-    private readonly CompletionRequest completionRequest;
-
-    public OpenAiService(string apiKey)
+    public class RapidApiService
     {
-        _openai = new OpenAIAPI(apiKey);
-        completionRequest = new CompletionRequest
-        {
-            Model = "text-embedding-3-smalls",
-        MaxTokens = 100
-        };
-    }
-    public async Task<string> UseChatGPT(string query)
-    {
-        string outputResult = "";
-        completionRequest.Prompt = query;
+        private readonly HttpClient _httpClient;
+        private readonly string _apiKey = "fe9f522ff1msh552e007fa4dc617p1d16e4jsn264deb2a2716";
+        private readonly string _apiHost = "chatgpt-42.p.rapidapi.com";
 
-        var completions = await _openai.Completions.CreateCompletionAsync(completionRequest);
-
-        foreach (var completion in completions.Completions)
+        public RapidApiService(HttpClient httpClient)
         {
-            outputResult += completion.Text;
+            _httpClient = httpClient;
         }
 
-        return outputResult;
+        public async Task<string> SendQuestionAsync(string question)
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("https://chatgpt-42.p.rapidapi.com/conversationgpt4-2"),
+                Headers =
+                {
+                    { "x-rapidapi-key", _apiKey },
+                    { "x-rapidapi-host", _apiHost },
+                },
+                Content = new StringContent("{\"messages\":[{\"role\":\"user\",\"content\":\"" + question + "\"}],\"system_prompt\":\"\",\"temperature\":0.9,\"top_k\":5,\"top_p\":0.9,\"max_tokens\":256,\"web_access\":false}")
+                {
+                    Headers =
+                    {
+                        ContentType = new MediaTypeHeaderValue("application/json")
+                    }
+                }
+            };
+
+            using (var response = await _httpClient.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                return body;
+            }
+        }
     }
-    //public async Task<string> AskQuestionAsync(string question)
-    //{
-    //    var requestBody = new
-    //    {
-    //        model = "gpt-3.5-turbo", 
-    //        prompt = question,
-    //        max_tokens = 1500
-    //    };
-
-    //    var requestContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
-    //    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
-
-    //    var response = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", requestContent);
-
-    //    if (response.IsSuccessStatusCode)
-    //    {
-    //        var responseContent = await response.Content.ReadFromJsonAsync<JsonDocument>();
-    //        var result = responseContent.RootElement.GetProperty("choices")[0].GetProperty("text").GetString();
-    //        return result;
-    //    }
-    //    else
-    //    {
-
-    //        var errorContent = await response.Content.ReadAsStringAsync();
-    //        throw new ApplicationException($"Error: {response.StatusCode}, Details: {errorContent}");
-    //    }
-    //}
 }

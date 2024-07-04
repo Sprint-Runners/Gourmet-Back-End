@@ -9,6 +9,7 @@ using Gourmet.Core.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using RapidApiExample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
@@ -102,7 +103,7 @@ builder.Services.AddHttpClient();
 //sk-proj-c3TVsXBxKivphLctG1hXT3BlbkFJ5bWlfJQ9FJSqvJ6paBjf
 //sk-gormetwebsite-BMZFeovFtffBCpIvZisCT3BlbkFJwO7VZGuism14fTqQwzQ9
 //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
-builder.Services.AddSingleton(new OpenAiService("sk-gormetwebsite-BMZFeovFtffBCpIvZisCT3BlbkFJwO7VZGuism14fTqQwzQ9"));
+
 
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
@@ -127,6 +128,7 @@ builder.Services.AddControllers();
 //                       .AllowAnyMethod();
 //            });
 //    });
+builder.Services.AddHttpClient<RapidApiService>();
 var app = builder.Build();
 
 

@@ -1,31 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RapidApiExample.Services;
 using System.Threading.Tasks;
 
-[ApiController]
-[Route("api/[controller]")]
-public class OpenAiController : ControllerBase
+namespace RapidApiExample.Controllers
 {
-    private readonly OpenAiService _openAiService;
-
-    public OpenAiController(OpenAiService openAiService)
+    [ApiController]
+    [Route("[controller]")]
+    public class ApiController : ControllerBase
     {
-        _openAiService = openAiService;
-    }
+        private readonly RapidApiService _rapidApiService;
 
-    [HttpPost("ask")]
-    public async Task<IActionResult> Ask([FromBody] AskQuestionRequest request)
-    {
-        if (string.IsNullOrWhiteSpace(request.Question))
+        public ApiController(RapidApiService rapidApiService)
         {
-            return BadRequest("Question cannot be empty");
+            _rapidApiService = rapidApiService;
         }
 
-        var answer = await _openAiService.UseChatGPT(request.Question);
-        return Ok(new { Answer = answer });
+        [HttpPost("ask")]
+        public async Task<IActionResult> AskQuestion([FromBody] string question)
+        {
+            var response = await _rapidApiService.SendQuestionAsync(question);
+            return Ok(response);
+        }
     }
-}
-
-public class AskQuestionRequest
-{
-    public string Question { get; set; }
 }
