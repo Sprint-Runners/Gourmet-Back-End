@@ -35,7 +35,7 @@ namespace Gourmet.WebApi.Controllers
                 row.ImgeUrl = await _imageProcessorService.GetImagebyFood(row.Name);
                 allfoods.Add(new FoodInformationResponse
                 {
-                    Name = row.Name,
+                    Name = row.Name.Replace('_',' '),
                     ImagePath = row.ImgeUrl,
                 }); ;
             }
