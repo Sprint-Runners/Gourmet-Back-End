@@ -10,8 +10,23 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using RapidApiExample.Services;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var proxy = new WebProxy("http://127.0.0.1:9050")
+{
+    UseDefaultCredentials = false
+};
+
+
+var httpClientHandler = new HttpClientHandler
+{
+    Proxy = proxy,
+    UseProxy = true
+};
+
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(option =>
 {
@@ -128,7 +143,19 @@ builder.Services.AddControllers();
 //                       .AllowAnyMethod();
 //            });
 //    });
-builder.Services.AddHttpClient<RapidApiService>();
+//builder.Services.AddHttpClient<RapidApiService>();
+builder.Services.AddHttpClient("RapidApiClient")
+                .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
+
+
+builder.Services.AddTransient<RapidApiService>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient("RapidApiClient");
+    return new RapidApiService(httpClient);
+});
+
+
 var app = builder.Build();
 
 
