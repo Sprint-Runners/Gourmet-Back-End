@@ -50,13 +50,20 @@ namespace Gourmet.WebApi.Controllers
             Meal_Type dinner = _db.MTs.Where(r => r.Name == "Dinner").FirstOrDefault();
             Meal_Type lunch = _db.MTs.Where(r => r.Name == "Lunch").FirstOrDefault();
             var mains = AllRecipes.Where(r => r.Meal_TypeId == dinner.Id || r.Meal_TypeId == lunch.Id).ToList();
-            var bestfoods = AllRecipes.Where(r => r.Score >= 4.0).ToList();
+            Food_type salad= _db.FTs.Where(r => r.Name == "Salad").FirstOrDefault();
+            var salads= AllRecipes.Where(r => r.Food_typeId==salad.Id).ToList();
+            Food_type fastfood = _db.FTs.Where(r => r.Name == "FastFood").FirstOrDefault();
+            var fastfoods= AllRecipes.Where(r => r.Food_typeId == fastfood.Id).ToList();
+            Meal_Type dessert = _db.MTs.Where(r => r.Name == "Dessert").FirstOrDefault();
+            var desserts= AllRecipes.Where(r => r.Meal_TypeId == dessert.Id).ToList();
             Dictionary<string, List<SummaryRecipeInfoResponse>> reciperesult = new Dictionary<string, List<SummaryRecipeInfoResponse>>();
 
             List<SummaryRecipeInfoResponse> quicksRecipe = new List<SummaryRecipeInfoResponse>();
             List<SummaryRecipeInfoResponse> vegansRecipe = new List<SummaryRecipeInfoResponse>();
             List<SummaryRecipeInfoResponse> mainsRecipe = new List<SummaryRecipeInfoResponse>();
-            List<SummaryRecipeInfoResponse> bestfoodsRecipe = new List<SummaryRecipeInfoResponse>();
+            List<SummaryRecipeInfoResponse> dessertsRecipe = new List<SummaryRecipeInfoResponse>();
+            List<SummaryRecipeInfoResponse> fastfoodsRecipe = new List<SummaryRecipeInfoResponse>();
+            List<SummaryRecipeInfoResponse> saladsRecipe = new List<SummaryRecipeInfoResponse>();
             List<SummaryRecipeInfoResponse> breakfastsRecipe = new List<SummaryRecipeInfoResponse>();
             foreach (var item in quicks)
             {
@@ -186,7 +193,7 @@ namespace Gourmet.WebApi.Controllers
 
             }
             reciperesult.Add("Breakfast", breakfastsRecipe);
-            foreach (var item in bestfoods)
+            foreach (var item in salads)
             {
                 var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
                 var isExitschef = await _userManager.FindByIdAsync(item.ChefId);
@@ -197,7 +204,7 @@ namespace Gourmet.WebApi.Controllers
                 var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
                 var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
                 var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
-                bestfoodsRecipe.Add(new SummaryRecipeInfoResponse
+                saladsRecipe.Add(new SummaryRecipeInfoResponse
                 {
                     Score = item.Score,
                     ChefName = isExitschef.FullName,
@@ -217,7 +224,74 @@ namespace Gourmet.WebApi.Controllers
                 });
 
             }
-            reciperesult.Add("Best", bestfoodsRecipe);
+            reciperesult.Add("Salad", saladsRecipe);
+
+            foreach (var item in fastfoods)
+            {
+                var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
+                var isExitschef = await _userManager.FindByIdAsync(item.ChefId);
+                var allPSOI = _db.PSOIs.ToList();
+                var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
+                fastfoodsRecipe.Add(new SummaryRecipeInfoResponse
+                {
+                    Score = item.Score,
+                    ChefName = isExitschef.FullName,
+                    ChefUserName = isExitschef.UserName,
+                    Description = item.Description,
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.Name, 1),
+                    Name = item.Name,
+                    FoodName = isExitsFood.Name,
+                    CMName = isExitsCM.Name,
+                    DLName = isExistDL.Name,
+                    FTName = isExitsFT.Name,
+                    MTName = isExitsMT.Name,
+                    NName = isExitsN.Name,
+                    Time = item.Time,
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer,
+                });
+
+            }
+            reciperesult.Add("FastFood", fastfoodsRecipe);
+
+            foreach (var item in desserts)
+            {
+                var isExitsFood = _db.Foods.Where(x => x.Id == item.FoodId).FirstOrDefault();
+                var isExitschef = await _userManager.FindByIdAsync(item.ChefId);
+                var allPSOI = _db.PSOIs.ToList();
+                var isExitsPSOI = allPSOI.Where(x => x.Id == item.Primary_Source_of_IngredientId).FirstOrDefault();
+                var isExitsCM = _db.CMs.Where(x => x.Id == item.Cooking_MethodId).FirstOrDefault();
+                var isExitsFT = _db.FTs.Where(x => x.Id == item.Food_typeId).FirstOrDefault();
+                var isExitsN = _db.Ns.Where(x => x.Id == item.NationalityId).FirstOrDefault();
+                var isExitsMT = _db.MTs.Where(x => x.Id == item.Meal_TypeId).FirstOrDefault();
+                var isExistDL = _db.DLs.Where(x => x.Id == item.Difficulty_LevelId).FirstOrDefault();
+                dessertsRecipe.Add(new SummaryRecipeInfoResponse
+                {
+                    Score = item.Score,
+                    ChefName = isExitschef.FullName,
+                    ChefUserName = isExitschef.UserName,
+                    Description = item.Description,
+                    ImagePath = await _imageProcessorService.GetImagebyRecipe(isExitsFood.Name, isExitschef.UserName, item.Name, 1),
+                    Name = item.Name,
+                    FoodName = isExitsFood.Name,
+                    CMName = isExitsCM.Name,
+                    DLName = isExistDL.Name,
+                    FTName = isExitsFT.Name,
+                    MTName = isExitsMT.Name,
+                    NName = isExitsN.Name,
+                    Time = item.Time,
+                    PSOIName = isExitsPSOI.Name,
+                    CountRate = item.Number_Scorer,
+                });
+
+            }
+            reciperesult.Add("Dessert",dessertsRecipe);
+
             Tuple<List<FoodInformationResponse>, Dictionary<string, List<SummaryRecipeInfoResponse>>> result = new Tuple<List<FoodInformationResponse>, Dictionary<string, List<SummaryRecipeInfoResponse>>>(allfoods, reciperesult);
             return Ok(result);
 
