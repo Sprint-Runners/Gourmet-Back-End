@@ -16,11 +16,13 @@ namespace Gourmet.Core.ServiceContracts
         Task<IEnumerable<Food_type>> GetAllFTCategory();
         Task<IEnumerable<Cooking_Method>> GetAllCMCategory();
         Task<IEnumerable<Primary_Source_of_Ingredient>> GetAllPSOICategory();
+        Task<IEnumerable<Difficulty_Level>> GetAllDLCategory();
         Task<PSOIResponse> CreatePSOICategory(AddCategoryRequest request);
         Task<CMResponse> CreateCMCategory(AddCategoryRequest request);
         Task<FTResponse> CreateFTCategory(AddCategoryRequest request);
         Task<NResponse> CreateNCategory(AddCategoryRequest request);
         Task<MTResponse> CreateMTCategory(AddCategoryRequest request);
+        Task<DLResponse> CreateDLCategory(AddCategoryRequest request);
 
     }
 }

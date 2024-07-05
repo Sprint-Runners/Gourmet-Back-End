@@ -13,5 +13,8 @@ namespace Gourmet.Core.DTO.Response
         public string? JWT_Token { get; set; }
         public DateTime? Expiration { get; set; }
         public string? Period { get; set; }
+        public string Role { get; set; }
+        public bool isPremium { get; set; }
+        public DateTime premium { get; set; }
     }
 }

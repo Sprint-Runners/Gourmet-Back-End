@@ -322,3 +322,6 @@ C:\Users\win_10\Desktop\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Test\bi
 C:\Users\win_10\Desktop\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Test\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\win_10\Desktop\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Test\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\win_10\Desktop\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Test\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Test\obj\Debug\net6.0\Gourmet.Test.dll
+C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Test\obj\Debug\net6.0\refint\Gourmet.Test.dll
+C:\Users\win_10\Desktop\SystemAnalysis\Gourmet\Gourmet-Back-End\GourmetSolution\Gourmet.Test\obj\Debug\net6.0\Gourmet.Test.pdb

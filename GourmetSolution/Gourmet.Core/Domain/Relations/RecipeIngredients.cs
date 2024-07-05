@@ -22,6 +22,8 @@ namespace Gourmet.Core.Domain.Relations
         public Ingredient ingredient { get; set; }
         [Required]
         public double Quantity {  get; set; }
+        [Required]
+        public string Unit { get; set; }
 
 
     }

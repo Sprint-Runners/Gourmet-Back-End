@@ -12,11 +12,14 @@ namespace Gourmet.Core.ServiceContracts
 {
     public interface IUsersService
     {
-        Task<Response> Sign_Up_User(SignUpRequest request);
-        Task<Response> LoginAsync(LoginRequest request);
-        Task<Response> MakeAdminAsync(UpdatePermissionRequest updatePermission);
+        Task<UserResponse> Sign_Up_User(SignUpRequest request);
+        Task<UserResponse> LoginAsync(LoginRequest request);
+        Task<UserResponse> MakeAdminAsync(UpdatePermissionRequest updatePermission);
         Task<Email_Response> Authenticate_Email(Authrequest request);
-        Task<Response> SeedRolesAsync();
+        Task<UserResponse> SeedRolesAsync();
         Task<Email_Response> Temproary_Password(Add_Temp_Password request);
+        Task<BanUserResponse> BanUser(BanUserRequest request);
+        Task<BanUserResponse> UnBanUser(BanUserRequest request);
+        Task<Email_Response> Email_User(string username, string reason);
     }
 }

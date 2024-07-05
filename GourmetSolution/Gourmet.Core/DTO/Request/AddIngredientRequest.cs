@@ -10,6 +10,5 @@ namespace Gourmet.Core.DTO.Request
     public class AddIngredientRequest
     {
         public string Name { get; set; }
-        public string Unit { get; set; }
     }
 }

@@ -11,27 +11,47 @@ namespace Gourmet.Core.Domain.Entities
 {
     public class Recipe
     {
+        
         [Key]
         public Guid Id { get; set; }
         [Required]
-        public Guid FoodId { get; set; }
+        [MaxLength(250)]
+        public string Name { get; set; }
+        public Guid? FoodId { get; set; }
         [ForeignKey("FoodId")]
-        public Food food { get; set; }
-        [Required]
-        public string ChefId { get; set; }
+        public Food? food { get; set; }
+        public string FoodString { get; set; }
+        public string? ChefId { get; set; }
         [ForeignKey("ChefId")]
-        public ApplicationUser chef { get; set; }
+        public Chef? chef { get; set; }
         [Required(ErrorMessage = "Description is required")]
-        [MaxLength(15000)]
+        [MaxLength(1000)]
         public string Description { get; set; }
         [Required]
-        [Range(0,5)]
-        public double Score {  get; set; }
+        [Range(0, 5)]
+        public double Score { get; set; } 
         [Required]
+        public int Number_Scorer { get; set; } = 0;
+        //[Required]
         [ValidateNever]
-        public string ImgeUrl { get; set; }
+        public string? ImgeUrl1 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string? ImgeUrl2 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string? ImgeUrl3 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string? ImgeUrl4 { get; set; }
+        //[Required]
+        [ValidateNever]
+        public string? ImgeUrl5 { get; set; }
+
         [Required]
         public string List_Ingriedents { get; set; }
+        public string NotExistIngredients { get; set; }
+        
         [Required]
         public Guid Primary_Source_of_IngredientId { get; set; }
         [ForeignKey("Primary_Source_of_IngredientId")]
@@ -50,8 +70,24 @@ namespace Gourmet.Core.Domain.Entities
         public Nationality nationality { get; set; }
         [Required]
         public Guid Meal_TypeId { get; set; }
-        [ForeignKey("Meal_Type")]
+        [ForeignKey("Meal_TypeId")]
         public Meal_Type meal_type { get; set; }
+        [Required]
+        public Guid Difficulty_LevelId { get; set; }
+        [ForeignKey("Difficulty_LevelId")]
+        public Difficulty_Level difficulty_Level  { get; set; }
+        [Required]
+        public int Time {  get; set; }
+        //[Required]
+        public DateTime CreatTime { get; set; }
+        [Required]
+        public bool IsAccepted {  get; set; }
+        [Required]
+        public int NumberOfPicture {  get; set; }
 
+        [Required]
+        public bool IsReject { get; set; }
+        [Required]
+        public bool IsCompelete { get; set; }
     }
 }

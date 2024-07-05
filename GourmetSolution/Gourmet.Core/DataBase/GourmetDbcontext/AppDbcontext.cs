@@ -25,26 +25,34 @@ namespace Gourmet.Core.DataBase.GourmetDbcontext
         public DbSet<Food_type> FTs { get; set; }
         public DbSet<Nationality> Ns { get; set; }
         public DbSet<Meal_Type> MTs { get; set; }
+        public DbSet<Difficulty_Level> DLs { get; set; }
         public DbSet<Chef> Chefs { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Food> Foods { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<InCompleteRecipe> InCompleteRecipes { get; set; }
         public DbSet<Email_Pass> Email_Passwords { get; set; }
         public DbSet<Temp_Password> Temproary_Passwords { get; set; }
         public DbSet<Secret> Secrets { get; set; }
+        public DbSet<Special_Category> Special_Categories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             base.OnModelCreating(modelbuilder);
             modelbuilder.Entity<RecipeIngredients>()
                   .HasKey(m => new { m.RecipeId, m.IngredientId });
-            modelbuilder.Entity<RecentFoodUser>()
-                  .HasKey(m => new { m.userId, m.FoodId });
-            modelbuilder.Entity<FavouritFoodUser>()
-                  .HasKey(m => new { m.userId, m.FoodId });
+            modelbuilder.Entity<RecentRecipeUser>()
+                  .HasKey(m => new { m.userId, m.RecipeId });
+            modelbuilder.Entity<FavouritRecipeUser>()
+                  .HasKey(m => new { m.userId, m.RecipeId });
+            modelbuilder.Entity<RecipeStep>()
+                  .HasKey(m => new { m.RecipeId, m.Number });
+            modelbuilder.Entity<ScoreRecipeUser>()
+                  .HasKey(m => new { m.RecipeId, m.userId });
         }
         public DbSet<RecipeIngredients> RecipeIngredients { get; set; }
-        public DbSet<RecentFoodUser> RecentFoodUsers { get; set; }
-        public DbSet<FavouritFoodUser> FavouritFoodUsers { get; set; }
+        public DbSet<RecentRecipeUser> RecentRecipeUsers { get; set; }
+        public DbSet<FavouritRecipeUser> FavouritRecipeUsers { get; set; }
+        public DbSet<ScoreRecipeUser> ScoreRecipeUsers { get; set; }
+        public DbSet<RecipeStep> RecipeSteps { get; set; }
+        public DbSet<ChefRequest>ChefRequests { get; set; }
     }
 }

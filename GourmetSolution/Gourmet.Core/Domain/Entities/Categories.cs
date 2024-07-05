@@ -12,48 +12,57 @@ namespace Gourmet.Core.Domain.Entities
         [Key]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "name is required")]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string Name { get; set; }
-        public string ImageUrl {  get; set; }
+        public string? ImageUrl {  get; set; }
     }
     public class Cooking_Method
     {
         [Key]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "name is required")]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+
+        [Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidateNever]
+        public string? ImageUrl { get; set; }
     }
     public class Food_type
     {
         [Key]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "name is required")]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
     }
     public class Nationality
     {
         [Key]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "name is required")]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
     }
     public class Meal_Type
     {
         [Key]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "name is required")]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
     }
-
+    public class Difficulty_Level
+    {
+        [Key]
+        public Guid Id { get; set; }
+        [Required(ErrorMessage = "name is required")]
+        //[MaxLength(150)]
+        public string Name { get; set; }
+    }
 
 
 }

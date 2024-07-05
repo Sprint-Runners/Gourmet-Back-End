@@ -9,6 +9,7 @@ using Gourmet.Core.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using RapidApiExample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
@@ -50,9 +51,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Hengameh");
+void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer("Default-Ali");
 builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Hengameh"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default-Ali"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
@@ -98,6 +99,12 @@ builder.Services
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
+//sk-proj-c3TVsXBxKivphLctG1hXT3BlbkFJ5bWlfJQ9FJSqvJ6paBjf
+//sk-gormetwebsite-BMZFeovFtffBCpIvZisCT3BlbkFJwO7VZGuism14fTqQwzQ9
+//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
+
+
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IJwt, JWTService>();
 builder.Services.AddScoped<IChefService, ChefService>();
@@ -121,15 +128,25 @@ builder.Services.AddControllers();
 //                       .AllowAnyMethod();
 //            });
 //    });
+builder.Services.AddHttpClient<RapidApiService>();
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
 
-}
+    //    app.UseSwagger();
+    //    app.UseSwaggerUI(c => {
+    //	    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    //	    c.RoutePrefix = "docs";
+    //}
+    //	);
+
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+    
+
+
+
 // Configure the HTTP request pipeline.
 app.UseAuthentication();
 app.UseAuthorization();

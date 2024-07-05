@@ -36,12 +36,12 @@ namespace Gourmet.Core.Services
             Email_Address = "GourmetFoodWebSite@gmail.com";
             Email_Password = _db.Secrets.Find(Email_Address).Password;
         }
-        public async Task<Response> Sign_Up_User(SignUpRequest request)
+        public async Task<UserResponse> Sign_Up_User(SignUpRequest request)
         {
             var isExistsUser = await _userManager.FindByNameAsync(request.Email);
 
             if (isExistsUser != null)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = "UserName Already Exists",
@@ -51,17 +51,18 @@ namespace Gourmet.Core.Services
             {
 
                 UserName = request.Email,
+                Email=request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
             var user = _db.Email_Passwords.Find(request.Email);
 
-            //if (user == null || user.Temp_Password.ToString() != request.Temp_Code)
-            //    return new Response()
-            //    {
-            //        IsSucceed = false,
-            //        user = null,
-            //        Message = "The Authentication code or the email is incorrect"
-            //    };
+            if (user == null || user.Temp_Password.ToString() != request.Temp_Code)
+                return new UserResponse()
+                {
+                    IsSucceed = false,
+                    user = null,
+                    Message = "The Authentication code or the email is incorrect"
+                };
 
             var createUserResult = await _userManager.CreateAsync(new_user, request.Password);
 
@@ -72,7 +73,7 @@ namespace Gourmet.Core.Services
                 {
                     errorString += " # " + error.Description;
                 }
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = errorString,
@@ -81,7 +82,7 @@ namespace Gourmet.Core.Services
             }
             await _userManager.AddToRoleAsync(new_user, StaticUserRoles.USER);
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 Message = "User Created Successfully",
@@ -89,25 +90,32 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<Response> LoginAsync(LoginRequest request)
+        public async Task<UserResponse> LoginAsync(LoginRequest request)
         {
             var new_user = await _userManager.FindByNameAsync(request.username);
 
             if (new_user is null)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = "Invalid Credentials",
                     user = null
                 };
-
+            if (new_user.Ban)
+            {
+                return new UserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "The User is Banned",
+                    user = null
+                };
+            }
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(new_user, request.password);
-
             if (!isPasswordCorrect)
             {
                 var Temp = await _db.Temproary_Passwords.FindAsync(request.username);
                 if (Temp is null || Temp.Password != request.password)
-                    return new Response()
+                    return new UserResponse()
                     {
                         IsSucceed = false,
                         Message = "Invalid Credentials",
@@ -121,7 +129,7 @@ namespace Gourmet.Core.Services
 
             }
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 Message = "Login was successful",
@@ -129,12 +137,12 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<Response> MakeAdminAsync(UpdatePermissionRequest updatePermission)
+        public async Task<UserResponse> MakeAdminAsync(UpdatePermissionRequest updatePermission)
         {
             var new_user = await _userManager.FindByNameAsync(updatePermission.UserName);
 
             if (new_user is null)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = false,
                     Message = "Invalid User name!",
@@ -143,7 +151,7 @@ namespace Gourmet.Core.Services
 
             await _userManager.AddToRoleAsync(new_user, StaticUserRoles.ADMIN);
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 user = (Chef)new_user,
@@ -151,14 +159,14 @@ namespace Gourmet.Core.Services
             };
         }
 
-        public async Task<Response> SeedRolesAsync()
+        public async Task<UserResponse> SeedRolesAsync()
         {
             bool isChefRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.CHEF);
             bool isAdminRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.ADMIN);
             bool isUserRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.USER);
 
             if (isChefRoleExists && isAdminRoleExists && isUserRoleExists)
-                return new Response()
+                return new UserResponse()
                 {
                     IsSucceed = true,
                     Message = "Roles Seeding is Already Done"
@@ -168,7 +176,7 @@ namespace Gourmet.Core.Services
             await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.ADMIN));
             await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.CHEF));
 
-            return new Response()
+            return new UserResponse()
             {
                 IsSucceed = true,
                 Message = "Role Seeding Done Successfully"
@@ -252,5 +260,74 @@ namespace Gourmet.Core.Services
                 return response;
             }
         }
+
+        public async Task<BanUserResponse> BanUser(BanUserRequest request)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+            if (isExistsUser == null)
+                return new BanUserResponse() { IsSucceed = false, Message = "No user with this username exists" };
+            isExistsUser.Ban = true;
+            //EditUser.UserName
+            var result = await _userManager.UpdateAsync(isExistsUser);
+
+            if (result.Succeeded)
+                return new BanUserResponse()
+                {
+                    IsSucceed = true,
+                    Message = "User Banned successfuly"
+                };
+            else
+                return new BanUserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "Could not ban user successfuly"
+                };
+        }
+        public async Task<BanUserResponse> UnBanUser(BanUserRequest request)
+        {
+            var isExistsUser = await _userManager.FindByNameAsync(request.UserName);
+            if (isExistsUser == null)
+                return new BanUserResponse() { IsSucceed = false, Message = "No user with this username exists" };
+            isExistsUser.Ban = false;
+            //EditUser.UserName
+            var result = await _userManager.UpdateAsync(isExistsUser);
+
+            if (result.Succeeded)
+                return new BanUserResponse()
+                {
+                    IsSucceed = true,
+                    Message = "User Unbanned successfuly"
+                };
+            else
+                return new BanUserResponse()
+                {
+                    IsSucceed = false,
+                    Message = "Could not unban user successfuly"
+                };
+        }
+        public async Task<Email_Response> Email_User(string username, string reason)
+        {
+            MailAddress From = new MailAddress(Email_Address);
+            MailAddress To = new MailAddress(username);
+            Random random = new Random();
+            string Body_Message = reason;
+            MailMessage message = new MailMessage(From, To) { Subject = "Gourmet Chef Request Notificaion", Body = Body_Message };
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.EnableSsl = true;
+            smtpClient.Credentials = new NetworkCredential(Email_Address, Email_Password);
+            try
+            {
+                smtpClient.Send(message);
+                Email_Response response = new Email_Response() { IsSucceed = true, Message = "Email has been sent" };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Email_Response response = new Email_Response() { IsSucceed = false, Message = "Email could not be sent " + ex.Message };
+                return response;
+            }
+        }
+
     }
 }

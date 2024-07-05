@@ -29,17 +29,30 @@ namespace Gourmet.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("CMs");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Difficulty_Level", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DLs");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Email_Pass", b =>
@@ -82,83 +95,15 @@ namespace Gourmet.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("FTs");
-                });
-
-            modelBuilder.Entity("Gourmet.Core.Domain.Entities.InCompleteRecipe", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ChefId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("Cooking_MethodId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(15000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FoodString")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("Food_typeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ImgeUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IngredientsString")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("Meal_Type")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Meal_TypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("NationalityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NotExistIngredients")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("Primary_Source_of_IngredientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChefId");
-
-                    b.HasIndex("Cooking_MethodId");
-
-                    b.HasIndex("Food_typeId");
-
-                    b.HasIndex("Meal_Type");
-
-                    b.HasIndex("NationalityId");
-
-                    b.HasIndex("Primary_Source_of_IngredientId");
-
-                    b.ToTable("InCompleteRecipes");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Ingredient", b =>
@@ -172,10 +117,6 @@ namespace Gourmet.Core.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Ingredients");
@@ -188,13 +129,11 @@ namespace Gourmet.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -208,13 +147,11 @@ namespace Gourmet.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -228,13 +165,11 @@ namespace Gourmet.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -248,39 +183,80 @@ namespace Gourmet.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ChefId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("Cooking_MethodId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(15000)
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
-                    b.Property<Guid>("FoodId")
+                    b.Property<Guid>("Difficulty_LevelId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("FoodId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FoodString")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("Food_typeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImgeUrl")
-                        .IsRequired()
+                    b.Property<string>("ImgeUrl1")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgeUrl5")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCompelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReject")
+                        .HasColumnType("bit");
 
                     b.Property<string>("List_Ingriedents")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Meal_Type")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("Meal_TypeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<Guid>("NationalityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NotExistIngredients")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfPicture")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Number_Scorer")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("Primary_Source_of_IngredientId")
                         .HasColumnType("uniqueidentifier");
@@ -288,17 +264,22 @@ namespace Gourmet.Core.Migrations
                     b.Property<double>("Score")
                         .HasColumnType("float");
 
+                    b.Property<int>("Time")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ChefId");
 
                     b.HasIndex("Cooking_MethodId");
 
+                    b.HasIndex("Difficulty_LevelId");
+
                     b.HasIndex("FoodId");
 
                     b.HasIndex("Food_typeId");
 
-                    b.HasIndex("Meal_Type");
+                    b.HasIndex("Meal_TypeId");
 
                     b.HasIndex("NationalityId");
 
@@ -320,6 +301,20 @@ namespace Gourmet.Core.Migrations
                     b.ToTable("Secrets");
                 });
 
+            modelBuilder.Entity("Gourmet.Core.Domain.Entities.Special_Category", b =>
+                {
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Title");
+
+                    b.ToTable("Special_Categories");
+                });
+
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Temp_Password", b =>
                 {
                     b.Property<string>("Email")
@@ -333,40 +328,58 @@ namespace Gourmet.Core.Migrations
                     b.ToTable("Temproary_Passwords");
                 });
 
-            modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritFoodUser", b =>
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ChefRequest", b =>
                 {
                     b.Property<string>("userId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("FoodId")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("userId");
+
+                    b.ToTable("ChefRequests");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritRecipeUser", b =>
+                {
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("RecipeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TimeToLike")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("userId", "FoodId");
+                    b.HasKey("userId", "RecipeId");
 
-                    b.HasIndex("FoodId");
+                    b.HasIndex("RecipeId");
 
-                    b.ToTable("FavouritFoodUsers");
+                    b.ToTable("FavouritRecipeUsers");
                 });
 
-            modelBuilder.Entity("Gourmet.Core.Domain.Relations.RecentFoodUser", b =>
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.RecentRecipeUser", b =>
                 {
                     b.Property<string>("userId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("FoodId")
+                    b.Property<Guid>("RecipeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("VisitTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("userId", "FoodId");
+                    b.HasKey("userId", "RecipeId");
 
-                    b.HasIndex("FoodId");
+                    b.HasIndex("RecipeId");
 
-                    b.ToTable("RecentFoodUsers");
+                    b.ToTable("RecentRecipeUsers");
                 });
 
             modelBuilder.Entity("Gourmet.Core.Domain.Relations.RecipeIngredients", b =>
@@ -380,11 +393,51 @@ namespace Gourmet.Core.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("RecipeId", "IngredientId");
 
                     b.HasIndex("IngredientId");
 
                     b.ToTable("RecipeIngredients");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.RecipeStep", b =>
+                {
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<string>("explenation")
+                        .IsRequired()
+                        .HasMaxLength(15000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RecipeId", "Number");
+
+                    b.ToTable("RecipeSteps");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ScoreRecipeUser", b =>
+                {
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecipeId", "userId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("ScoreRecipeUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -599,13 +652,23 @@ namespace Gourmet.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Ban")
+                        .HasColumnType("bit");
+
                     b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("premium")
+                        .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -620,76 +683,27 @@ namespace Gourmet.Core.Migrations
                     b.HasDiscriminator().HasValue("Chef");
                 });
 
-            modelBuilder.Entity("Gourmet.Core.Domain.Entities.InCompleteRecipe", b =>
-                {
-                    b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "chef")
-                        .WithMany()
-                        .HasForeignKey("ChefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gourmet.Core.Domain.Entities.Cooking_Method", "cooking_method")
-                        .WithMany()
-                        .HasForeignKey("Cooking_MethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gourmet.Core.Domain.Entities.Food_type", "food_type")
-                        .WithMany()
-                        .HasForeignKey("Food_typeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gourmet.Core.Domain.Entities.Meal_Type", "meal_type")
-                        .WithMany()
-                        .HasForeignKey("Meal_Type")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gourmet.Core.Domain.Entities.Nationality", "nationality")
-                        .WithMany()
-                        .HasForeignKey("NationalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gourmet.Core.Domain.Entities.Primary_Source_of_Ingredient", "primary_source_of_ingredient")
-                        .WithMany()
-                        .HasForeignKey("Primary_Source_of_IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("chef");
-
-                    b.Navigation("cooking_method");
-
-                    b.Navigation("food_type");
-
-                    b.Navigation("meal_type");
-
-                    b.Navigation("nationality");
-
-                    b.Navigation("primary_source_of_ingredient");
-                });
-
             modelBuilder.Entity("Gourmet.Core.Domain.Entities.Recipe", b =>
                 {
-                    b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "chef")
+                    b.HasOne("Gourmet.Core.Domain.Entities.Chef", "chef")
                         .WithMany()
-                        .HasForeignKey("ChefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChefId");
 
                     b.HasOne("Gourmet.Core.Domain.Entities.Cooking_Method", "cooking_method")
                         .WithMany()
                         .HasForeignKey("Cooking_MethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gourmet.Core.Domain.Entities.Difficulty_Level", "difficulty_Level")
+                        .WithMany()
+                        .HasForeignKey("Difficulty_LevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Gourmet.Core.Domain.Entities.Food", "food")
                         .WithMany()
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FoodId");
 
                     b.HasOne("Gourmet.Core.Domain.Entities.Food_type", "food_type")
                         .WithMany()
@@ -699,7 +713,7 @@ namespace Gourmet.Core.Migrations
 
                     b.HasOne("Gourmet.Core.Domain.Entities.Meal_Type", "meal_type")
                         .WithMany()
-                        .HasForeignKey("Meal_Type")
+                        .HasForeignKey("Meal_TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -718,6 +732,8 @@ namespace Gourmet.Core.Migrations
                     b.Navigation("chef");
 
                     b.Navigation("cooking_method");
+
+                    b.Navigation("difficulty_Level");
 
                     b.Navigation("food");
 
@@ -730,30 +746,22 @@ namespace Gourmet.Core.Migrations
                     b.Navigation("primary_source_of_ingredient");
                 });
 
-            modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritFoodUser", b =>
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ChefRequest", b =>
                 {
-                    b.HasOne("Gourmet.Core.Domain.Entities.Food", "Food")
-                        .WithMany()
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "user")
                         .WithMany()
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Food");
 
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("Gourmet.Core.Domain.Relations.RecentFoodUser", b =>
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.FavouritRecipeUser", b =>
                 {
-                    b.HasOne("Gourmet.Core.Domain.Entities.Food", "food")
+                    b.HasOne("Gourmet.Core.Domain.Entities.Recipe", "recipe")
                         .WithMany()
-                        .HasForeignKey("FoodId")
+                        .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -763,7 +771,26 @@ namespace Gourmet.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("food");
+                    b.Navigation("recipe");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.RecentRecipeUser", b =>
+                {
+                    b.HasOne("Gourmet.Core.Domain.Entities.Recipe", "recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("recipe");
 
                     b.Navigation("user");
                 });
@@ -785,6 +812,36 @@ namespace Gourmet.Core.Migrations
                     b.Navigation("ingredient");
 
                     b.Navigation("recipe");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.RecipeStep", b =>
+                {
+                    b.HasOne("Gourmet.Core.Domain.Entities.Recipe", "recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("recipe");
+                });
+
+            modelBuilder.Entity("Gourmet.Core.Domain.Relations.ScoreRecipeUser", b =>
+                {
+                    b.HasOne("Gourmet.Core.Domain.Entities.Recipe", "recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gourmet.Core.Domain.Entities.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("recipe");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

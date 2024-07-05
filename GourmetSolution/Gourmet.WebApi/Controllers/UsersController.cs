@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Gourmet.Core.Domain.Other_Object;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Diagnostics.Eventing.Reader;
+using Gourmet.Core.DataBase.GourmetDbcontext;
 
 namespace Gourmet.WebApi.Controllers
 {
@@ -23,14 +25,16 @@ namespace Gourmet.WebApi.Controllers
         private readonly IChefService _chefService;
         private readonly UserManager<Chef> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly AppDbContext _db;
 
-        public UsersController(IJwt jwtservice, IUsersService usersService, IChefService chefService, UserManager<Chef> userManager, IConfiguration configuration)
+        public UsersController(IJwt jwtservice, IUsersService usersService, IChefService chefService, UserManager<Chef> userManager, IConfiguration configuration, AppDbContext db)
         {
             _jwtservice = jwtservice;
             _usersService = usersService;
             _chefService = chefService;
             _userManager = userManager;
             _configuration = configuration;
+            _db = db;
         }
         [HttpPost]
         [Route("seed-roles")]
@@ -68,17 +72,33 @@ namespace Gourmet.WebApi.Controllers
             {
                 var claims = _userManager.GetClaimsAsync(loginResult.user).Result.ToList();
                 var roles = _userManager.GetRolesAsync(loginResult.user).Result.ToList();
-                foreach (var role in roles)
+                string Role = "";
+                if (roles.Contains("ADMIN"))
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
+                    Role = "ADMIN";
                 }
+                else if (roles.Contains("CHEF"))
+                {
+                    Role = "CHEF";
+                }
+                else
+                {
+                    Role = "USER";
+                }
+                claims.Add(new Claim(ClaimTypes.Role, Role));
+                
                 var token = _jwtservice.CreateJwtToken(loginResult.user,claims);
+                
+                
                 AuthenticationResponse login_response = new AuthenticationResponse
                 {
-                    //Email = new_User.UserName,
+                    Email = loginResult.user.UserName,
                     JWT_Token = token,
                     //    Expiration = Expiration,
-                    Period = _configuration["JWT:Expiration_Time"]
+                    Period = _configuration["JWT:Expiration_Time"],
+                    Role=Role,
+                    isPremium = loginResult.user.premium > DateTime.Now ? true : false,
+                    premium = loginResult.user.premium
                 };
                 return Ok(login_response);
             }
@@ -107,17 +127,7 @@ namespace Gourmet.WebApi.Controllers
         }
 
         // Route -> make user -> chef
-        [HttpPost]
-        [Route("make-chef")]
-        public async Task<IActionResult> MakeChef([FromBody] UpdatePermissionRequest updatePermission)
-        {
-            var operationResult = await _chefService.MakeChefAsync(updatePermission);
-
-            if (operationResult.IsSucceed)
-                return Ok(operationResult.Message);
-
-            return BadRequest(operationResult.Message);
-        }
+        
         [HttpPost("Authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] Authrequest request)
         {
@@ -133,9 +143,41 @@ namespace Gourmet.WebApi.Controllers
             var EmailResult = await _usersService.Temproary_Password(request);
             if (EmailResult.IsSucceed)
                 return Ok(EmailResult);
-           
-
             return Problem(detail: EmailResult.Message, statusCode: 400);
+        }
+                [HttpGet]
+        [Route("make-chef-requests")]
+        public async Task<IActionResult> MakeChefRequests()
+        {
+            try
+            {
+                var List =_db.ChefRequests.ToList();
+                return Ok(List);
+            }
+            catch( Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("reject-chef")]
+        public async Task<IActionResult> RejectChefRequest([FromBody] RejectRequest reject)
+        {
+            var IsExistRequest = _db.ChefRequests.Where(x => x.UserName == reject.UserName).FirstOrDefault();
+            if (IsExistRequest != null)
+            {
+                if (reject.Reason != null)
+                {
+                    var Emailres = _usersService.Email_User(reject.UserName, reject.Reason);
+                    _db.ChefRequests.Remove(IsExistRequest);
+                }
+                else
+                    _db.ChefRequests.Remove(IsExistRequest);
+            }
+            else
+                return BadRequest("This Chef does not exist");
+
+            return Ok(IsExistRequest);
         }
     }
 }

@@ -15,13 +15,15 @@ namespace Gourmet.Core.Services
     public class FoodService : IFoodService
     {
         private readonly AppDbContext _db;
-        public FoodService(AppDbContext db)
+        private readonly IImageProcessorService _imageProcessorService;
+        public FoodService(AppDbContext db,IImageProcessorService imageProcessorService)
         {
             _db = db;
+            _imageProcessorService = imageProcessorService;
         }
         public async Task<FoodResponse> Create(AddFoodRequest request)
         {
-            var isExistFood = _db.Foods.Where(r => r.Name.ToLower() == request.Name.ToLower()).FirstOrDefault();
+            var isExistFood = _db.Foods.Where(r => r.Name.ToLower().Replace(" ","") == request.Name.ToLower().Replace(" ", "")).FirstOrDefault();
             if (isExistFood != null)
             {
                 return new FoodResponse
@@ -35,7 +37,7 @@ namespace Gourmet.Core.Services
             {
                 Id = new Guid(),
                 Name = request.Name.ToLower(),
-
+                ImgeUrl = await _imageProcessorService.GetImagebyFood(request.Name.ToLower())
             };
             _db.Foods.Add(food);
             _db.SaveChanges();
@@ -45,6 +47,40 @@ namespace Gourmet.Core.Services
                 Message = "Food Added Successfully",
                 food=food
             };
+        }
+        public async Task<SearchRecipesFood> GetAllRecipe(string request)
+        {
+            var isExistFood = _db.Foods.Where(r => r.Name.ToLower() == request.ToLower()).FirstOrDefault();
+            if (isExistFood == null)
+            {
+                return new SearchRecipesFood
+                {
+                    IsSucceed = false,
+                    Message = "This Food Not Exists",
+                    Recipes = null
+                };
+            }
+            var allRecipes = _db.Recipes.Where(r => r.food.Name.ToLower() == request.ToLower() && r.IsAccepted==true && r.IsReject==false && r.FoodString == "" && r.NotExistIngredients == "").OrderByDescending(r => r.Score).ToList();
+            if (allRecipes.Count == 0)
+            {
+                return new SearchRecipesFood
+                {
+                    IsSucceed = false,
+                    Message = "No recipes have been added for this food yet",
+                    Recipes = null
+                };
+            }
+            return new SearchRecipesFood
+            {
+                IsSucceed = true,
+                Message = "Recipes found successfully",
+                Recipes = allRecipes
+            };
+        }
+
+        public async Task<List<Food>> Get_All()
+        {
+            return _db.Foods.ToList();
         }
         //public async Task<IEnumerable<Food>> GetAllFoodWithOnePSOI(Guid category)
         //{
