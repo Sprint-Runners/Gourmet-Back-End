@@ -10,8 +10,25 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using RapidApiExample.Services;
+using System.Net;
+using SocksSharp;
+using SocksSharp.Proxy;
+using MihaZupan;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+//builder.Services.AddHttpClient<RapidApiService>()
+//    .ConfigurePrimaryHttpMessageHandler(() =>
+//    {
+//        var proxy = new HttpToSocks5Proxy("127.0.0.1", 9050);
+//        return new HttpClientHandler
+//        {
+//            Proxy = proxy,
+//            UseProxy = true
+//        };
+//    });
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(option =>
 {
@@ -129,6 +146,9 @@ builder.Services.AddControllers();
 //            });
 //    });
 builder.Services.AddHttpClient<RapidApiService>();
+
+
+
 var app = builder.Build();
 
 
